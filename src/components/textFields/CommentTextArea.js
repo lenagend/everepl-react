@@ -4,6 +4,7 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import Textarea from '@mui/joy/Textarea';
 import Typography from '@mui/joy/Typography';
+import {Stack, TextField} from "@mui/material";
 
 export default function CommentTextArea() {
     const [text, setText] = React.useState('');
@@ -24,14 +25,27 @@ export default function CommentTextArea() {
                         <IconButton variant="outlined" color="neutral" onClick={addEmoji('😍')}>
                             😍
                         </IconButton>
-                        <Button variant="outlined" color="neutral" sx={{ ml: 'auto' }}>
-                            쓰기
-                        </Button>
+                        <Stack direction="row" sx={{ ml: 'auto' }}>
+                            <TextField
+                                required
+                                id="outlined-required"
+                                label="비밀번호"
+                                size="small"
+                                sx={{width: 100 }}
+                                inputProps={{
+                                    maxLength: 4
+                                }}
+                            />
+                            <Button variant="outlined" color="neutral" >
+                                쓰기
+                            </Button>
+                        </Stack>
+
                     </Box>
                 }
                 endDecorator={
                     <Typography level="body-xs" sx={{ ml: 'auto' }}>
-                        {text.length} character(s)
+                        {text.length} 글자
                     </Typography>
                 }
                 sx={{ width: '100%' }}

@@ -1,33 +1,48 @@
-import * as React from 'react';
-import Divider from '@mui/material/Divider';
-import Avatar from '@mui/material/Avatar';
+import Comment from "./Comment";
+import Box from "@mui/material/Box";
+import {Stack} from "@mui/material";
 import CommentTextArea from "../textFields/CommentTextArea";
-import CommentButtonGroup from "../iconButtons/CommentButtonGroup";
-import {Grid, Stack} from "@mui/joy";
-import Typography from "@mui/joy/Typography";
+import * as React from "react";
+import Divider from "@mui/material/Divider";
+import {useState} from "react";
+const testComments = [
+    {
+        id: 1,
+        userIp: "192.168.1.1",
+        nickname: "UserA",
+        url: "https://example.com/article1",
+        text: "Great article!",
+        pin: "1234",
+        createdAt: "2023-12-15 11:00",
+        updatedAt: "2023-12-15 11:30",
+        parentCommentId: null,
+        reportCount: 0
+    },
+    {
+        id: 2,
+        userIp: "192.168.1.2",
+        nickname: "UserB",
+        url: "https://example.com/article2",
+        text: "Interesting point of view.",
+        pin: "5678",
+        createdAt: "2023-12-15 11:00",
+        updatedAt: "2023-12-15 11:30",
+        parentCommentId: 1,
+        reportCount: 1
+    },
+    // 이하 동일한 구조로 3개의 추가 코멘트
+];
+export default function CommentList({depth = 0}) {
 
-export default function CommentList() {
+    if (depth > 3) return null;
+
     return(
-        <Stack spacing={1}>
-            <Stack direction="row" spacing={1} alignItems="center">
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" sx={{width: 30, height: 30}}/>
-                <Typography color="primary" level="title-md">익명1</Typography>
-                <Typography color="neutral" level="body-md">&middot; 15분 전 작성</Typography>
+        <Box>
+            <Stack spacing={2} sx={{ ml: depth * 1}}>
+                {testComments.map(comment => (
+                    <Comment key={comment.id} comment={comment} depth={depth}/>
+                ))}
             </Stack>
-            <Stack spacing={1}>
-                <Typography
-                    color="neutral"
-                    level="title-md"
-                    variant="soft"
-                    sx={{p: 2}}
-                >
-                    솔직히 시원스쿨은 현지가보면 쳐주지도 않는다. 내가 영국 갔을 때 'Do you know seewonschool?'이라고 영국 맨체스터 국문학과 다니는 학생 발음으로 질문했더니 지나가던 영국 과외 알바생이 'aha? I want to go and get some coffee!'라고 하던 게 눈에 선하다. 그에 비해
-                </Typography>
-                <CommentButtonGroup />
-                <CommentTextArea/>
-                <Divider variant="inset" />
-            </Stack>
-
-        </Stack>
+        </Box>
     );
 }

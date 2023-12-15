@@ -8,11 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Card from "@mui/joy/Card";
 import {Chat} from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import CommentList from "../comments/CommentList";
+import CommentBox from "../comments/CommentBox";
 
 
 export default function UrlCard() {
@@ -30,13 +30,12 @@ export default function UrlCard() {
                         G
                     </Avatar>
                 }
-                action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
+                title={
+                   'https://www.youtube.com/watch?v=2zx3REQxfDo'
                 }
-                title="https://www.youtube.com/watch?v=2zx3REQxfDo"
-                subheader="첫댓글: 2023년 12월 24일"
+                subheader={
+                    '업데이트:23/12/15 13:26'
+                }
             />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
@@ -55,7 +54,7 @@ export default function UrlCard() {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                   <CommentList/>
+                   <CommentBox/>
                 </CardContent>
             </Collapse>
         </Card>
