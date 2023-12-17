@@ -2,7 +2,6 @@ import * as React from 'react';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
@@ -11,15 +10,19 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Card from "@mui/joy/Card";
 import {Chat} from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
-import CommentList from "../comments/CommentList";
-import CommentBox from "../comments/CommentBox";
+import {useNavigate} from "react-router-dom";
+import CommentTextArea from "../textFields/CommentTextArea";
 
 
-export default function UrlCard() {
-    const [expanded, setExpanded] = React.useState(false);
+export default function UrlCard({ isViewPage }) {
+    const navigate = useNavigate();
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
+    const handleCommentButtonClick = () => {
+        if (isViewPage) {
+
+        } else {
+            navigate('/view');
+        }
     };
 
     return (
@@ -48,15 +51,10 @@ export default function UrlCard() {
                 </IconButton>
                 <IconButton aria-label="comment">
                     <Badge badgeContent={100} max={99} color="primary">
-                        <Chat onClick={handleExpandClick}  aria-label="show comments" />
+                        <Chat onClick={handleCommentButtonClick}  aria-label="go comments page" />
                     </Badge>
                 </IconButton>
             </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent>
-                   <CommentBox/>
-                </CardContent>
-            </Collapse>
         </Card>
     );
 }

@@ -5,6 +5,7 @@ import CommentTextArea from "../textFields/CommentTextArea";
 import * as React from "react";
 import Divider from "@mui/material/Divider";
 import {useState} from "react";
+import CommentCard from "./CommentCard";
 const testComments = [
     {
         id: 1,
@@ -32,17 +33,14 @@ const testComments = [
     },
     // 이하 동일한 구조로 3개의 추가 코멘트
 ];
-export default function CommentList({depth = 0}) {
+export default function CommentList() {
 
-    if (depth > 3) return null;
 
     return(
-        <Box>
-            <Stack spacing={2} sx={{ ml: depth * 1}}>
+            <Stack spacing={2}>
                 {testComments.map(comment => (
-                    <Comment key={comment.id} comment={comment} depth={depth}/>
+                    <CommentCard key={comment.id} comment={comment} />
                 ))}
             </Stack>
-        </Box>
     );
 }

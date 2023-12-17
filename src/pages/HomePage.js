@@ -1,13 +1,20 @@
 import {Box, Container} from "@mui/joy";
 import UrlCard from "../components/card/UrlCard";
+import FloatingButtonBottomNavigation from "../components/menu/FloatingButtonBottomNavigation";
 
 const HomePage = () => {
     return(
         <Box>
             <Container maxWidth="md">
-                <UrlCard/>
-                <UrlCard/>
-                <UrlCard/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
+                <UrlCard isViewPage={false}/>
             </Container>
         </Box>
     )

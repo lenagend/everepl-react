@@ -130,7 +130,7 @@ export default function Appbar() {
     );
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
+        <Box sx={{ flexGrow: 1,  position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
             <AppBar position="static">
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }} />
@@ -145,15 +145,7 @@ export default function Appbar() {
                         />
                     </Search>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show 17 new notifications"
-                            color="inherit"
-                        >
-                            <Badge badgeContent={17} color="error">
-                                <NotificationsIcon />
-                            </Badge>
-                        </IconButton>
+
                         <IconButton
                             size="large"
                             edge="end"
