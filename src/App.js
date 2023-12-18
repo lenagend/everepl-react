@@ -1,10 +1,11 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import Appbar from "./components/menu/Appbar";
-import ViewPageBottomNavigation from "./components/menu/ViewPageBottomNavigation";
-import ViewPage from "./pages/ViewPage";
+import TextAreaBottomNavigation from "./components/menu/TextAreaBottomNavigation";
+import CommentPage from "./pages/CommentPage";
 import FloatingButtonBottomNavigation from "./components/menu/FloatingButtonBottomNavigation";
 import Box from "@mui/material/Box";
+import UserCard from "./components/user/UserCard";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
                 <Appbar />
                 <Box sx={{pt: {
                           xs: 7,
-                         sm: 11
+                          sm: 11
                          },
                          pb: {
                             xs:7
@@ -21,7 +22,7 @@ function App() {
                 }}>
                     <Routes>
                         <Route path="/" element={<HomePage />} />
-                        <Route path="/view" element={<ViewPage />} />
+                        <Route path="/comment" element={<CommentPage />} />
                     </Routes>
                 </Box>
                 <FloatingButtonBottomNavigation/>

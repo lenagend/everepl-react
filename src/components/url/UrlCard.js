@@ -6,13 +6,14 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import Card from "@mui/joy/Card";
 import {Chat} from "@mui/icons-material";
 import Badge from "@mui/material/Badge";
 import {useNavigate} from "react-router-dom";
-import CommentTextArea from "../textFields/CommentTextArea";
-
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import FlagIcon from '@mui/icons-material/Flag';
+import Box from "@mui/material/Box";
+import SiteInfoCard from "./SiteInfoCard";
 
 export default function UrlCard({ isViewPage }) {
     const navigate = useNavigate();
@@ -21,33 +22,18 @@ export default function UrlCard({ isViewPage }) {
         if (isViewPage) {
 
         } else {
-            navigate('/view');
+            navigate('/comment');
         }
     };
 
     return (
-        <Card sx={{ maxWidth: 'auto', mt: 2 }} color="primary">
-            <CardHeader
-                avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        G
-                    </Avatar>
-                }
-                title={
-                   'https://www.youtube.com/watch?v=2zx3REQxfDo'
-                }
-                subheader={
-                    '업데이트:23/12/15 13:26'
-                }
-            />
+        <Card sx={{ maxWidth: 'auto', mt: 2 }} color="primary" size="sm">
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
-                    타이틀: 쇠쟁이들은 정말 다 이럴까...? (Feat. 마선호)
-                </Typography>
+                <SiteInfoCard/>
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
-                    <FavoriteIcon color="error"/>
+                    <BookmarkIcon />
                 </IconButton>
                 <IconButton aria-label="comment">
                     <Badge badgeContent={100} max={99} color="primary">
