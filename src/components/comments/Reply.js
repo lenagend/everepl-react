@@ -1,6 +1,7 @@
-import {ButtonGroup, Divider, Stack, Step, StepIndicator} from "@mui/joy";
-import Typography from "@mui/joy/Typography";
+import {Avatar, ButtonGroup, Step, StepIndicator} from "@mui/joy";
 import * as React from "react";
+import Stack from "@mui/joy/Stack";
+import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/material/IconButton";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
@@ -10,20 +11,15 @@ import FlagIcon from "@mui/icons-material/Flag";
 import CardContent from "@mui/joy/CardContent";
 import styled from "@emotion/styled";
 import Card from "@mui/joy/Card";
-import AspectRatio from "@mui/joy/AspectRatio";
-import Box from "@mui/material/Box";
 
 const StyledCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
         paddingBottom: 0
     },
-    padding: 0,
-    border: 'none',
-    background: 'none',
-    gap: 1
+    padding: 10
 }));
 
-export default function Comment({comment, depth}){
+export default function Reply(){
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -32,32 +28,18 @@ export default function Comment({comment, depth}){
 
 
     return(
-        <StyledCard orientation="horizontal" variant="outlined" >
-            <Stack>
-                <AspectRatio ratio="1" sx={{ width: {
-                        xs: 40,
-                        sm: 60
-                    } }} variant="outlined">
-                    <img
-                        src="/images/character/level2.png"
-                        loading="lazy"
-                        alt=""
-                    />
-                </AspectRatio>
-                <Stack direction="row" sx={{height: '100%'}}>
-                    <Box sx={{width: '50%'}}/><Divider orientation="vertical"></Divider><Box/>
-                </Stack>
-            </Stack>
-
-            <CardContent >
+        <StyledCard sx={{ maxWidth: 'auto'}}  size="sm">
+            <CardContent>
                 <Stack direction="row">
-                    <Stack sx={{flexGrow: 1}} spacing={1}>
+
+                    <Stack sx={{flexGrow: 1, px: 1}} spacing={1}>
                         <Stack direction="row" sx={{alignItems: 'center'}}>
-                            <Typography level="title-sm" color="primary" px={1}>
-                                {comment.nickname}({comment.userIp})
+                            <Avatar alt="user-level1" src="/images/character/level1.png" size="sm"/>
+                            <Typography level="title-lg" color="primary" px={1}>
+                                유저1
                             </Typography>
                             <Typography  level="body-xs" color="neutral">
-                                {comment.createdAt}
+                                20분전
                             </Typography>
                             <Stack direction="row" sx={{ml: 'auto'}}>
                                 <IconButton>
@@ -70,9 +52,8 @@ export default function Comment({comment, depth}){
                         </Stack>
                         <Typography
                             level="body-sm"
-                            sx={{pl: 1}}
                         >
-                            {comment.text}
+                            말말말
                         </Typography>
                         <Stack direction="row" spacing={0.5}>
                             <Button aria-label="댓글" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<Chat/>} onClick={handleExpandClick}>

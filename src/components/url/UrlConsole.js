@@ -4,36 +4,22 @@ import Card from '@mui/joy/Card';
 import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Typography from '@mui/joy/Typography';
-import {Input} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import BadgeIcon from '@mui/icons-material/Badge';
-import VpnKeyIcon from '@mui/icons-material/VpnKey';
 import Stack from "@mui/joy/Stack";
+import {Divider} from "@mui/joy";
+import WhatshotIcon from '@mui/icons-material/Whatshot';
+import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 
-export default function AnonymousCard() {
+export default function UrlConsole() {
     return (
         <Card orientation="horizontal" variant="outlined" sx={{mt: 2}}>
-            <CardOverflow>
-                <AspectRatio ratio="1" sx={{ width: 110 }}>
-                    <img
-                        src="/images/character/level2.png"
-                        loading="lazy"
-                        alt=""
-                    />
-                </AspectRatio>
-            </CardOverflow>
-            <CardContent sx={{p: 0}}>
-                <Stack  maxWidth={200}>
-                    <Input
-                        startDecorator={<BadgeIcon />}
-                        endDecorator={<Button>저장</Button>}
-                    />
-                    <Input
-                        startDecorator={<VpnKeyIcon />}
-                        endDecorator={<Button>저장</Button>}
-                    />
+            <CardContent>
+                <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start">
+                    <Button size="sm" variant="soft" startDecorator={<WhatshotIcon />}>인기</Button>
+                    <Button size="sm" variant="soft" startDecorator={<NewReleasesIcon />}>최신</Button>
+                    <Button size="sm" variant="soft" startDecorator={<ChatBubbleIcon />}>댓글</Button>
                 </Stack>
-
             </CardContent>
             <CardOverflow
                 variant="soft"
@@ -50,7 +36,7 @@ export default function AnonymousCard() {
                     borderColor: 'divider',
                 }}
             >
-                로그아웃
+                콘솔
             </CardOverflow>
         </Card>
     );

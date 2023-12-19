@@ -20,7 +20,7 @@ export default function FloatingButtonBottomNavigation({ isViewPage }) {
             sx={{
                 position: 'fixed',
                 bottom: 50,
-                right: { xs: 10, sm: '25%' },
+                right: { xs: 10, sm: '20%' },
                 zIndex: 10
             }}
         >
