@@ -8,15 +8,27 @@ import {Stack, TextField} from "@mui/material";
 
 export default function CommentTextArea() {
     const [text, setText] = React.useState('');
+    const [rows, setRows] = React.useState(1); // 초기 row 수 설정
     const addEmoji = (emoji) => () => setText(`${text}${emoji}`);
+
+    const handleFocus = () => {
+        setRows(3); // 포커스 되었을 때 row 수 변경
+    };
+
+    const handleBlur = () => {
+        setRows(1); // 포커스가 해제되었을 때 원래 row 수로 돌아감
+    };
+
     return (
-        <Box>
+        <Box sx={{width: '100%'}}>
             <Textarea
                 placeholder="여기에 댓글을 달아주세요..."
                 value={text}
                 onChange={(event) => setText(event.target.value)}
-                minRows={2}
-                maxRows={4}
+                onFocus={handleFocus}
+                onBlur={handleBlur}
+                minRows={rows}
+                maxRows={rows}
                 startDecorator={
                     <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
                         <IconButton variant="outlined" color="neutral" onClick={addEmoji('👍')}>
@@ -26,27 +38,12 @@ export default function CommentTextArea() {
                             😍
                         </IconButton>
                         <Stack direction="row" sx={{ ml: 'auto' }}>
-                            <TextField
-                                required
-                                id="outlined-required"
-                                label="비밀번호"
-                                size="small"
-                                sx={{width: 100 }}
-                                inputProps={{
-                                    maxLength: 4
-                                }}
-                            />
                             <Button variant="outlined" color="neutral" >
                                 쓰기
                             </Button>
                         </Stack>
 
                     </Box>
-                }
-                endDecorator={
-                    <Typography level="body-xs" sx={{ ml: 'auto' }}>
-                        {text.length} 글자
-                    </Typography>
                 }
                 sx={{ width: '100%' }}
             />

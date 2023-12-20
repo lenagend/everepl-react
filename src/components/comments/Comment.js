@@ -1,19 +1,16 @@
-import {ButtonGroup, Divider, Stack, Step, StepIndicator} from "@mui/joy";
+import { Divider, Stack} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
-import IconButton from "@mui/material/IconButton";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import Button from "@mui/joy/Button";
 import {Chat} from "@mui/icons-material";
-import FlagIcon from "@mui/icons-material/Flag";
 import CardContent from "@mui/joy/CardContent";
 import styled from "@emotion/styled";
 import Card from "@mui/joy/Card";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/material/Box";
+import VerticalUserMenu from "../iconButtons/VerticalUserMenu";
 
-const StyledCard = styled(Card)(({ theme }) => ({
+const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
         paddingBottom: 0
     },
@@ -23,7 +20,7 @@ const StyledCard = styled(Card)(({ theme }) => ({
     gap: 1
 }));
 
-export default function Comment({comment, depth}){
+export default function Comment({comment}){
     const [expanded, setExpanded] = React.useState(false);
 
     const handleExpandClick = () => {
@@ -32,7 +29,7 @@ export default function Comment({comment, depth}){
 
 
     return(
-        <StyledCard orientation="horizontal" variant="outlined" >
+        <CommentCard orientation="horizontal" variant="outlined" >
             <Stack>
                 <AspectRatio ratio="1" sx={{ width: {
                         xs: 40,
@@ -59,14 +56,9 @@ export default function Comment({comment, depth}){
                             <Typography  level="body-xs" color="neutral">
                                 {comment.createdAt}
                             </Typography>
-                            <Stack direction="row" sx={{ml: 'auto'}}>
-                                <IconButton>
-                                    <EditIcon color="primary"/>
-                                </IconButton>
-                                <IconButton>
-                                    <DeleteForeverIcon color="primary"/>
-                                </IconButton>
-                            </Stack>
+                            <Box sx={{ml: 'auto'}}>
+                                <VerticalUserMenu componentName={'Comment'} />
+                            </Box>
                         </Stack>
                         <Typography
                             level="body-sm"
@@ -78,13 +70,10 @@ export default function Comment({comment, depth}){
                             <Button aria-label="댓글" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<Chat/>} onClick={handleExpandClick}>
                                 99+ 댓글
                             </Button>
-                            <Button aria-label="신고" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<FlagIcon />}>
-                                신고
-                            </Button>
                         </Stack>
                     </Stack>
                 </Stack>
             </CardContent>
-        </StyledCard>
+        </CommentCard>
     );
 }

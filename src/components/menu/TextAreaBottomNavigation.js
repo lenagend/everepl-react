@@ -1,51 +1,36 @@
 import * as React from 'react';
-import {ArrowCircleDown, ArrowCircleUp, FavoriteBorder, Send} from "@mui/icons-material";
-import {FormControl, Grid, InputAdornment, InputLabel, OutlinedInput, Stack, TextField} from "@mui/material";
-import EjectIcon from '@mui/icons-material/Eject';import Box from "@mui/material/Box";
-import IconButton from "@mui/joy/IconButton";
-import {Input} from "@mui/joy";
-import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
-export default function TextAreaBottomNavigation({ isViewPage }) {
-    const handleScrollToTop = () => {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    };
+import Box from "@mui/material/Box";
+import CommentTextArea from "../textFields/CommentTextArea";
+import Card from "@mui/joy/Card";
+import CardContent from "@mui/joy/CardContent";
+import {CardOverflow, Container, Typography} from "@mui/joy";
+
+export default function TextAreaBottomNavigation({ }) {
 
     return (
         <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10}} elevation={3}>
-                <Grid container alignItems="center">
-                    <Grid item xs={3}/>
-                    <Grid item xs={12} sm={6} >
-                            {/*<Input*/}
-                            {/*    placeholder="여기에 댓글을 입력하세요..."*/}
-                            {/*    size="lg"*/}
-                            {/*    sx={{ flexGrow: 1 }}*/}
-                            {/*    multiline*/}
-                            {/*    endDecorator={*/}
-                            {/*        <IconButton  variant="soft" color="primary">*/}
-                            {/*            <Send />*/}
-                            {/*        </IconButton>*/}
-                            {/*    }*/}
-                            {/*/>*/}
-                        <FormControl sx={{ flexGrow: 1, width: '100%', background: 'white' }}>
-                        <OutlinedInput
-                            size="small"
-                            multiline
-                            placeholder="여기에 댓글을 입력하세요..."
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton  variant="soft" color="primary">
-                                        <Send />
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                        </FormControl>
-                    </Grid>
-                    <Grid xs={12} item sm={3}/>
-                </Grid>
+            <Container maxWidth="md" sx={{p: 0}}>
+                <Card sx={{p: 0, gap: 0}}>
+                    <CardOverflow
+                        variant="soft"
+                        color="primary"
+                        sx={{
+                            px: 2,
+                            textAlign: 'left',
+                            fontSize: 'sm',
+                            fontWeight: 'xl',
+                            letterSpacing: '1px',
+                            borderBottom: '1px solid',
+                            borderColor: 'divider',
+                        }}
+                    >
+                            @UserA에게 댓글쓰기
+                    </CardOverflow>
+                    <CardContent sx={{p: 0}}>
+                        <CommentTextArea/>
+                    </CardContent>
+                </Card>
+            </Container>
         </Box>
     );
 }

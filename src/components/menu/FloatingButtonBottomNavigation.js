@@ -7,7 +7,7 @@ import {ButtonGroup, Input} from "@mui/joy";
 import ArrowCircleUpIcon from '@mui/icons-material/ArrowCircleUp';
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-export default function FloatingButtonBottomNavigation({ isViewPage }) {
+export default function FloatingButtonBottomNavigation() {
     const handleScrollToTop = () => {
         window.scrollTo({
             top: 0,
@@ -19,7 +19,9 @@ export default function FloatingButtonBottomNavigation({ isViewPage }) {
         <Box
             sx={{
                 position: 'fixed',
-                bottom: 50,
+                bottom: {
+                    xs: 200
+                },
                 right: { xs: 10, sm: '20%' },
                 zIndex: 10
             }}

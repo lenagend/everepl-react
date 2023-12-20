@@ -9,8 +9,16 @@ import Box from "@mui/material/Box";
 import {TextField} from "@mui/material";
 import {FormControl, FormHelperText, FormLabel, Input} from "@mui/joy";
 import Stack from "@mui/joy/Stack";
+import {useNavigate} from "react-router-dom";
 
 export default function UserCard() {
+
+    const navigate = useNavigate();
+
+    const handleLoginbuttonClick = () => {
+            navigate('/login');
+    };
+
     return (
         <Card orientation="horizontal" variant="outlined" sx={{mt: 2, p: 1}}>
             <AspectRatio ratio="1" sx={{ width: 90,  }} variant="outlined">
@@ -23,18 +31,18 @@ export default function UserCard() {
             <CardContent>
                 <Stack direction={{sm: 'row'}} alignItems="center">
                     <Typography fontWeight="md" textColor="success.plainColor" level="title-sm" sx={{flexGrow: 1}}>
-                        프로필을 작성해주세요
+                        프로필
                     </Typography>
-                    <Button sx={{p: 0}} size="sm" variant="plain">로그인/회원가입</Button>
+                    <Button onClick={handleLoginbuttonClick} sx={{p: 0}} size="sm" variant="plain">로그인/회원가입</Button>
                 </Stack>
                 <Box maxWidth={250}>
                     <FormControl>
-                        <Input placeholder="익명5" size="sm"/>
-                        <FormHelperText sx={{fontSize:12}}>댓글에 표시될 닉네임입니다.</FormHelperText>
+                        <Input placeholder="익명5" size="sm" disabled />
+                        <FormHelperText sx={{fontSize:12}}>닉네임은 회원가입 후 변경가능.</FormHelperText>
                     </FormControl>
                     <FormControl>
                         <Input placeholder="0012" size="sm"/>
-                        <FormHelperText sx={{fontSize:12}}>삭제에 필요한 비밀번호입니다.</FormHelperText>
+                        <FormHelperText sx={{fontSize:12}}>삭제에 필요한 비밀번호.</FormHelperText>
                     </FormControl>
                 </Box>
             </CardContent>
