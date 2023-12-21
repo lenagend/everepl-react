@@ -11,6 +11,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import LogoButton from "../iconButtons/LogoButton";
 import {RateReview} from "@mui/icons-material";
+import {useEffect} from "react";
+import {InputAdornment} from "@mui/material";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -42,8 +44,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     color: 'inherit',
     '& .MuiInputBase-input': {
         padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
+        paddingLeft: `calc(1em + ${theme.spacing(0)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
         [theme.breakpoints.up('md')]: {
@@ -52,12 +53,28 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Appbar() {
+export default function Appbar({ url }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+    const [inputValue, setInputValue] = React.useState('');
+
+    useEffect(() => {
+        if (url) {
+            setInputValue(url);
+            someFunction(url);
+        }
+    }, [url]);
+
+    const someFunction = (url) => {
+        console.log(url);
+    }
+
+    const handleSearchButtonClick = () => {
+        someFunction(inputValue);
+    };
+
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -118,12 +135,23 @@ export default function Appbar() {
                     <Box sx={{ flexGrow: 1 }} />
                     <LogoButton width={'80px'}/>
                     <Search>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
                         <StyledInputBase
                             placeholder="URL을 붙여넣으세요…"
                             inputProps={{ 'aria-label': 'search' }}
+                            value={inputValue}
+                            onChange={(e) => setInputValue(e.target.value)}
+
+                            startAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                        aria-label="toggle password visibility"
+                                        edge="end"
+                                        onClick={handleSearchButtonClick}
+                                    >
+                                        <SearchIcon sx={{color: 'white'}}/>
+                                    </IconButton>
+                                </InputAdornment>
+                            }
                         />
                     </Search>
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

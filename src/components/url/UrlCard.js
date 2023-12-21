@@ -9,9 +9,7 @@ import Stack from "@mui/joy/Stack";
 import Button from "@mui/joy/Button";
 import VerticalUserMenu from "../iconButtons/VerticalUserMenu";
 import Box from "@mui/material/Box";
-import CommentTextArea from "../textFields/CommentTextArea";
 import Typography from "@mui/joy/Typography";
-import {Badge} from "@mui/joy";
 
 export default function UrlCard({ isCommentPage }) {
     const navigate = useNavigate();
@@ -41,14 +39,6 @@ export default function UrlCard({ isCommentPage }) {
                 }
             }}
         >
-            <Badge
-                anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'left',
-                }}
-                badgeContent={100000}
-                color="danger"
-            >
                 <AspectRatio ratio="1" sx={{ width: 60, minWidth: 40 }}>
                     <img
                         src="/images/favicon/naver_favicon.ico"
@@ -56,7 +46,6 @@ export default function UrlCard({ isCommentPage }) {
                         alt=""
                     />
                 </AspectRatio>
-            </Badge>
             <CardContent sx={{p: 0, pb: 0}} sx={{flexGrow: 1}}>
                 <Typography level="title-md" id="card-description">
                     지석진, 건강 문제로 '런닝맨' 잠시 하차 "치료 필요" [공식입장]
