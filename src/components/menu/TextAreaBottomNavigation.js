@@ -4,7 +4,9 @@ import CommentTextArea from "../textFields/CommentTextArea";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import {CardOverflow, Container, Typography} from "@mui/joy";
-
+import Stack from "@mui/joy/Stack";
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from "@mui/joy/IconButton";
 export default function TextAreaBottomNavigation({ }) {
 
     return (
@@ -16,15 +18,16 @@ export default function TextAreaBottomNavigation({ }) {
                         color="primary"
                         sx={{
                             px: 2,
-                            textAlign: 'left',
-                            fontSize: 'sm',
-                            fontWeight: 'xl',
-                            letterSpacing: '1px',
                             borderBottom: '1px solid',
                             borderColor: 'divider',
                         }}
                     >
-                            @UserA에게 댓글쓰기
+                        <Stack direction="row" alignItems="center" justifyContent="space-between">
+                            <Typography level="title-md">@UserA에게 댓글쓰기</Typography>
+                            <IconButton size="sm" >
+                                <CloseIcon/>
+                            </IconButton>
+                        </Stack>
                     </CardOverflow>
                     <CardContent sx={{p: 0}}>
                         <CommentTextArea/>

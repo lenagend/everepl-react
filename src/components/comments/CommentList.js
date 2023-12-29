@@ -38,16 +38,13 @@ const testComments = [
 export default function CommentList() {
 
     return(
-        <Card>
-            <CardContent>
-                <Stack spacing={0}>
-                    {testComments.map((comment) => (
-                        <React.Fragment key={comment.id}>
-                            <Comment comment={comment} />
-                        </React.Fragment>
-                    ))}
-                </Stack>
-            </CardContent>
-        </Card>
+        <Stack spacing={0}>
+            {testComments.map((comment) => (
+                <React.Fragment key={comment.id}>
+                    <Comment comment={comment} />
+                </React.Fragment>
+            ))}
+
+        </Stack>
     );
 }

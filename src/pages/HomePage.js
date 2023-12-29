@@ -7,6 +7,7 @@ import FloatingButtonBottomNavigation from "../components/menu/FloatingButtonBot
 import Appbar from "../components/menu/Appbar";
 import {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
+import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
 
 const HomePage = () => {
     const [url, setUrl] = useState('');
@@ -32,6 +33,7 @@ const HomePage = () => {
                 <UrlConsole/>
                 <UrlListCard/>
             </Container>
+            <TextAreaBottomNavigation/>
             <FloatingButtonBottomNavigation/>
         </Box>
     )
