@@ -53,28 +53,20 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Appbar({ url }) {
+export default function Appbar({ url, setUrl  }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const [inputValue, setInputValue] = React.useState('');
 
-    useEffect(() => {
-        if (url) {
-            setInputValue(url);
-            someFunction(url);
-        }
-    }, [url]);
-
-    const someFunction = (url) => {
-        console.log(url);
-    }
-
-    const handleSearchButtonClick = () => {
-        someFunction(inputValue);
+    const handleInputChange = (e) => {
+        setInputValue(e.target.value);
     };
 
+    const handleSearchButtonClick = () => {
+        setUrl(inputValue);
+    };
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -138,8 +130,8 @@ export default function Appbar({ url }) {
                         <StyledInputBase
                             placeholder="URL을 붙여넣으세요…"
                             inputProps={{ 'aria-label': 'search' }}
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
+                            value={url}
+                            onChange={handleInputChange}
 
                             startAdornment={
                                 <InputAdornment position="end">

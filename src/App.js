@@ -1,8 +1,9 @@
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import HomePage from "./pages/HomePage";
-import LoginPage from "./pages/LoginPage";
 import WildcardPage from "./pages/WildcardPage";
+import Home from "./pages/Home";
+import LoginPage from "./pages/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import * as React from "react";
 
 function App() {
   return (
@@ -10,7 +11,7 @@ function App() {
             <div className="App">
                 <Routes>
                     <Route path="*" element={<WildcardPage/>}/>
-                    <Route path="/" element={<HomePage />} />
+                    <Route path="/" element={<Home />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/404" element={<NotFoundPage />} />
                 </Routes>
