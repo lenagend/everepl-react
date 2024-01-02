@@ -20,7 +20,7 @@ export default function UserCard() {
     };
 
     return (
-        <Card orientation="horizontal" variant="outlined" sx={{mt: 2, p: 1}}>
+        <Card orientation="horizontal" variant="outlined" sx={{p: 1}}>
             <AspectRatio ratio="1" sx={{ width: 90,  }} variant="outlined">
                 <img
                     src="/images/character/level2.png"
@@ -33,12 +33,15 @@ export default function UserCard() {
                     <Typography fontWeight="md" textColor="success.plainColor" level="title-sm" sx={{flexGrow: 1}}>
                         프로필
                     </Typography>
-                    <Button onClick={handleLoginbuttonClick} sx={{p: 0}} size="sm" variant="plain">로그인/회원가입</Button>
+                    {/*<Button onClick={handleLoginbuttonClick} sx={{p: 0}} size="sm" variant="plain">로그인/회원가입</Button>*/}
+                    <Typography level="title-md" sx={{p: 0}} color="primary" >
+                        회원가입 추후 업데이트.
+                    </Typography>
                 </Stack>
                 <Box maxWidth={250}>
                     <FormControl>
-                        <Input placeholder="익명5" size="sm" disabled />
-                        <FormHelperText sx={{fontSize:12}}>닉네임은 회원가입 후 변경가능.</FormHelperText>
+                        <Input placeholder="익명5" size="sm" />
+                        <FormHelperText sx={{fontSize:12}}>댓글에 표시될 닉네임.</FormHelperText>
                     </FormControl>
                     <FormControl>
                         <Input placeholder="0012" size="sm"/>

@@ -12,13 +12,20 @@ import CommentList from "../comments/CommentList";
 import {Divider} from "@mui/joy";
 import CardOverflow from "@mui/joy/CardOverflow";
 import CommentTextArea from "../textFields/CommentTextArea";
+import {useNavigate} from "react-router-dom";
 
-export default function UrlCard({ isCommentPage }) {
-    const [expanded, setExpanded] = React.useState(false);
+export default function UrlCard({ isListItem }) {
+    const navigate = useNavigate();
 
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+    const handleCardClick = () => {
+        if (isListItem) {
+            // 리스트 아이템일 경우, navigate를 사용
+            navigate('/view/1');
+        } else {
+            // 리스트 아이템이 아닐 경우, 페이지 새로고침
+            window.location.href = '/view/1';
+        }
+    }
 
     return (
         <Card
@@ -28,8 +35,8 @@ export default function UrlCard({ isCommentPage }) {
                 '& .css-14d6vet-MuiCardContent-root:last-child': {
                     paddingBottom: 0
                 },
-                border: isCommentPage? undefined: 'none',
-                background: isCommentPage? undefined: 'none',
+                border: isListItem? 'none': undefined,
+                background: isListItem? 'none': undefined,
                 padding: 1.5,
                 gap: {
                     xs: 0
@@ -57,8 +64,7 @@ export default function UrlCard({ isCommentPage }) {
                             <Link
                                 overlay
                                 underline="none"
-                                href="#"
-                                onClick={handleExpandClick}
+                                onClick={handleCardClick}
                                 sx={{ color: 'text.tertiary' }}
                             >
                             지석진, 건강 문제로 '런닝맨' 잠시 하차 "치료 필요" [공식입장]
@@ -78,15 +84,6 @@ export default function UrlCard({ isCommentPage }) {
                     </Box>
                 </Stack>
             </CardContent>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <Stack sx={{my: 2}} spacing={2}>
-                    <Divider></Divider>
-                    <CommentList/>
-                    <Stack alignItems="center">
-                        <Pagination count={10} showFirstButton showLastButton/>
-                    </Stack>
-                </Stack>
-            </Collapse>
         </Card>
     );
 }

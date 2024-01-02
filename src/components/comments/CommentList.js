@@ -1,7 +1,5 @@
 import Comment from "./Comment";
-import {Stack} from "@mui/material";
 import * as React from "react";
-import ReplyList from "./ReplyList";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 const testComments = [
@@ -38,13 +36,14 @@ const testComments = [
 export default function CommentList() {
 
     return(
-        <Stack spacing={0}>
+        <Card sx={{ p: 1.5, gap: 0 }}>
+            <CardContent>
             {testComments.map((comment) => (
                 <React.Fragment key={comment.id}>
                     <Comment comment={comment} />
                 </React.Fragment>
             ))}
-
-        </Stack>
+            </CardContent>
+        </Card>
     );
 }

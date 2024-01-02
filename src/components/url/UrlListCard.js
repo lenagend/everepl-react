@@ -28,16 +28,16 @@ export default function UrlListCard(){
             </CardOverflow>
             <CardContent>
                 <Stack sx={{borderRadius: 3}} divider={<Divider/>}>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
-                    <UrlCard isCommentPage={false}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
+                    <UrlCard isListItem={true}/>
                 </Stack>
             </CardContent>
             <CardOverflow

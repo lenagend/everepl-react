@@ -1,34 +1,24 @@
-import {Box, Container } from "@mui/joy";
-import UserCard from "../components/user/UserCard";
 import * as React from "react";
-import UrlConsole from "../components/url/UrlConsole";
+import {useEffect} from "react";
+import {useParams} from "react-router-dom";
+import UrlCard from "../components/url/UrlCard";
+import Stack from "@mui/joy/Stack";
+import CommentList from "../components/comments/CommentList";
 import UrlListCard from "../components/url/UrlListCard";
-import FloatingButtonBottomNavigation from "../components/menu/FloatingButtonBottomNavigation";
-import Appbar from "../components/menu/Appbar";
-import {useEffect, useState} from "react";
-import {useLocation, useParams} from "react-router-dom";
-import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
 
 const ViewPage = () => {
-    let { id } = useParams();
+    let {id} = useParams();
+
+    useEffect(() => {
+        console.log(id);
+    }, [id]);
 
     return(
-        <Box sx={{pt: {
-                xs: 7,
-                sm: 11
-            },
-            pb: {
-                    xs:7
-                }}}>
-            <Appbar />
-            <Container maxWidth="md">
-                <UserCard/>
-                <UrlConsole/>
-                <UrlListCard/>
-            </Container>
-            <TextAreaBottomNavigation/>
-            <FloatingButtonBottomNavigation/>
-        </Box>
+        <Stack spacing={2}>
+            <UrlCard isListItem={false}/>
+            <CommentList/>
+            <UrlListCard/>
+        </Stack>
     )
 }
 

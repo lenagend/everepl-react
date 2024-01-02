@@ -14,7 +14,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 
 export default function UrlConsole() {
     return (
-        <Card orientation="horizontal" variant="outlined" sx={{mt: 2}}>
+        <Card orientation="horizontal" variant="outlined">
             <CardContent>
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     <Button size="sm" variant="soft" startDecorator={<WhatshotIcon />}>인기</Button>

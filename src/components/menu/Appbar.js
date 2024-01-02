@@ -11,8 +11,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import LogoButton from "../iconButtons/LogoButton";
 import {RateReview} from "@mui/icons-material";
-import {useEffect} from "react";
 import {InputAdornment} from "@mui/material";
+import {useEffect} from "react";
+import {useNavigate} from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
@@ -53,19 +54,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Appbar({ url, setUrl  }) {
+export default function Appbar({ url }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
     const [inputValue, setInputValue] = React.useState('');
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if (url) {
+            setInputValue(url);
+        }
+    }, [url]);
 
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     };
 
     const handleSearchButtonClick = () => {
-        setUrl(inputValue);
+        navigate(`/${inputValue}`)
     };
 
     const handleProfileMenuOpen = (event) => {
@@ -130,7 +138,7 @@ export default function Appbar({ url, setUrl  }) {
                         <StyledInputBase
                             placeholder="URL을 붙여넣으세요…"
                             inputProps={{ 'aria-label': 'search' }}
-                            value={url}
+                            value={inputValue}
                             onChange={handleInputChange}
 
                             startAdornment={
