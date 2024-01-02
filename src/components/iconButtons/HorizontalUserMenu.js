@@ -1,0 +1,17 @@
+import * as React from 'react';
+import Stack from "@mui/joy/Stack";
+import Button from "@mui/joy/Button";
+import {Chat, FavoriteBorder} from "@mui/icons-material";
+
+export default function HorizontalUserMenu() {
+    return (
+        <Stack direction="row" spacing={0.5}>
+            <Button aria-label="댓글" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<Chat/>}>
+                99+
+            </Button>
+            <Button aria-label="좋아요" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<FavoriteBorder/>}>
+                99+
+            </Button>
+        </Stack>
+    );
+}

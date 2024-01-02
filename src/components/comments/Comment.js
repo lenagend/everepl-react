@@ -9,6 +9,7 @@ import Card from "@mui/joy/Card";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/material/Box";
 import VerticalUserMenu from "../iconButtons/VerticalUserMenu";
+import HorizontalUserMenu from "../iconButtons/HorizontalUserMenu";
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -66,11 +67,7 @@ export default function Comment({comment}){
                         >
                             {comment.text}
                         </Typography>
-                        <Stack direction="row" spacing={0.5}>
-                            <Button aria-label="댓글" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<Chat/>} onClick={handleExpandClick}>
-                                99+ 댓글
-                            </Button>
-                        </Stack>
+                        <HorizontalUserMenu/>
                     </Stack>
                 </Stack>
             </CardContent>

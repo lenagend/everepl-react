@@ -6,7 +6,6 @@ import {useEffect, useState} from "react";
 import ViewPage from "./ViewPage";
 import HomePage from "./HomePage";
 import axios from "axios";
-import LoginPage from "./LoginPage";
 import NotFoundPage from "./NotFoundPage";
 import WildcardPage from "./WildcardPage";
 import UserCard from "../components/user/UserCard";

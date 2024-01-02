@@ -13,8 +13,9 @@ import {Divider} from "@mui/joy";
 import CardOverflow from "@mui/joy/CardOverflow";
 import CommentTextArea from "../textFields/CommentTextArea";
 import {useNavigate} from "react-router-dom";
+import HorizontalUserMenu from "../iconButtons/HorizontalUserMenu";
 
-export default function UrlCard({ isListItem }) {
+export default function UrlCard({ isListItem, urlInfo }) {
     const navigate = useNavigate();
 
     const handleCardClick = () => {
@@ -49,7 +50,7 @@ export default function UrlCard({ isListItem }) {
                         underline="none"
                         href="https://www.naver.com"
                         target="_blank"
-                        sx={{ zIndex: 10}}
+                        sx={{ zIndex: 5}}
                     >
                     <AspectRatio ratio="1" sx={{ width: 40}}>
                         <img
@@ -78,6 +79,7 @@ export default function UrlCard({ isListItem }) {
                                 https://entertain.naver.com/read?oid=076&aid=0004089955
                             </Link>
                         </Typography>
+                        <HorizontalUserMenu/>
                     </Stack>
                     <Box>
                         <VerticalUserMenu componentName={'Url'} />
