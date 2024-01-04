@@ -12,6 +12,7 @@ import UserCard from "../components/user/UserCard";
 import Stack from "@mui/joy/Stack";
 
 export default function Root(){
+    //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
     const [url, setUrl] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
@@ -56,7 +57,7 @@ export default function Root(){
                 <Stack spacing={2}>
                 <UserCard/>
                 <Routes>
-                    <Route path="/" element={<HomePage />} />
+                    <Route path="/" element={<HomePage/>} />
                     <Route path="/view/:id" element={<ViewPage />} />
                     {/*<Route path="/login" element={<LoginPage />} />*/}
                     <Route path="/404" element={<NotFoundPage />} />

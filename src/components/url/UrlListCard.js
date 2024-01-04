@@ -40,24 +40,6 @@ export default function UrlListCard(){
                     <UrlCard isListItem={true}/>
                 </Stack>
             </CardContent>
-            <CardOverflow
-                variant="soft"
-                color="primary"
-                sx={{
-                    px: 0.2,
-                    py: 1,
-                    textAlign: 'center',
-                    fontSize: 'xl',
-                    fontWeight: 'xl',
-                    letterSpacing: '1px',
-                    textTransform: 'uppercase',
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-
-                }}
-            >
-                <Pagination sx={{mx: 'auto'}} count={10} showFirstButton showLastButton/>
-            </CardOverflow>
         </Card>
     )
 }
