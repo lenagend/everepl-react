@@ -28,7 +28,7 @@ const ViewPage = () => {
     return(
         <Stack spacing={2}>
             {isUrlCardLoading ? (
-                <LoadingUrlCard/>
+                <LoadingUrlCard isListItem={false}/>
             ) : (
                 <UrlCard isListItem={false} urlInfo={urlInfo}/>
             )}

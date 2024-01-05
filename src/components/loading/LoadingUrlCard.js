@@ -4,7 +4,7 @@ import Skeleton from '@mui/joy/Skeleton';
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 
-export default function LoadingUrlCard() {
+export default function LoadingUrlCard({isListItem}) {
     return (
         <Card
             variant="outlined"
@@ -14,6 +14,8 @@ export default function LoadingUrlCard() {
                 '& .css-14d6vet-MuiCardContent-root:last-child': {
                     paddingBottom: 0
                 },
+                border: isListItem? 'none': undefined,
+                background: isListItem? 'none': undefined,
                 padding: 1.5,
                 gap: {
                     xs: 0

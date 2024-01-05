@@ -1,11 +1,10 @@
 import * as React from "react";
-import UrlConsole from "../components/url/UrlConsole";
+import MenuConsole from "../components/url/MenuConsole";
 import UrlListCard from "../components/url/UrlListCard";
 import Stack from "@mui/joy/Stack";
 import {useState} from "react";
 import axios from "axios";
-import {Pagination, useMediaQuery} from "@mui/material";
-import UrlPagination from "../components/url/UrlPagination";
+import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 
 const HomePage = () => {
     const [urlInfos, setUrlInfos] = useState([]);
@@ -13,10 +12,12 @@ const HomePage = () => {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(10);
     const [currentFilter, setCurrentFilter] = useState([]);
-    const [currentSort, setCurrentSort] = useState('');
+    const [currentSort, setCurrentSort] = useState('updatedAt,desc');
+    const [isUrlInfosLoading, setIsUrlInfosLoading] = useState(true);
+
 
     const fetchUrlInfos = () => {
-        axios.get('/api/url', {
+        axios.get('http://localhost:8080/api/url', {
             params: {
                 filterStrings: searchKeyword ? [searchKeyword] : currentFilter,
                 sort: currentSort,
@@ -26,6 +27,7 @@ const HomePage = () => {
         })
             .then(response => {
                 setUrlInfos(response.data);
+                console.log(response.data)
             })
             .catch(error => {
                 console.error('Error fetching data', error);
@@ -46,8 +48,14 @@ const HomePage = () => {
     };
 
     // 필터 및 정렬 변경 핸들러
-    const handleFilterSortChange = (filter, sort) => {
+    const handleFilterChange = (filter) => {
         setCurrentFilter(filter);
+        setCurrentSort('updatedAt,desc');
+        setPage(1); // 첫 페이지로 이동
+        fetchUrlInfos();
+    };
+
+    const handleSortChange = (sort) => {
         setCurrentSort(sort);
         setPage(1); // 첫 페이지로 이동
         fetchUrlInfos();
@@ -55,9 +63,12 @@ const HomePage = () => {
 
     return(
             <Stack spacing={2}>
-                <UrlConsole onFetchUrlInfos={handleFilterSortChange} />
-                <UrlListCard urlInfos={urlInfos} />
-                <UrlPagination page={page} handlePageChange={handlePageChange}/>
+                <MenuConsole onFetchUrlInfos={handleFilterChange} />
+                {isUrlInfosLoading ? (
+                    <LoadingUrlCardList/>
+                ) : (
+                    <UrlListCard urlInfos={urlInfos} page={page} handlePageChange={handlePageChange} handleSortChange={handleSortChange}/>
+                )}
             </Stack>
     )
 }

@@ -7,11 +7,6 @@ import Stack from "@mui/joy/Stack";
 import VerticalUserMenu from "../iconButtons/VerticalUserMenu";
 import Box from "@mui/material/Box";
 import Typography from "@mui/joy/Typography";
-import {Collapse, Pagination} from "@mui/material";
-import CommentList from "../comments/CommentList";
-import {Divider} from "@mui/joy";
-import CardOverflow from "@mui/joy/CardOverflow";
-import CommentTextArea from "../textFields/CommentTextArea";
 import {useNavigate} from "react-router-dom";
 import HorizontalUserMenu from "../iconButtons/HorizontalUserMenu";
 
