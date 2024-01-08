@@ -33,3 +33,10 @@ export function isSafeInput(input) {
     // 입력된 문자열이 위험한 패턴 중 하나라도 포함하고 있는지 검사
     return !unsafePatterns.some(pattern => pattern.test(input));
 }
+
+export function truncateString(str, num) {
+    if (str.length <= num) {
+        return str;
+    }
+    return str.slice(0, num) + '...';
+}

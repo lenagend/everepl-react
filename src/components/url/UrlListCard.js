@@ -29,7 +29,7 @@ export default function UrlListCard({urlInfos, page, handlePageChange, handleSor
                         size="sm"
                         variant="soft"
                         startDecorator={<UploadFileIcon />}
-                        onClick={() => handleSortChange("updatedAt,desc")}
+                        onClick={() => handleSortChange(["updatedAt,desc"])}
                     >
                         최신
                     </Button>
@@ -37,7 +37,7 @@ export default function UrlListCard({urlInfos, page, handlePageChange, handleSor
                         size="sm"
                         variant="soft"
                         startDecorator={<FavoriteIcon />}
-                        onClick={() => handleSortChange("updatedAt,desc,likeCount,desc")}
+                        onClick={() => handleSortChange(['updatedAt,desc','likeCount,desc'])}
                     >
                         좋아요
                     </Button>
@@ -45,7 +45,7 @@ export default function UrlListCard({urlInfos, page, handlePageChange, handleSor
                         size="sm"
                         variant="soft"
                         startDecorator={<ChatBubbleIcon />}
-                        onClick={() => handleSortChange("updatedAt,desc,commentCount,desc")}
+                        onClick={() => handleSortChange(['updatedAt,desc','commentCount,desc'])}
                     >
                         댓글많은
                     </Button>
@@ -54,7 +54,7 @@ export default function UrlListCard({urlInfos, page, handlePageChange, handleSor
             </CardOverflow>
             <CardContent>
                 <Stack sx={{ borderRadius: 3 }} divider={<Divider />}>
-                    {urlInfos.map((urlInfo, index) => (
+                    {urlInfos.content.map((urlInfo, index) => (
                         <UrlCard key={index} urlInfo={urlInfo} isListItem={true} />
                     ))}
                 </Stack>

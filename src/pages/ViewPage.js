@@ -33,7 +33,7 @@ const ViewPage = () => {
                 <UrlCard isListItem={false} urlInfo={urlInfo}/>
             )}
             <CommentList/>
-            <UrlListCard/>
+            {/*<UrlListCard/>*/}
         </Stack>
     )
 }

@@ -2,18 +2,25 @@ import * as React from "react";
 import MenuConsole from "../components/url/MenuConsole";
 import UrlListCard from "../components/url/UrlListCard";
 import Stack from "@mui/joy/Stack";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import axios from "axios";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
+import qs from "qs";
+import {handleScrollToTop} from "../utils/navigationUtils";
 
 const HomePage = () => {
     const [urlInfos, setUrlInfos] = useState([]);
     const [searchKeyword, setSearchKeyword] = useState('');
     const [page, setPage] = useState(1);
-    const [size, setSize] = useState(10);
+    const [size, setSize] = useState(20);
     const [currentFilter, setCurrentFilter] = useState([]);
-    const [currentSort, setCurrentSort] = useState('updatedAt,desc');
+    const [currentSort, setCurrentSort] = useState(['updatedAt,desc']);
     const [isUrlInfosLoading, setIsUrlInfosLoading] = useState(true);
+
+    useEffect(() => {
+        fetchUrlInfos();
+        handleScrollToTop();
+    }, [currentSort, page]);
 
 
     const fetchUrlInfos = () => {
@@ -23,16 +30,23 @@ const HomePage = () => {
                 sort: currentSort,
                 page: page - 1,
                 size: size
-            }
+            },
+            paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' })
         })
             .then(response => {
                 setUrlInfos(response.data);
-                console.log(response.data)
+                setIsUrlInfosLoading(false);
             })
             .catch(error => {
                 console.error('Error fetching data', error);
-                // 오류 처리
+               // setIsUrlInfosLoading(true);
             });
+    };
+
+
+    const handleSortChange = (sort) => {
+        setCurrentSort(sort);
+        setPage(1); // 첫 페이지로 이동
     };
 
     // 검색 핸들러
@@ -55,11 +69,6 @@ const HomePage = () => {
         fetchUrlInfos();
     };
 
-    const handleSortChange = (sort) => {
-        setCurrentSort(sort);
-        setPage(1); // 첫 페이지로 이동
-        fetchUrlInfos();
-    };
 
     return(
             <Stack spacing={2}>
