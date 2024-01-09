@@ -4,23 +4,37 @@ import CardContent from '@mui/joy/CardContent';
 import CardOverflow from '@mui/joy/CardOverflow';
 import Button from "@mui/joy/Button";
 import Stack from "@mui/joy/Stack";
-import {Divider} from "@mui/joy";
+import {Badge, Divider} from "@mui/joy";
 import ForumIcon from '@mui/icons-material/Forum';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import FeedIcon from '@mui/icons-material/Feed';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import InstagramIcon from '@mui/icons-material/Instagram';
 
-export default function MenuConsole({ onFetchUrlInfos }) {
+export default function MenuConsole({ handleFilterChange, currentFilter }) {
+
+    const renderButton = (label, filter, icon) => (
+        <Badge color="danger" invisible={currentFilter.join(',') !== filter.join(',')}>
+            <Button
+                size="sm"
+                variant="soft"
+                startDecorator={icon}
+                onClick={() => handleFilterChange(filter)}
+            >
+                {label}
+            </Button>
+        </Badge>
+    );
+
     return (
         <Card orientation="horizontal" variant="outlined">
             <CardContent>
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
-                    <Button size="sm" variant="soft" startDecorator={<WidgetsIcon />}>전체</Button>
-                    <Button size="sm" variant="soft" startDecorator={<YouTubeIcon />}>유튜브</Button>
-                    <Button size="sm" variant="soft" startDecorator={<FeedIcon />}>뉴스</Button>
-                    <Button size="sm" variant="soft" startDecorator={<InstagramIcon />}>인스타</Button>
-                    <Button size="sm" variant="soft" startDecorator={<ForumIcon />}>커뮤</Button>
+                    {renderButton('전체', [], <WidgetsIcon />)}
+                    {renderButton('유튜브', ['youtube'], <YouTubeIcon />)}
+                    {renderButton('뉴스', ['news', 'entertain'], <FeedIcon />)}
+                    {renderButton('인스타', ['instagram.com'], <InstagramIcon />)}
+                    {renderButton('커뮤', ['dcinside', 'mania.kr', 'fmkorea'], <ForumIcon />)}
                 </Stack>
             </CardContent>
             <CardOverflow

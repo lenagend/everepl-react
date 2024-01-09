@@ -14,7 +14,7 @@ export function isValidUrl(url) {
 }
 
 
-export  function ensureHttpOrHttps(url) {
+export function ensureHttpOrHttps(url) {
     // URL이 이미 http나 https로 시작하는지 확인
     if (!url.startsWith('http://') && !url.startsWith('https://')) {
         // http를 기본 프로토콜로 추가

@@ -7,6 +7,8 @@ import axios from "axios";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import qs from "qs";
 import {handleScrollToTop} from "../utils/navigationUtils";
+import Typography from "@mui/joy/Typography";
+import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
 
 const HomePage = () => {
     const [urlInfos, setUrlInfos] = useState([]);
@@ -20,7 +22,7 @@ const HomePage = () => {
     useEffect(() => {
         fetchUrlInfos();
         handleScrollToTop();
-    }, [currentSort, page]);
+    }, [currentSort, page, currentFilter]);
 
 
     const fetchUrlInfos = () => {
@@ -58,26 +60,27 @@ const HomePage = () => {
     // 페이지 변경 핸들러
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
-        fetchUrlInfos();
     };
 
     // 필터 및 정렬 변경 핸들러
     const handleFilterChange = (filter) => {
         setCurrentFilter(filter);
-        setCurrentSort('updatedAt,desc');
+        setCurrentSort(['updatedAt,desc']);
         setPage(1); // 첫 페이지로 이동
-        fetchUrlInfos();
     };
 
 
     return(
             <Stack spacing={2}>
-                <MenuConsole onFetchUrlInfos={handleFilterChange} />
+                <MenuConsole handleFilterChange={handleFilterChange} currentFilter={currentFilter}/>
                 {isUrlInfosLoading ? (
                     <LoadingUrlCardList/>
+                ) : urlInfos.content.length === 0 ? (
+                    <NotExistUrlCardList/>
                 ) : (
-                    <UrlListCard urlInfos={urlInfos} page={page} handlePageChange={handlePageChange} handleSortChange={handleSortChange}/>
+                    <UrlListCard urlInfos={urlInfos} page={page} currentSort={currentSort} handlePageChange={handlePageChange} handleSortChange={handleSortChange}/>
                 )}
+
             </Stack>
     )
 }

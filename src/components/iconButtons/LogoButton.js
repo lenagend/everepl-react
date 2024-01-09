@@ -5,7 +5,7 @@ export default function LogoButton({width}){
     const navigate = useNavigate();
     const logo = '/images/logo/logo.png'
     const handleClick = () => {
-        navigate('/');
+        window.location.href="/";
     };
     return(
         <Box onClick={handleClick} sx={{ cursor: 'pointer', width: width }}>

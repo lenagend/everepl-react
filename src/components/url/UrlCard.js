@@ -45,20 +45,20 @@ export default function UrlCard({ isListItem, urlInfo }) {
                 }}
             >
                 <CardContent sx={{p: 0, pb: 0}} >
-                    <Stack direction="row" spacing={2} >
+                    <Stack direction="row" spacing={3} >
                         <Link
                             underline="none"
                             href={urlInfo.url}
                             target="_blank"
                             sx={{ zIndex: 5}}
                         >
-                            <AspectRatio ratio="1" sx={{ width: 40}}>
-                            <img
-                                src={urlInfo.faviconSrc}
-                                loading="lazy"
-                                alt={urlInfo.title}
-                                />
-                            </AspectRatio>
+                                <AspectRatio ratio="1" sx={{ width: 40}} variant="plain">
+                                <img
+                                    src={urlInfo.faviconSrc}
+                                    loading="lazy"
+                                    alt={urlInfo.title}
+                                    />
+                                </AspectRatio>
                         </Link>
                         <Stack sx={{flexGrow: 1}} spacing={1}>
                                 <Typography level="title-md" id="card-description" sx={{fontWeight: 700}}>
@@ -73,11 +73,14 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                 </Typography>
 
                             <Stack direction="row" spacing={1}>
-                                <Chip variant="outlined" component="span" color="danger" size="sm" startDecorator={<Favorite sx={{fontSize: 12}}/>}>
+                                <Chip variant="soft" component="span" color="danger" size="sm" startDecorator={<Favorite sx={{fontSize: 12}}/>}>
                                     {urlInfo.likeCount}
                                 </Chip>
-                                <Chip variant="outlined" component="span" size="sm" startDecorator={<ChatBubble sx={{fontSize: 12}}/>}>
-                                    {urlInfo.commentCount} (<TimeAgo time={urlInfo.updatedAt} />)
+                                <Chip variant="soft" component="span" size="sm" startDecorator={<ChatBubble sx={{fontSize: 12}}/>}>
+                                    {urlInfo.commentCount}
+                                </Chip>
+                                <Chip variant="soft" component="span" color="success" size="sm" >
+                                   <TimeAgo time={urlInfo.updatedAt} />
                                 </Chip>
                             </Stack>
                             {/*<HorizontalUserMenu likeCount={urlInfo.likeCount} commentCount={urlInfo.commentCount}/>*/}

@@ -10,10 +10,10 @@ function WildcardPage() {
     useEffect(() => {
         const fullPath = location.pathname.slice(1) + location.search;
         const url =  ensureHttpOrHttps(fullPath);
-
         // URL 유효성 검사
         if (isValidUrl(url)) {
-            navigate(`/?url=${url}`);
+            const encodedUrl = encodeURIComponent(url);
+            navigate(`/?url=${encodedUrl}`);
         } else {
             // 유효하지 않은 URL인 경우 404 페이지로 네비게이트
             navigate('/404');

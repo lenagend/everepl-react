@@ -20,7 +20,7 @@ export default function Root(){
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         const urlParam = queryParams.get('url');
-        if (urlParam) setUrl(urlParam);
+        if (urlParam) setUrl(decodeURIComponent(urlParam));
     }, [location]);
 
     useEffect(() => {

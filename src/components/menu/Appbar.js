@@ -68,6 +68,12 @@ export default function Appbar({ url }) {
         }
     }, [url]);
 
+    const handleSubmitOnEnter = (e) => {
+        if (e.key === 'Enter') {
+            handleSearchButtonClick();
+        }
+    };
+
     const handleInputChange = (e) => {
         setInputValue(e.target.value);
     };
@@ -140,7 +146,7 @@ export default function Appbar({ url }) {
                             inputProps={{ 'aria-label': 'search' }}
                             value={inputValue}
                             onChange={handleInputChange}
-
+                            onKeyDown={handleSubmitOnEnter}
                             startAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
