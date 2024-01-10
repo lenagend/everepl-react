@@ -1,4 +1,13 @@
-import {Box, Container} from "@mui/joy";
+import {
+    Box,
+    CircularProgress,
+    Container,
+    DialogContent,
+    DialogTitle,
+    LinearProgress,
+    Modal,
+    ModalDialog
+} from "@mui/joy";
 import Appbar from "../components/menu/Appbar";
 import {Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import * as React from "react";
@@ -10,12 +19,14 @@ import NotFoundPage from "./NotFoundPage";
 import WildcardPage from "./WildcardPage";
 import UserCard from "../components/user/UserCard";
 import Stack from "@mui/joy/Stack";
+import LoadingProgressModal from "../components/loading/LoadingProgressModal";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
     const [url, setUrl] = useState('');
     const location = useLocation();
     const navigate = useNavigate();
+    const [isViewPageLoading, setIsViewPageLoading] = useState(false);
 
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
@@ -30,6 +41,7 @@ export default function Root(){
     }, [url]);
 
     const handleSearch = (url) => {
+        setIsViewPageLoading(true);
         axios.post('http://localhost:8080/api/url', { url: url })
             .then(response => {
                 if (response.status === 200) {
@@ -38,9 +50,11 @@ export default function Root(){
             })
             .catch(error => {
                 console.error("Error: ", error.response ? error.response.data : error.message);
+            })
+            .finally(()=>{
+                setIsViewPageLoading(false);
             });
     };
-
 
     return(
         <Box sx={{
@@ -52,6 +66,7 @@ export default function Root(){
                 xs: 7
             }
         }}>
+            <LoadingProgressModal isLoading={isViewPageLoading}/>
             <Appbar url={url} setUrl={setUrl} onSearch={handleSearch} />
             <Container maxWidth="md">
                 <Stack spacing={2}>
