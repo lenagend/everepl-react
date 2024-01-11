@@ -54,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     },
 }));
 
-export default function Appbar({ url }) {
+export default function Appbar({ url, setUrl }) {
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
     const isMenuOpen = Boolean(anchorEl);
@@ -79,6 +79,7 @@ export default function Appbar({ url }) {
     };
 
     const handleSearchButtonClick = () => {
+        setUrl('');
         navigate(`/${inputValue}`)
     };
 
