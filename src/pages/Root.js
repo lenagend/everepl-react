@@ -36,7 +36,6 @@ export default function Root(){
                 if (response.status === 200) {
                     navigate(`/view/${response.data.id}`);
                 }
-                console.log("ㅎㅇ");
             })
             .catch(error => {
                 console.error("Error: ", error.response ? error.response.data : error.message);

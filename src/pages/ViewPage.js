@@ -10,6 +10,8 @@ import LoadingUrlCard from "../components/loading/LoadingUrlCard";
 import qs from "qs";
 import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
+import CommentTextArea from "../components/textFields/CommentTextArea";
+import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     let {id} = useParams();
@@ -49,6 +51,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 urlInfos={urlInfos}
                 isUrlInfosLoading={isUrlInfosLoading}
             />
+            <TextAreaBottomNavigation/>
         </Stack>
     )
 }

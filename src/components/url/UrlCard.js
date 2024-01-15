@@ -55,7 +55,7 @@ export default function UrlCard({ isListItem, urlInfo }) {
                         >
                                 <AspectRatio ratio="1" sx={{ width: 40}} variant="plain">
                                 <img
-                                    src={urlInfo.faviconSrc}
+                                    src={urlInfo.faviconSrc ? urlInfo.faviconSrc : '/images/favicon/homepage.png'}
                                     loading="lazy"
                                     alt={urlInfo.title}
                                     />

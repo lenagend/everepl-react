@@ -4,6 +4,7 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import Textarea from '@mui/joy/Textarea';
 import {Stack, TextField} from "@mui/material";
+import {FormControl, Input} from "@mui/joy";
 
 export default function CommentTextArea() {
     const [text, setText] = React.useState('');
@@ -19,19 +20,14 @@ export default function CommentTextArea() {
                 minRows={4}
                 maxRows={4}
                 startDecorator={
-                    <Box sx={{ display: 'flex', gap: 0.5, flex: 1 }}>
-                        <IconButton variant="outlined" color="neutral" onClick={addEmoji('👍')}>
-                            👍
-                        </IconButton>
-                        <IconButton variant="outlined" color="neutral" onClick={addEmoji('😍')}>
-                            😍
-                        </IconButton>
-                        <Stack direction="row" sx={{ ml: 'auto' }} spacing={1}>
-                            <Button variant="soft" color="neutral" >
-                                쓰기
-                            </Button>
-                        </Stack>
-                    </Box>
+                    <Stack direction="row" flexWrap="wrap"  >
+                        <FormControl sx={{maxWidth: '50%'}}>
+                            <Input placeholder="닉네임" size="sm" />
+                        </FormControl>
+                        <FormControl sx={{maxWidth: '50%'}}>
+                            <Input placeholder="비밀번호" size="sm"/>
+                        </FormControl>
+                    </Stack>
                 }
                 sx={{ width: '100%' }}
             />
