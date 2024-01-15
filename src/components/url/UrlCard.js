@@ -5,7 +5,7 @@ import AspectRatio from "@mui/joy/AspectRatio";
 import Link from "@mui/joy/Link";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {Badge, Chip} from "@mui/joy";
 import {ChatBubble, Favorite, FavoriteBorder} from "@mui/icons-material";
 import {useMediaQuery} from "@mui/material";
@@ -16,6 +16,7 @@ import TimeAgo from "../../utils/TimeAgo";
 export default function UrlCard({ isListItem, urlInfo }) {
     const navigate = useNavigate();
     const isMobile = useMediaQuery('(max-width:600px)');
+    const { id } = useParams();
 
     const handleCardClick = () => {
         if (isListItem) {
@@ -61,12 +62,15 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                 </AspectRatio>
                         </Link>
                         <Stack sx={{flexGrow: 1}} spacing={1}>
-                                <Typography level="title-md" id="card-description" sx={{fontWeight: 700}}>
+                                <Typography level="title-md" id="card-description" sx={{fontWeight: 700}}
+                                            variant={(id == urlInfo.id && isListItem)? 'solid' : 'plane'}
+                                            color='primary'
+                                >
                                     <Link
                                         overlay
                                         underline="none"
                                         onClick={handleCardClick}
-                                        sx={{ color: 'text.tertiary' }}
+                                        sx={{ color: (id == urlInfo.id && isListItem) ? 'white' : 'text.tertiary'}}
                                     >
                                         {isMobile ? truncateString(urlInfo.title, 35) : urlInfo.title}
                                     </Link>
