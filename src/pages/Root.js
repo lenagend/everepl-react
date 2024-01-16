@@ -1,13 +1,4 @@
-import {
-    Box,
-    CircularProgress,
-    Container,
-    DialogContent,
-    DialogTitle,
-    LinearProgress,
-    Modal,
-    ModalDialog
-} from "@mui/joy";
+import { Box, Container } from "@mui/joy";
 import Appbar from "../components/menu/Appbar";
 import {Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import * as React from "react";
@@ -17,7 +8,6 @@ import HomePage from "./HomePage";
 import axios from "axios";
 import NotFoundPage from "./NotFoundPage";
 import WildcardPage from "./WildcardPage";
-import UserCard from "../components/user/UserCard";
 import Stack from "@mui/joy/Stack";
 import LoadingProgressModal from "../components/loading/LoadingProgressModal";
 import qs from "qs";

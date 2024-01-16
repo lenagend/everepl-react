@@ -13,6 +13,7 @@ import AspectRatio from "@mui/joy/AspectRatio";
 import { styled } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Collapse} from "@mui/material";
+import Link from "@mui/joy/Link";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -45,17 +46,22 @@ export default function TextAreaBottomNavigation({ }) {
                             borderColor: 'divider',
                         }}
                     >
-                        <Stack direction="row" alignItems="center" justifyContent="space-between">
+                        <Link
+                            overlay
+                            onClick={handleExpandClick}
+                            underline="none"
+                        >
+                        <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%">
                             <Typography level="title-md">댓글쓰기</Typography>
                             <ExpandMore
                                 expand={expanded}
-                                onClick={handleExpandClick}
                                 aria-expanded={expanded}
                                 aria-label="show more"
                             >
                                 <ExpandMoreIcon />
                             </ExpandMore>
                         </Stack>
+                        </Link>
                     </CardOverflow>
                     <Collapse in={expanded} timeout="auto" unmountOnExit>
                         <CardContent sx={{p: 0}}>
