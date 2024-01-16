@@ -6,8 +6,7 @@ import * as React from "react";
 import Stack from "@mui/joy/Stack";
 import {Badge, Divider} from "@mui/joy";
 import Button from "@mui/joy/Button";
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ChatBubbleIcon from "@mui/icons-material/ChatBubble";
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {Pagination, useMediaQuery} from "@mui/material";
 
@@ -38,9 +37,8 @@ export default function UrlListCard({urlInfos, page, currentSort, handlePageChan
                 }}
             >
                 <Stack direction="row" spacing={1} justifyContent="flex-end" flexWrap="wrap" useFlexGap>
+                    {renderButton('인기', ['updatedDate,desc', 'popularityScore,desc'], <AutoAwesomeIcon />)}
                     {renderButton('최신', ['updatedAt,desc'], <UploadFileIcon />)}
-                    {renderButton('좋아요', ['updatedDate,desc', 'likeCount,desc'], <FavoriteIcon />)}
-                    {renderButton('댓글많은', ['updatedDate,desc', 'commentCount,desc'], <ChatBubbleIcon />)}
                 </Stack>
             </CardOverflow>
             <CardContent>

@@ -81,7 +81,7 @@ export default function Root(){
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(20);
     const [currentFilter, setCurrentFilter] = useState([]);
-    const [currentSort, setCurrentSort] = useState(['updatedAt,desc']);
+    const [currentSort, setCurrentSort] = useState(['updatedDate,desc', 'popularityScore,desc']);
     const [urlInfos, setUrlInfos] = useState([]);
     const [isUrlInfosLoading, setIsUrlInfosLoading] = useState(true);
 
@@ -108,8 +108,8 @@ export default function Root(){
     return(
         <Box sx={{
             pt: {
-                xs: 7,
-                sm: 11
+                xs: 9,
+                sm: 13
             },
             pb: {
                 xs: 7
@@ -119,7 +119,6 @@ export default function Root(){
             <Appbar url={url} setUrl={setUrl} onSearch={handleSearch} />
             <Container maxWidth="md">
                 <Stack spacing={2}>
-                <UserCard/>
                 <Routes>
                     <Route path="/" element={<HomePage
                         page={page}
