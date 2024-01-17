@@ -91,7 +91,7 @@ export default function Root(){
             })
             .catch(error => {
                 console.error('Error fetching data', error);
-                // setIsUrlInfosLoading(true);
+                setIsUrlInfosLoading(true);
             });
     };
 

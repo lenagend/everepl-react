@@ -1,19 +1,17 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import UrlCard from "../components/url/UrlCard";
 import Stack from "@mui/joy/Stack";
 import CommentList from "../components/comments/CommentList";
-import UrlListCard from "../components/url/UrlListCard";
 import axios from "axios";
 import LoadingUrlCard from "../components/loading/LoadingUrlCard";
-import qs from "qs";
 import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
-import CommentTextArea from "../components/textFields/CommentTextArea";
 import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
+    //urlInfo를 불러오는 로직
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
@@ -31,6 +29,71 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             }
         })();
     }, [id]);
+
+    //댓글과 관련된 로직
+    const [nickname, setNickname] = useState('');
+    const [password, setPassword] = useState('');
+    const [commentText, setCommentText] = useState('');
+    const [targetId, setTargetId] = useState('');
+    const [targetType, setTargetType] = useState('');
+
+    const handlePasswordChange = (password) => {
+        // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
+        if (password.length <= 15) {
+            setPassword(password);
+        }
+    };
+
+    const handleNicknameChange = (nickname) => {
+        // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
+        if (nickname.length <= 8) {
+            setNickname(nickname);
+        }
+    };
+
+    const validate = () => {
+        let tempErrors = {};
+        if (!nickname) tempErrors.nickname = '닉네임을 입력해주세요.';
+        else if (nickname.length < 2 || nickname.length > 8) {
+            tempErrors.nickname = '닉네임은 2글자 이상 입력해주세요.';
+        }
+        if (!password) tempErrors.password = '비밀번호를 입력해주세요.';
+        else if (password.length < 4 || password.length > 15) {
+            tempErrors.password = '비밀번호는 4글자 이상 입력해주세요.';
+        }
+        if (!commentText) tempErrors.text = '텍스트를 입력해주세요.';
+        console.log(tempErrors);
+
+        return Object.keys(tempErrors).length === 0;
+    };
+
+
+    const handleSubmit = async () => {
+        // 먼저 유효성 검사를 실행합니다.
+        const isValid = validate();
+
+        // 유효성 검사를 통과하지 못했다면, 요청을 중단합니다.
+        if (!isValid)  return;
+
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/comment', {
+                nickname: nickname,
+                text: commentText,
+                password: password,
+                targetId: targetId || id,
+                type: targetType || 'URLINFO'
+            });
+            console.log(response.data);
+            // 요청 후 상태 초기화
+            setCommentText('');
+            setTargetId('');
+            setTargetType('');
+
+        } catch (error) {
+            console.error('댓글 전송 오류:', error);
+        }
+    };
 
     return(
         <Stack spacing={2}>
@@ -51,7 +114,15 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 urlInfos={urlInfos}
                 isUrlInfosLoading={isUrlInfosLoading}
             />
-            <TextAreaBottomNavigation/>
+            <TextAreaBottomNavigation
+                nickname={nickname}
+                onNicknameChange={handleNicknameChange}
+                password={password}
+                onPasswordChange={handlePasswordChange}
+                commentText={commentText}
+                onCommentChange={setCommentText}
+                onSubmit={handleSubmit}
+            />
         </Stack>
     )
 }

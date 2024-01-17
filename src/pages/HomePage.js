@@ -2,12 +2,9 @@ import * as React from "react";
 import MenuConsole from "../components/url/MenuConsole";
 import UrlListCard from "../components/url/UrlListCard";
 import Stack from "@mui/joy/Stack";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useEffect} from "react";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
-import qs from "qs";
 import {handleScrollToTop} from "../utils/navigationUtils";
-import Typography from "@mui/joy/Typography";
 import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
 
 const HomePage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
@@ -30,6 +27,7 @@ const HomePage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 ) : (
                     <UrlListCard urlInfos={urlInfos} page={page} currentSort={currentSort} handlePageChange={onPageChange} handleSortChange={onSortChange}/>
                 )}
+
 
             </Stack>
     )

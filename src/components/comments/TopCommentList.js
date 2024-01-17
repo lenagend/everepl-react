@@ -1,7 +1,8 @@
-import Comment from "./Comment";
-import * as React from "react";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
+import {Typography} from "@mui/joy";
+import * as React from "react";
+import Comment from "./Comment";
 const testComments = [
     {
         id: 1,
@@ -45,17 +46,23 @@ const testComments = [
     },
     // 이하 동일한 구조로 3개의 추가 코멘트
 ];
-export default function CommentList() {
-
+export default function TopCommentList(){
     return(
-        <Card sx={{ p: 1.5, gap: 2 }}>
-
+        <Card
+            variant="soft"
+        >
             <CardContent>
-            {testComments.map((comment) => (
-                <React.Fragment key={comment.id}>
-                    <Comment comment={comment} />
-                </React.Fragment>
-            ))}
+                <Typography
+                    color="primary"
+                    level="title-lg"
+                    variant="solid">
+                    Top3
+                </Typography>
+                {testComments.map((comment) => (
+                    <React.Fragment key={comment.id}>
+                        <Comment comment={comment} />
+                    </React.Fragment>
+                ))}
             </CardContent>
         </Card>
     );
