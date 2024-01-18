@@ -9,6 +9,7 @@ import LoadingUrlCard from "../components/loading/LoadingUrlCard";
 import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
+import qs from "qs";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -28,14 +29,16 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 console.error('Error fetching url info', error);
             }
         })();
+
+        fetchComments(id, 'URLINFO');
     }, [id]);
 
     //댓글과 관련된 로직
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
     const [commentText, setCommentText] = useState('');
-    const [targetId, setTargetId] = useState('');
-    const [targetType, setTargetType] = useState('');
+    const [parentId, setParentId] = useState('');
+    const [parentType, setParentType] = useState('');
 
     const handlePasswordChange = (password) => {
         // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
@@ -77,23 +80,54 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
 
         try {
+            const currentParentId = parentId || id;
+            const currentParentType = parentType || 'URLINFO';
+
             const response = await axios.post('http://localhost:8080/api/comment', {
                 nickname: nickname,
                 text: commentText,
                 password: password,
-                targetId: targetId || id,
-                type: targetType || 'URLINFO'
+                parentId: currentParentId,
+                type: currentParentType
             });
-            console.log(response.data);
+
+            // 댓글 목록을 다시 불러옵니다.
+            fetchComments(currentParentId, currentParentType);
+
             // 요청 후 상태 초기화
             setCommentText('');
-            setTargetId('');
-            setTargetType('');
-
+            setParentId('');
+            setParentType('');
         } catch (error) {
             console.error('댓글 전송 오류:', error);
         }
     };
+
+    //댓글 목록을 위한 변수와 함수들.
+    const [commentPage, setCommentPage] = useState(1);
+    const [commentSize, setCommentSize] = useState(20);
+    const [comments, setComments] = useState([]);
+    const [isCommentsLoading, setIsCommentsLoading] = useState(true);
+
+    const fetchComments = (parentId, commentType) => {
+        axios.get('http://localhost:8080/api/comment', {
+            params: {
+                page: commentPage - 1,
+                size: commentSize,
+                type: commentType,
+                parentId: parentId
+            },
+        })
+            .then(response => {
+                setComments(response.data);
+                setIsCommentsLoading(false);
+                console.log(response.data)
+            })
+            .catch(error => {
+                console.error('Error fetching data', error);
+                setIsCommentsLoading(true);
+            });
+    }
 
     return(
         <Stack spacing={2}>
@@ -102,7 +136,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             ) : (
                 <UrlCard isListItem={false} urlInfo={urlInfo}/>
             )}
-            <CommentList/>
+            <CommentList fetchComments={fetchComments} comments={comments} isCommentsLoading={isCommentsLoading}/>
             <HomePage
                 page={page}
                 currentFilter={currentFilter}
