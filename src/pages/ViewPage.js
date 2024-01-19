@@ -30,15 +30,15 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             }
         })();
 
-        fetchComments(id, 'URLINFO');
+       fetchComments(id, 'URLINFO');
     }, [id]);
 
     //댓글과 관련된 로직
     const [nickname, setNickname] = useState('');
     const [password, setPassword] = useState('');
     const [commentText, setCommentText] = useState('');
-    const [parentId, setParentId] = useState('');
-    const [parentType, setParentType] = useState('');
+    const [targetId, setTargetId] = useState('');
+    const [targetType, setTargetType] = useState('');
 
     const handlePasswordChange = (password) => {
         // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
@@ -80,24 +80,24 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
 
         try {
-            const currentParentId = parentId || id;
-            const currentParentType = parentType || 'URLINFO';
-
             const response = await axios.post('http://localhost:8080/api/comment', {
                 nickname: nickname,
                 text: commentText,
                 password: password,
-                parentId: currentParentId,
-                type: currentParentType
+                type: targetType || 'URLINFO',
+                targetId: targetId || id
             });
 
             // 댓글 목록을 다시 불러옵니다.
-            fetchComments(currentParentId, currentParentType);
+            //fetchComments(currentParentId, currentParentType);
 
             // 요청 후 상태 초기화
             setCommentText('');
-            setParentId('');
-            setParentType('');
+            setTargetType('');
+            setTargetId('');
+            console.log(response.data);
+
+            fetchComments(id, 'URLINFO');
         } catch (error) {
             console.error('댓글 전송 오류:', error);
         }
@@ -109,13 +109,13 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const [comments, setComments] = useState([]);
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
-    const fetchComments = (parentId, commentType) => {
+    const fetchComments = (targetId, targetType) => {
         axios.get('http://localhost:8080/api/comment', {
             params: {
                 page: commentPage - 1,
                 size: commentSize,
-                type: commentType,
-                parentId: parentId
+                type: targetType,
+                targetId: targetId
             },
         })
             .then(response => {

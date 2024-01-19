@@ -1,16 +1,16 @@
-import { Divider, Stack} from "@mui/joy";
+import {Divider, Stack, IconButton} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
-import Button from "@mui/joy/Button";
-import {Chat} from "@mui/icons-material";
 import CardContent from "@mui/joy/CardContent";
 import styled from "@emotion/styled";
 import Card from "@mui/joy/Card";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/material/Box";
-import VerticalUserMenu from "../iconButtons/VerticalUserMenu";
-import HorizontalUserMenu from "../iconButtons/HorizontalUserMenu";
-import {Collapse} from "@mui/material";
+import TimeAgo from "../../utils/TimeAgo";
+import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -23,13 +23,6 @@ const CommentCard = styled(Card)(({ theme }) => ({
 }));
 
 export default function Comment({comment}){
-    const [expanded, setExpanded] = React.useState(false);
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
-
-
     return(
         <CommentCard orientation="horizontal" variant="outlined" >
             <Stack>
@@ -50,33 +43,54 @@ export default function Comment({comment}){
 
             <CardContent >
                 <Stack direction="row">
-                    <Stack sx={{flexGrow: 1}} spacing={1}>
-                        <Stack direction="row" sx={{alignItems: 'center'}}>
-                            <Typography level="title-sm" color="primary" px={1}>
+                    <Stack sx={{flexGrow: 1, pl: 1, pb: 1}} spacing={1}>
+                        <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
+                            <Typography level="title-sm" color="neutral">
                                 {comment.nickname}({comment.userIp})
+                                <Typography  level="body-xs" color="neutral" >
+                                    &nbsp;&middot;&nbsp;<TimeAgo time={comment.updatedAt} />
+                                </Typography>
                             </Typography>
-                            <Typography  level="body-xs" color="neutral">
-                                {comment.createdAt}
-                            </Typography>
-                            <Box sx={{ml: 'auto'}}>
-                                <VerticalUserMenu componentName={'Comment'} />
-                            </Box>
+
                         </Stack>
                         <Typography
                             level="body-sm"
-                            sx={{pl: 1}}
+
                         >
                             {comment.text}
                         </Typography>
-                        <Stack direction="row" spacing={0.5}>
-                          <Button aria-label="댓글" sx={{px: 0.5}} size="sm" variant="plain"  startDecorator={<Chat/>} onClick={handleExpandClick}/>
+                        <Stack direction="row" spacing={1}   alignItems="center">
+                            <Stack direction="row" spacing={0}  alignItems="center">
+                                <IconButton  variant="plain" sx={{
+                                    "--IconButton-size": "20px",
+                                    ml: -0.5
+                                }}>
+                                    <ChatBubbleTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
+                                </IconButton>
+                                <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
+                            </Stack>
+                                <Stack direction="row" spacing={0}  alignItems="center">
+                                <IconButton  variant="plain" sx={{
+                                    "--IconButton-size": "20px",
+                                    ml: -0.5
+                                }}>
+                                    <FavoriteTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
+                                </IconButton>
+                                <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
+                            </Stack>
+                            <Stack direction="row" spacing={0}  alignItems="center">
+                                <IconButton  variant="plain" sx={{
+                                    "--IconButton-size": "20px",
+                                    ml: -0.5
+                                }}>
+                                    <MoreHorizIcon color="action" sx={{ fontSize: 20 }}/>
+                                </IconButton>
+                            </Stack>
                         </Stack>
-                        <Collapse in={expanded} timeout="auto" unmountOnExit>
-                            ㅎㅇ
-                        </Collapse>
                     </Stack>
                 </Stack>
             </CardContent>
+
         </CommentCard>
     );
 }
