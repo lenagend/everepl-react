@@ -6,11 +6,13 @@ import Link from "@mui/joy/Link";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import {useNavigate, useParams} from "react-router-dom";
-import {Badge, Chip} from "@mui/joy";
-import {ChatBubble, Favorite, FavoriteBorder} from "@mui/icons-material";
+import {Badge, CardOverflow, Chip, IconButton} from "@mui/joy";
 import {useMediaQuery} from "@mui/material";
 import {truncateString} from "../../utils/stringUtils";
 import TimeAgo from "../../utils/TimeAgo";
+import ChatBubbleTwoToneIcon from "@mui/icons-material/ChatBubbleTwoTone";
+import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 
 export default function UrlCard({ isListItem, urlInfo }) {
@@ -61,33 +63,57 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                     />
                                 </AspectRatio>
                         </Link>
-                        <Stack sx={{flexGrow: 1}} spacing={1}>
-                                <Typography level="title-md" id="card-description" sx={{fontWeight: 700}}
-                                            variant={(id == urlInfo.id && isListItem)? 'solid' : 'plane'}
-                                            color='primary'
+                        <Stack sx={{flexGrow: 1}} spacing={1} justifyContent={
+                            isListItem? "flex-start" : "center"
+                        }>
+                            <Typography level="title-md" id="card-description" sx={{fontWeight: 700}}
+                                        variant={(id == urlInfo.id && isListItem)? 'solid' : 'plane'}
+                                        color='primary'
+                            >
+                                <Link
+                                    overlay
+                                    underline="none"
+                                    onClick={handleCardClick}
+                                    sx={{ color: (id == urlInfo.id && isListItem) ? 'white' : 'text.tertiary'}}
                                 >
-                                    <Link
-                                        overlay
-                                        underline="none"
-                                        onClick={handleCardClick}
-                                        sx={{ color: (id == urlInfo.id && isListItem) ? 'white' : 'text.tertiary'}}
-                                    >
-                                        {isMobile ? truncateString(urlInfo.title, 35) : urlInfo.title}
-                                    </Link>
+                                    {isMobile ? truncateString(urlInfo.title, 35) : truncateString(urlInfo.title, 50)}
+                                </Link>
+                                <Typography  level="body-xs" color={
+                                    (id == urlInfo.id && isListItem) ? 'white' : 'neutral'
+                                } >
+                                    &nbsp;&middot;&nbsp;<TimeAgo time={urlInfo.updatedAt} />
                                 </Typography>
-
-                            <Stack direction="row" spacing={1}>
-                                <Chip variant="soft" component="span" color="danger" size="sm" startDecorator={<Favorite sx={{fontSize: 12}}/>}>
-                                    {urlInfo.likeCount}
-                                </Chip>
-                                <Chip variant="soft" component="span" size="sm" startDecorator={<ChatBubble sx={{fontSize: 12}}/>}>
-                                    {urlInfo.commentCount}
-                                </Chip>
-                                <Chip variant="soft" component="span" color="success" size="sm" >
-                                   <TimeAgo time={urlInfo.updatedAt} />
-                                </Chip>
-                            </Stack>
-                            {/*<HorizontalUserMenu likeCount={urlInfo.likeCount} commentCount={urlInfo.commentCount}/>*/}
+                            </Typography>
+                                <Stack direction="row" spacing={1} alignItems="center">
+                                    <Stack direction="row" spacing={0} alignItems="center">
+                                        <IconButton variant="plain" sx={{
+                                            "--IconButton-size": "20px",
+                                            ml: -0.5
+                                        }}>
+                                            <ChatBubbleTwoToneIcon color="action" sx={{fontSize: 20}}/>
+                                        </IconButton>
+                                        <Typography sx={{ml: 0}} level="body-xs"
+                                                    color="neutral">{urlInfo.commentCount}</Typography>
+                                    </Stack>
+                                    <Stack direction="row" spacing={0} alignItems="center">
+                                        <IconButton variant="plain" sx={{
+                                            "--IconButton-size": "20px",
+                                            ml: -0.5
+                                        }}>
+                                            <FavoriteTwoToneIcon color="action" sx={{fontSize: 20}}/>
+                                        </IconButton>
+                                        <Typography sx={{ml: 0}} level="body-xs"
+                                                    color="neutral">{urlInfo.likeCount}</Typography>
+                                    </Stack>
+                                    <Stack direction="row" spacing={0} alignItems="center">
+                                        <IconButton variant="plain" sx={{
+                                            "--IconButton-size": "20px",
+                                            ml: -0.5
+                                        }}>
+                                            <MoreHorizIcon color="action" sx={{fontSize: 20}}/>
+                                        </IconButton>
+                                    </Stack>
+                                </Stack>
                         </Stack>
                     </Stack>
                 </CardContent>

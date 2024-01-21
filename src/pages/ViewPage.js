@@ -9,7 +9,11 @@ import LoadingUrlCard from "../components/loading/LoadingUrlCard";
 import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
-import qs from "qs";
+import Card from "@mui/joy/Card";
+import styled from "@emotion/styled";
+import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
+import NotExistCommentList from "../components/loading/NotExistCommentList";
+import {CardOverflow, Typography} from "@mui/joy";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -17,20 +21,24 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
 
+    const fetchUrlInfo = (id) => {
+        axios.get(`http://localhost:8080/api/url/${id}`)
+            .then(response => {
+                setUrlInfo(response.data);
+                setIsUrlCardLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching url info', error);
+            });
+    };
+
+
     useEffect(() => {
         handleScrollToTop();
 
-        (async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/api/url/${id}`);
-                setUrlInfo(response.data);
-                setIsUrlCardLoading(false);
-            } catch (error) {
-                console.error('Error fetching url info', error);
-            }
-        })();
+        fetchUrlInfo(id);
 
-       fetchComments(id, 'URLINFO');
+        fetchComments(id, 'URLINFO');
     }, [id]);
 
     //댓글과 관련된 로직
@@ -39,6 +47,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const [commentText, setCommentText] = useState('');
     const [targetId, setTargetId] = useState('');
     const [targetType, setTargetType] = useState('');
+    const [targetNicknameAndIp, setTargetNicknameAndIp] = useState('');
 
     const handlePasswordChange = (password) => {
         // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
@@ -95,7 +104,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             setCommentText('');
             setTargetType('');
             setTargetId('');
-            console.log(response.data);
 
             fetchComments(id, 'URLINFO');
         } catch (error) {
@@ -105,7 +113,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
     //댓글 목록을 위한 변수와 함수들.
     const [commentPage, setCommentPage] = useState(1);
-    const [commentSize, setCommentSize] = useState(20);
+    const [commentSize, setCommentSize] = useState(10);
     const [comments, setComments] = useState([]);
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
@@ -129,6 +137,28 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             });
     }
 
+    // 스타일 컴포넌트 정의
+    const StyledCard = styled(Card)({
+        position: 'relative',
+        width: '50px',
+        height: '30px',
+        justifyContent: 'center',
+
+        // 역삼각형 추가
+        '.MuiCard-root::after': {
+            content: '""',
+            position: 'absolute',
+            bottom: '-10px', // 역삼각형의 위치 조정
+            left: '50%',
+            transform: 'translateX(-50%)',
+            width: '0',
+            height: '0',
+            borderLeft: '10px solid transparent', // 왼쪽 테두리
+            borderRight: '10px solid transparent', // 오른쪽 테두리
+            borderTop: '10px solid white', // 상단 테두리 (역삼각형 색)
+        },
+    });
+
     return(
         <Stack spacing={2}>
             {isUrlCardLoading ? (
@@ -136,7 +166,35 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             ) : (
                 <UrlCard isListItem={false} urlInfo={urlInfo}/>
             )}
-            <CommentList fetchComments={fetchComments} comments={comments} isCommentsLoading={isCommentsLoading}/>
+            {isCommentsLoading ? (
+                <LoadingUrlCardList/>
+            ) : comments.content.length === 0 ? (
+                <NotExistCommentList/>
+            ) : (
+                <Card sx={{ p: 1.5, gap: 2, pt: 0, overflow: 'auto' }}>
+                    <CardOverflow
+                        color="primary"
+                        sx={{
+                            p: 2.5,
+                            pb: 1,
+                            borderBottom: '1px solid',
+                            borderColor: 'divider',
+                        }}
+                    >
+                        <Typography level="title-md" variant="soft"  color="success" >
+                            {comments.totalElements}개의 댓글이 있습니다.
+                        </Typography>
+                    </CardOverflow>
+                    <CommentList
+                        comments={comments.content}
+                        depth={0}
+                        commentCount={comments.totalElements}
+                        setTargetNicknameAndIp={setTargetNicknameAndIp}
+                        setTargetId={setTargetId}
+                        setTargetType={setTargetType}
+                    />
+                </Card>
+            )}
             <HomePage
                 page={page}
                 currentFilter={currentFilter}
@@ -156,6 +214,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 commentText={commentText}
                 onCommentChange={setCommentText}
                 onSubmit={handleSubmit}
+                targetNicknameAndIp={targetNicknameAndIp}
             />
         </Stack>
     )

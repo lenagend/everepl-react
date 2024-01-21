@@ -25,7 +25,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function TextAreaBottomNavigation({ nickname, onNicknameChange, password, onPasswordChange, commentText, onCommentChange, onSubmit}) {
+export default function TextAreaBottomNavigation({ nickname, onNicknameChange, password, onPasswordChange, commentText, onCommentChange, onSubmit, targetNicknameAndIp}) {
     const [expanded, setExpanded] = React.useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -49,7 +49,10 @@ export default function TextAreaBottomNavigation({ nickname, onNicknameChange, p
                             underline="none"
                         >
                         <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%">
-                            <Typography level="title-md">댓글쓰기</Typography>
+                            <Typography level="title-md">
+                                댓글쓰기
+                            <Typography level="title-lg" color="primary" sx={{pl: 1}}>@{targetNicknameAndIp ? targetNicknameAndIp : '원문'}</Typography>
+                            </Typography>
                             <ExpandMore
                                 expand={expanded}
                                 aria-expanded={expanded}
