@@ -7,11 +7,11 @@ import Card from "@mui/joy/Card";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/material/Box";
 import TimeAgo from "../../utils/TimeAgo";
-import ChatBubbleTwoToneIcon from '@mui/icons-material/ChatBubbleTwoTone';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CommentList from "./CommentList";
-
+import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
+import CommentsDisabledTwoToneIcon from '@mui/icons-material/CommentsDisabledTwoTone';
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -20,7 +20,8 @@ const CommentCard = styled(Card)(({ theme }) => ({
     padding: 0,
     border: 'none',
     background: 'none',
-    gap: 1
+    gap: 0,
+    overflow: 'auto'
 }));
 
 export default function Comment({comment, depth, setTargetNicknameAndIp, setTargetId, setTargetType}){
@@ -36,7 +37,7 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
         <CommentCard orientation="horizontal" variant="outlined" >
             <Stack>
                 <AspectRatio ratio="1" sx={{ width: {
-                        xs: 40,
+                        xs: 30,
                         sm: 60
                     } }} variant="outlined">
                     <img
@@ -50,9 +51,9 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
                 </Stack>
             </Stack>
 
-            <CardContent >
+            <CardContent sx={{flexGrow: 1}}>
                 <Stack direction="row">
-                    <Stack sx={{flexGrow: 1, pl: 1, pb: 1}} spacing={1}>
+                    <Stack sx={{ pl: 1, pb: 1}} spacing={1}>
                         <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                             <Typography level="title-sm" color="neutral">
                                 {comment.nickname}({ipPart})
@@ -64,24 +65,36 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
                         </Stack>
                         <Typography
                             level="body-sm"
-
+                            pr={{
+                                xs: 1
+                            }}
                         >
                             {comment.text}
                         </Typography>
                         {/*버튼들*/}
                         <Stack direction="row" spacing={1}   alignItems="center">
-                            <Stack direction="row" spacing={0}  alignItems="center">
-                                <IconButton  variant="plain" sx={{
-                                    "--IconButton-size": "20px",
-                                    ml: -0.5
-                                }}
-                                disabled={depth > 3}
-                                onClick={handleCommentButtonClick}
-                                >
-                                    <ChatBubbleTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
-                                </IconButton>
-                                <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
-                            </Stack>
+                                <Stack direction="row" spacing={0}  alignItems="center">
+                                    {depth < 5 ? (
+                                        <IconButton  variant="plain" sx={{
+                                            "--IconButton-size": "20px",
+                                            ml: -0.5
+                                        }}
+                                                     onClick={handleCommentButtonClick}
+                                        >
+                                            <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
+                                        </IconButton>
+                                    ): (
+                                        <IconButton  variant="plain" sx={{
+                                            "--IconButton-size": "20px",
+                                            ml: -0.5
+                                        }}
+                                                     onClick={handleCommentButtonClick}
+                                        >
+                                            <CommentsDisabledTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
+                                        </IconButton>
+                                    )}
+                                    <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
+                                </Stack>
                                 <Stack direction="row" spacing={0}  alignItems="center">
                                 <IconButton  variant="plain" sx={{
                                     "--IconButton-size": "20px",
@@ -102,20 +115,21 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
                         </Stack>
                         {/*버튼들*/}
                         {comment.replies.length > 0 ? (
-                            <CommentList
-                                comments={comment.replies}
-                                depth={depth + 1}
-                                commentCount={comment.replies.length}
-                                setTargetNicknameAndIp={setTargetNicknameAndIp}
-                                setTargetId={setTargetId}
-                                setTargetType={setTargetType}
-                            />
+                                <Box sx={{ width: 'calc(100% + 15px)', transform: 'translateX(-15px)' }}>
+                                <CommentList
+                                    comments={comment.replies}
+                                    depth={depth + 1}
+                                    commentCount={comment.replies.length}
+                                    setTargetNicknameAndIp={setTargetNicknameAndIp}
+                                    setTargetId={setTargetId}
+                                    setTargetType={setTargetType}
+                                />
+                            </Box>
                             ) :
                         null}
                     </Stack>
                 </Stack>
             </CardContent>
-
         </CommentCard>
     );
 }

@@ -98,7 +98,7 @@ export default function Root(){
     return(
         <Box sx={{
             pt: {
-                xs: 9,
+                xs: 8,
                 sm: 13
             },
             pb: {
@@ -107,7 +107,10 @@ export default function Root(){
         }}>
             <LoadingProgressModal isLoading={isViewPageLoading}/>
             <Appbar url={url} setUrl={setUrl} onSearch={handleSearch} />
-            <Container maxWidth="md">
+            <Container maxWidth="md" sx={{p: {
+                     xs: 0.5,
+                    sm: 1
+                }}}>
                 <Stack spacing={2}>
                 <Routes>
                     <Route path="/" element={<HomePage

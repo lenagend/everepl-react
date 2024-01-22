@@ -32,7 +32,10 @@ export default function TextAreaBottomNavigation({ nickname, onNicknameChange, p
     };
     return (
         <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10}} elevation={3}>
-            <Container maxWidth="md" sx={{p: 0}}>
+            <Container maxWidth="md" sx={{p: {
+                    xs: 0,
+                    sm: 0.5
+                }}}>
                 <Card sx={{p: 0, gap: 0}}>
                     <CardOverflow
                         variant="soft"

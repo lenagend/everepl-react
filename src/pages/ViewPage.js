@@ -13,7 +13,7 @@ import Card from "@mui/joy/Card";
 import styled from "@emotion/styled";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import NotExistCommentList from "../components/loading/NotExistCommentList";
-import {CardOverflow, Typography} from "@mui/joy";
+import {CardContent, CardOverflow, Typography} from "@mui/joy";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -171,12 +171,13 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             ) : comments.content.length === 0 ? (
                 <NotExistCommentList/>
             ) : (
-                <Card sx={{ p: 1.5, gap: 2, pt: 0, overflow: 'auto' }}>
+                <Card sx={{ p: 1.5, gap: 2, pt: 0}}>
                     <CardOverflow
                         color="primary"
                         sx={{
-                            p: 2.5,
+                            pt: 2.5,
                             pb: 1,
+                            px: 1.5,
                             borderBottom: '1px solid',
                             borderColor: 'divider',
                         }}
