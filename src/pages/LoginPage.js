@@ -1,5 +1,5 @@
 import {Box, Container} from "@mui/joy";
-import TextAreaBottomNavigation from "../components/menu/TextAreaBottomNavigation";
+import CommentEditor from "../components/menu/CommentEditor";
 import * as React from "react";
 import Stack from "@mui/joy/Stack";
 import LoginCard from "../components/login/LoginCard";

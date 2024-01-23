@@ -2,7 +2,7 @@ import * as React from 'react';
 import Box from "@mui/material/Box";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
-import {CardOverflow, Container, FormControl, Input, Typography} from "@mui/joy";
+import {Badge, CardOverflow, Container, FormControl, Input, Typography} from "@mui/joy";
 import Stack from "@mui/joy/Stack";
 import IconButton from '@mui/material/IconButton';
 import IconButtonJoy from '@mui/joy/IconButton';
@@ -13,6 +13,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import {Collapse} from "@mui/material";
 import Link from "@mui/joy/Link";
 import Textarea from "@mui/joy/Textarea";
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -25,11 +26,8 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function TextAreaBottomNavigation({ nickname, onNicknameChange, password, onPasswordChange, commentText, onCommentChange, onSubmit, targetNicknameAndIp}) {
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandClick = () => {
-        setExpanded(!expanded);
-    };
+export default function CommentEditor({ nickname, onNicknameChange, password, onPasswordChange, commentText, onCommentChange, onSubmit, targetNicknameAndIp, handleCommentExpandClick, commentEditorExpanded, handleCommentButtonClick}) {
+
     return (
         <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10}} elevation={3}>
             <Container maxWidth="md" sx={{p: {
@@ -48,17 +46,32 @@ export default function TextAreaBottomNavigation({ nickname, onNicknameChange, p
                     >
                         <Link
                             overlay
-                            onClick={handleExpandClick}
+                            onClick={handleCommentExpandClick}
                             underline="none"
                         >
                         <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%">
                             <Typography level="title-md">
                                 댓글쓰기
-                            <Typography level="title-lg" color="primary" sx={{pl: 1}}>@{targetNicknameAndIp ? targetNicknameAndIp : '원문'}</Typography>
                             </Typography>
+                                {targetNicknameAndIp ? (
+                                        <Badge
+                                            badgeContent={<CloseRoundedIcon sx={{fontSize: 10}}/>}
+                                            variant="outlined" color="danger" size="sm"
+                                            badgeInset="-2%"
+                                            onClick={(e) => {
+                                            e.stopPropagation();
+                                            handleCommentButtonClick('', '', '');
+                                        }}>
+                                            <Typography level="title-lg" color="primary" sx={{pl: 1}}>
+                                                @{targetNicknameAndIp}
+                                            </Typography>
+                                        </Badge>
+                                ) : (
+                                    <Typography level="title-lg" color="primary" sx={{pl: 1}}>@원문</Typography>
+                                )}
                             <ExpandMore
-                                expand={expanded}
-                                aria-expanded={expanded}
+                                expand={commentEditorExpanded}
+                                aria-expanded={commentEditorExpanded}
                                 aria-label="show more"
                             >
                                 <ExpandMoreIcon />
@@ -66,7 +79,7 @@ export default function TextAreaBottomNavigation({ nickname, onNicknameChange, p
                         </Stack>
                         </Link>
                     </CardOverflow>
-                    <Collapse in={expanded} timeout="auto" unmountOnExit>
+                    <Collapse in={commentEditorExpanded} timeout="auto" unmountOnExit>
                         <CardContent sx={{p: 0}}>
                             <Card orientation="horizontal" variant="outlined" sx={{p: 1, border: 'none'}}>
                                 <CardContent>

@@ -1,7 +1,7 @@
 import Comment from "./Comment";
 import * as React from "react";
 import CardContent from "@mui/joy/CardContent";
-export default function CommentList({comments, depth, setTargetNicknameAndIp, setTargetId, setTargetType}) {
+export default function CommentList({comments, depth, onCommentButtonClick}) {
 
     return(
             <CardContent>
@@ -10,9 +10,7 @@ export default function CommentList({comments, depth, setTargetNicknameAndIp, se
                         <Comment
                             comment={comment}
                             depth={depth}
-                            setTargetNicknameAndIp={setTargetNicknameAndIp}
-                            setTargetId={setTargetId}
-                            setTargetType={setTargetType}
+                            onCommentButtonClick={onCommentButtonClick}
                         />
                     </React.Fragment>
                 ))}

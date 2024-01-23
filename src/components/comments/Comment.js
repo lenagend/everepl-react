@@ -24,14 +24,8 @@ const CommentCard = styled(Card)(({ theme }) => ({
     overflow: 'auto'
 }));
 
-export default function Comment({comment, depth, setTargetNicknameAndIp, setTargetId, setTargetType}){
+export default function Comment({comment, depth, onCommentButtonClick}){
     const ipPart = comment.userIp.split('.').slice(0, 2).join('.');
-
-    const handleCommentButtonClick = () => {
-        setTargetNicknameAndIp(`${comment.nickname}(${ipPart})`);
-        setTargetId(comment.id);
-        setTargetType('COMMENT');
-    }
 
     return(
         <CommentCard orientation="horizontal" variant="outlined" >
@@ -79,7 +73,7 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
                                             "--IconButton-size": "20px",
                                             ml: -0.5
                                         }}
-                                                     onClick={handleCommentButtonClick}
+                                        onClick={() => onCommentButtonClick(`${comment.nickname}(${ipPart})`, comment.id, 'COMMENT')}
                                         >
                                             <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
                                         </IconButton>
@@ -88,7 +82,7 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
                                             "--IconButton-size": "20px",
                                             ml: -0.5
                                         }}
-                                                     onClick={handleCommentButtonClick}
+                                        disabled
                                         >
                                             <CommentsDisabledTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
                                         </IconButton>
@@ -120,9 +114,7 @@ export default function Comment({comment, depth, setTargetNicknameAndIp, setTarg
                                     comments={comment.replies}
                                     depth={depth + 1}
                                     commentCount={comment.replies.length}
-                                    setTargetNicknameAndIp={setTargetNicknameAndIp}
-                                    setTargetId={setTargetId}
-                                    setTargetType={setTargetType}
+                                    onCommentButtonClick={onCommentButtonClick}
                                 />
                             </Box>
                             ) :
