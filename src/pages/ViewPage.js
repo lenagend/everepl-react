@@ -10,13 +10,14 @@ import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import CommentEditor from "../components/menu/CommentEditor";
 import Card from "@mui/joy/Card";
-import styled from "@emotion/styled";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import NotExistCommentList from "../components/loading/NotExistCommentList";
-import {CardContent, CardOverflow, IconButton, Typography} from "@mui/joy";
+import {CardContent, CardOverflow, IconButton, Snackbar, Typography} from "@mui/joy";
 import {Pagination, useMediaQuery} from "@mui/material";
 import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -31,7 +32,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 setIsUrlCardLoading(false);
             })
             .catch(error => {
-                console.error('Error fetching url info', error);
+                setErrorMessage({ fetchError: 'URL 정보를 불러오는데 실패했습니다.' });
             });
     };
 
@@ -77,10 +78,18 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             tempErrors.password = '비밀번호는 4글자 이상 입력해주세요.';
         }
         if (!commentText) tempErrors.text = '텍스트를 입력해주세요.';
-        console.log(tempErrors);
-
+        setErrorMessageOpen(true);
+        setErrorMessage(tempErrors);
         return Object.keys(tempErrors).length === 0;
     };
+
+    const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
+    const [errorMessage, setErrorMessage] = useState({});
+
+    const handleErrorMessageClose = () => {
+        setErrorMessageOpen(false);
+        setErrorMessage({});
+    }
 
 
     const handleSubmit = async () => {
@@ -108,7 +117,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
             fetchComments(id, 'URLINFO');
         } catch (error) {
-            console.error('댓글 전송 오류:', error);
+            setErrorMessage({ fetchError: '댓글 저장에 실패했습니다.' });
         }
     };
 
@@ -140,7 +149,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 console.log(response.data);
             })
             .catch(error => {
-                console.error('Error fetching data', error);
+                setErrorMessage({ fetchError: '댓글 정보를 불러오는데 실패했습니다.' });
                 setIsCommentsLoading(true);
             });
     };
@@ -290,6 +299,25 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 handleCommentExpandClick={handleCommentExpandClick}
                 handleCommentButtonClick={handleCommentButtonClick}
             />
+            <Snackbar
+                autoHideDuration={5000}
+                open={errorMessageOpen}
+                color="danger"
+                size="lg"
+                onClose={handleErrorMessageClose}
+                startDecorator={<ErrorOutlineRoundedIcon/>}
+                endDecorator={
+                    <IconButton color="danger" onClick={handleErrorMessageClose}>
+                        <CloseRoundedIcon/>
+                    </IconButton>
+                }
+            >
+                <Stack>
+                {Object.keys(errorMessage).map((key) => (
+                    <Typography color="danger" level="title-md" key={key}>{errorMessage[key]}</Typography>
+                ))}
+                </Stack>
+            </Snackbar>
         </Stack>
     )
 }
