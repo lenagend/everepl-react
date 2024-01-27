@@ -6,7 +6,7 @@ import Link from "@mui/joy/Link";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import {useNavigate, useParams} from "react-router-dom";
-import { IconButton} from "@mui/joy";
+import {CardOverflow, IconButton} from "@mui/joy";
 import {useMediaQuery} from "@mui/material";
 import {truncateString} from "../../utils/stringUtils";
 import TimeAgo from "../../utils/TimeAgo";
@@ -14,6 +14,8 @@ import ChatBubbleTwoToneIcon from "@mui/icons-material/ChatBubbleTwoTone";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Box from "@mui/joy/Box";
+import YouTubeEmbed from "../embeds/YouTubeEmbed";
+import InstagramEmbed from "../embeds/InstagramEmbed";
 
 
 export default function UrlCard({ isListItem, urlInfo }) {
@@ -126,14 +128,19 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                             </IconButton>
                                         </Stack>
                                     </Stack>
-                                ): (
-                                    <Box>
-                                        트위터, 인스타, 유튜브 등의 변환링크가 올 곳
-                                    </Box>
-                                )}
+                                ): null}
                         </Stack>
                     </Stack>
                 </CardContent>
+                {isListItem ? null : (
+                    <CardOverflow>
+                        {urlInfo.url.includes('youtube.com') ? (
+                            <YouTubeEmbed url={urlInfo.url} />
+                        ) : urlInfo.url.includes('instagram.com') ? (
+                            <InstagramEmbed url={urlInfo.url} />
+                        ) : null}
+                    </CardOverflow>
+                )}
             </Card>
     );
 }

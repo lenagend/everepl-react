@@ -11,6 +11,7 @@ import WildcardPage from "./WildcardPage";
 import Stack from "@mui/joy/Stack";
 import LoadingProgressModal from "../components/loading/LoadingProgressModal";
 import qs from "qs";
+import PolicyPage from "./PolicyPage";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -136,6 +137,7 @@ export default function Root(){
                         isUrlInfosLoading={isUrlInfosLoading}
                     />} />
                     {/*<Route path="/login" element={<LoginPage />} />*/}
+                    <Route path="/policy" element={<PolicyPage />} />
                     <Route path="/404" element={<NotFoundPage />} />
                     <Route path="*" element={<WildcardPage />} />
                 </Routes>
