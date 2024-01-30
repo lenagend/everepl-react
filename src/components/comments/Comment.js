@@ -30,8 +30,9 @@ const CommentCard = styled(Card)(({ theme }) => ({
     overflow: 'auto'
 }));
 
-export default function Comment({comment, depth, onCommentButtonClick}){
+export default function Comment({comment, depth, onCommentButtonClick, onEditComment, onDeleteComment}){
     const ipPart = comment.userIp.split('.').slice(0, 2).join('.');
+
 
     return(
         <CommentCard orientation="horizontal" variant="outlined" >
@@ -113,8 +114,8 @@ export default function Comment({comment, depth, onCommentButtonClick}){
                                         <MoreHorizIcon color="action"/>
                                     </MenuButton>
                                     <Menu>
-                                        <MenuItem startd><EditTwoToneIcon  color="action" />수정</MenuItem>
-                                        <MenuItem><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
+                                        <MenuItem  onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
+                                        <MenuItem onClick={() => onDeleteComment(comment.id)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
                                         <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
                                     </Menu>
                                 </Dropdown>

@@ -126,6 +126,20 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         }
     };
 
+    // 댓글 수정/삭제
+    const [editableComment, setEditableComment] = useState(null);
+    // 댓글 수정
+    const handleEditComment = (comment) => {
+        setEditableComment(comment);
+        setCommentEditorExpanded(true);
+    };
+
+    // 댓글 삭제
+    const handleDeleteComment = (commentId) => {
+        setCommentEditorExpanded(true);
+    };
+
+
     //댓글 목록을 위한 변수와 함수들.
     const [commentPage, setCommentPage] = useState(1);
     const [commentSize, setCommentSize] = useState(10);
@@ -237,6 +251,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                         depth={0}
                         commentCount={comments.totalElements}
                         onCommentButtonClick={handleCommentButtonClick}
+                        onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
                     />
                     <CardOverflow
                         color="primary"
