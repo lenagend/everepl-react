@@ -78,10 +78,16 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             tempErrors.password = '비밀번호는 4글자 이상 입력해주세요.';
         }
         if (!commentText) tempErrors.text = '텍스트를 입력해주세요.';
-        setErrorMessageOpen(true);
-        setErrorMessage(tempErrors);
+
+        // 오류가 있을 경우에만 실행
+        if (Object.keys(tempErrors).length > 0) {
+            setErrorMessageOpen(true);
+            setErrorMessage(tempErrors);
+        }
+
         return Object.keys(tempErrors).length === 0;
     };
+
 
     const [errorMessageOpen, setErrorMessageOpen] = React.useState(false);
     const [errorMessage, setErrorMessage] = useState({});
@@ -109,12 +115,11 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 targetId: targetId || id
             });
 
-            // 댓글 목록을 다시 불러옵니다.
-            //fetchComments(currentParentId, currentParentType);
-
             // 요청 후 상태 초기화
             setCommentText('');
-
+            //댓글창 닫기
+            setCommentEditorExpanded(false);
+            // 댓글 목록을 다시 불러옵니다.
             fetchComments(id, 'URLINFO');
         } catch (error) {
             setErrorMessage({ fetchError: '댓글 저장에 실패했습니다.' });
@@ -146,7 +151,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                     content: commentTree // 댓글 목록만 업데이트
                 });
                 setIsCommentsLoading(false);
-                console.log(response.data);
             })
             .catch(error => {
                 setErrorMessage({ fetchError: '댓글 정보를 불러오는데 실패했습니다.' });
