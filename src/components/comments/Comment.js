@@ -1,4 +1,4 @@
-import {Divider, Stack, IconButton} from "@mui/joy";
+import {Divider, Stack, IconButton, Dropdown} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
 import CardContent from "@mui/joy/CardContent";
@@ -12,6 +12,12 @@ import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CommentList from "./CommentList";
 import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
 import CommentsDisabledTwoToneIcon from '@mui/icons-material/CommentsDisabledTwoTone';
+import MenuButton from "@mui/joy/MenuButton";
+import Menu from "@mui/joy/Menu";
+import MenuItem from "@mui/joy/MenuItem";
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -99,12 +105,19 @@ export default function Comment({comment, depth, onCommentButtonClick}){
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                             </Stack>
                             <Stack direction="row" spacing={0}  alignItems="center">
-                                <IconButton  variant="plain" sx={{
-                                    "--IconButton-size": "20px",
-                                    ml: -0.5
-                                }}>
-                                    <MoreHorizIcon color="action" sx={{ fontSize: 20 }}/>
-                                </IconButton>
+                                <Dropdown>
+                                    <MenuButton
+                                        slots={{ root: IconButton }}
+                                        slotProps={{ root: { variant: 'plane'} }}
+                                    >
+                                        <MoreHorizIcon color="action"/>
+                                    </MenuButton>
+                                    <Menu>
+                                        <MenuItem startd><EditTwoToneIcon  color="action" />수정</MenuItem>
+                                        <MenuItem><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
+                                        <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
+                                    </Menu>
+                                </Dropdown>
                             </Stack>
                         </Stack>
                         {/*버튼들*/}
