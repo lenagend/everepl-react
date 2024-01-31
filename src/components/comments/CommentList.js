@@ -11,7 +11,8 @@ export default function CommentList({comments, depth, onCommentButtonClick, onEd
                             comment={comment}
                             depth={depth}
                             onCommentButtonClick={onCommentButtonClick}
-                            onEditComment={onEditComment} onDeleteComment={onDeleteComment}
+                            onEditComment={onEditComment}
+                            onDeleteComment={onDeleteComment}
                         />
                     </React.Fragment>
                 ))}

@@ -26,7 +26,19 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function CommentEditor({ nickname, onNicknameChange, password, onPasswordChange, commentText, onCommentChange, onSubmit, targetNicknameAndIp, handleCommentExpandClick, commentEditorExpanded, handleCommentButtonClick}) {
+export default function CommentEditor({ nickname, onNicknameChange, password, onPasswordChange,
+                                          commentText, onCommentChange, onSubmit, targetNicknameAndIp,
+                                          handleCommentExpandClick, commentEditorExpanded, handleCommentButtonClick,
+                                          commentActionType, resetCommentState }) {
+
+    // 댓글 제목 결정
+    const commentTitles = {
+        edit: '댓글수정',
+        delete: '댓글삭제',
+        create: '댓글쓰기', // 기본값 혹은 'create' 상태일 때의 제목
+    };
+
+    const commentTitle = commentTitles[commentActionType] || '댓글쓰기';
 
     return (
         <Box sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 10}} elevation={3}>
@@ -50,25 +62,38 @@ export default function CommentEditor({ nickname, onNicknameChange, password, on
                             underline="none"
                         >
                         <Stack direction="row" alignItems="center" justifyContent="space-between" width="100%">
-                            <Typography level="title-md">
-                                댓글쓰기
-                            </Typography>
-                                {targetNicknameAndIp ? (
+                                <Badge
+                                    badgeContent={<CloseRoundedIcon sx={{fontSize: 10}}/>}
+                                    variant="outlined" color="danger" size="sm"
+                                    badgeInset="-8%"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        resetCommentState();
+                                    }}
+                                    invisible={commentActionType ? false : true}
+                                >
+                                    <Typography level="title-md">
+                                        {commentTitle}
+                                    </Typography>
+                                    {targetNicknameAndIp ? (
                                         <Badge
                                             badgeContent={<CloseRoundedIcon sx={{fontSize: 10}}/>}
                                             variant="outlined" color="danger" size="sm"
                                             badgeInset="-2%"
                                             onClick={(e) => {
-                                            e.stopPropagation();
-                                            handleCommentButtonClick('', '', '');
-                                        }}>
+                                                e.stopPropagation();
+                                                handleCommentButtonClick('', '', '');
+                                            }}>
                                             <Typography level="title-lg" color="primary" sx={{pl: 1}}>
                                                 @{targetNicknameAndIp}
                                             </Typography>
                                         </Badge>
-                                ) : (
-                                    <Typography level="title-lg" color="primary" sx={{pl: 1}}>@원문</Typography>
-                                )}
+                                    ) : (
+                                        <Typography level="title-lg" color="primary" sx={{pl: 1}}>
+                                            {commentActionType ? '' : '@원문'}
+                                        </Typography>
+                                    )}
+                                </Badge>
                             <ExpandMore
                                 expand={commentEditorExpanded}
                                 aria-expanded={commentEditorExpanded}
@@ -98,6 +123,7 @@ export default function CommentEditor({ nickname, onNicknameChange, password, on
                                                                 size="sm"
                                                                 onChange={(event) => onNicknameChange(event.target.value)}
                                                                 value={nickname}
+                                                                disabled={commentActionType? true : false}
                                                             />
                                                         </FormControl>
                                                         <FormControl sx={{ maxWidth: '50%' }}>

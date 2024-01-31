@@ -114,7 +114,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                         <MoreHorizIcon color="action"/>
                                     </MenuButton>
                                     <Menu>
-                                        <MenuItem  onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
+                                        <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
                                         <MenuItem onClick={() => onDeleteComment(comment.id)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
                                         <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
                                     </Menu>

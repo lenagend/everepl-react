@@ -103,36 +103,80 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         const isValid = validate();
 
         // 유효성 검사를 통과하지 못했다면, 요청을 중단합니다.
-        if (!isValid)  return;
-
-
+        if (!isValid) return;
         try {
-            const response = await axios.post('http://localhost:8080/api/comment', {
-                nickname: nickname,
-                text: commentText,
-                password: password,
-                type: targetType || 'URLINFO',
-                targetId: targetId || id
-            });
+            let response;
+            console.log(commentActionType);
+            console.log(targetId);
+            console.log(targetType);
+            if (commentActionType === 'edit') {
+                // 수정 요청
+                response = await axios.patch('http://localhost:8080/api/comment', {
+                    nickname: nickname,
+                    text: commentText,
+                    password: password,
+                    targetId: targetId
+                });
+            } else {
+                // 생성 요청
+                response = await axios.post('http://localhost:8080/api/comment', {
+                    nickname: nickname,
+                    text: commentText,
+                    password: password,
+                    type: targetType || 'URLINFO',
+                    targetId: targetId || id
+                });
+            }
 
             // 요청 후 상태 초기화
-            setCommentText('');
-            //댓글창 닫기
+            resetCommentState();
+            // 댓글창 닫기
             setCommentEditorExpanded(false);
             // 댓글 목록을 다시 불러옵니다.
             fetchComments(id, 'URLINFO');
         } catch (error) {
-            setErrorMessage({ fetchError: '댓글 저장에 실패했습니다.' });
+            setErrorMessage({ fetchError: `댓글 ${commentActionType === 'edit' ? '수정' : '저장'}에 실패했습니다.` });
+
+            // 서버로부터 오류 응답이 있는 경우, 상세 메시지를 추가
+            if (error.response && error.response.data) {
+                // 서버 응답에서 상세 메시지 추출
+                const serverErrorMessage = error.response.data;
+                setErrorMessage(prevState => ({
+                    ...prevState, // 이전 상태를 유지
+                    serverErrorMessage: serverErrorMessage // 상세 메시지 추가
+                }));
+            }
+            setErrorMessageOpen(true);
         }
     };
 
+
     // 댓글 수정/삭제
-    const [editableComment, setEditableComment] = useState(null);
+    const [commentActionType, setCommentActionType] = useState('');
     // 댓글 수정
+
     const handleEditComment = (comment) => {
-        setEditableComment(comment);
+        console.log(comment);
+        setPassword('');
+        setTargetNicknameAndIp('');
+        setNickname(comment.nickname);
+        setCommentText(comment.text);
+        setTargetId(comment.id);
+        setCommentActionType('edit');
         setCommentEditorExpanded(true);
     };
+
+    const resetCommentState = () => {
+        setPassword('');
+        if (commentActionType.length > 0) {
+            setNickname('');
+            setTargetId('');
+            setTargetNicknameAndIp('');
+        }
+        setCommentText('');
+        setCommentActionType('');
+    }
+
 
     // 댓글 삭제
     const handleDeleteComment = (commentId) => {
@@ -216,6 +260,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         setTargetNicknameAndIp(nicknameAndIp);
         setTargetId(targetId);
         setTargetType(targetType);
+        setCommentActionType('');
         setCommentEditorExpanded(true);
     }
 
@@ -317,6 +362,8 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 commentEditorExpanded={commentEditorExpanded}
                 handleCommentExpandClick={handleCommentExpandClick}
                 handleCommentButtonClick={handleCommentButtonClick}
+                commentActionType={commentActionType}
+                resetCommentState={resetCommentState}
             />
             <Snackbar
                 autoHideDuration={5000}
