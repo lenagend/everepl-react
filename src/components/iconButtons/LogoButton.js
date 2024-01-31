@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom';
 import Box from "@mui/material/Box";
 
 export default function LogoButton({width}){
-    const navigate = useNavigate();
     const logo = '/images/logo/logo.png'
     const handleClick = () => {
         window.location.href="/";

@@ -50,7 +50,9 @@ export default function UrlCard({ isListItem, urlInfo }) {
                     }
                 }}
             >
-                <CardContent sx={{p: 0, pb: 0}} >
+                <CardContent sx={{p: 0,
+                    pb: isListItem? 0 : 2
+                }} >
                     <Stack direction="row" spacing={3} >
                         <Link
                             underline="none"
