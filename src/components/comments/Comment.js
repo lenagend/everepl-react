@@ -129,6 +129,8 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                     depth={depth + 1}
                                     commentCount={comment.replies.length}
                                     onCommentButtonClick={onCommentButtonClick}
+                                    onEditComment={onEditComment}
+                                    onDeleteComment={onDeleteComment}
                                 />
                             </Box>
                             ) :

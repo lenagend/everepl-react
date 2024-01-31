@@ -106,9 +106,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         if (!isValid) return;
         try {
             let response;
-            console.log(commentActionType);
-            console.log(targetId);
-            console.log(targetType);
             if (commentActionType === 'edit') {
                 // 수정 요청
                 response = await axios.patch('http://localhost:8080/api/comment', {
@@ -156,7 +153,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     // 댓글 수정
 
     const handleEditComment = (comment) => {
-        console.log(comment);
         setPassword('');
         setTargetNicknameAndIp('');
         setNickname(comment.nickname);
