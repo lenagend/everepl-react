@@ -114,7 +114,15 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                     password: password,
                     targetId: targetId
                 });
-            } else {
+            }else if (commentActionType === 'delete') {
+                // 삭제 요청
+                response = await axios.patch('http://localhost:8080/api/comment', {
+                    password: password,
+                    targetId: targetId,
+                    isDeleted: true
+                });
+            }
+            else {
                 // 생성 요청
                 response = await axios.post('http://localhost:8080/api/comment', {
                     nickname: nickname,
@@ -124,15 +132,16 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                     targetId: targetId || id
                 });
             }
-
-            // 요청 후 상태 초기화
-            resetCommentState();
-            // 댓글창 닫기
-            setCommentEditorExpanded(false);
-            // 댓글 목록을 다시 불러옵니다.
-            fetchComments(id, 'URLINFO');
+            finalizeCommentAction();
         } catch (error) {
-            setErrorMessage({ fetchError: `댓글 ${commentActionType === 'edit' ? '수정' : '저장'}에 실패했습니다.` });
+            let actionWord = '저장'; // 기본 동작은 '저장'
+            if (commentActionType === 'edit') {
+                actionWord = '수정';
+            } else if (commentActionType === 'delete') {
+                actionWord = '삭제';
+            }
+
+            setErrorMessage({ fetchError: `댓글 ${actionWord}에 실패했습니다. ${error.response ? error.response.data.message : error.message}` });
 
             // 서버로부터 오류 응답이 있는 경우, 상세 메시지를 추가
             if (error.response && error.response.data) {
@@ -147,24 +156,30 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         }
     };
 
-
     // 댓글 수정/삭제
     const [commentActionType, setCommentActionType] = useState('');
-    // 댓글 수정
 
-    const handleEditComment = (comment) => {
-        setPassword('');
-        setTargetNicknameAndIp('');
+    const handleCommentAction = (comment, actionType) => {
+        resetCommentState(actionType);
         setNickname(comment.nickname);
         setCommentText(comment.text);
         setTargetId(comment.id);
-        setCommentActionType('edit');
+        setCommentActionType(actionType);
         setCommentEditorExpanded(true);
     };
 
-    const resetCommentState = () => {
+    const handleEditComment = (comment) => {
+        handleCommentAction(comment, 'edit');
+    };
+
+    const handleDeleteComment = (comment) => {
+        handleCommentAction(comment, 'delete');
+    };
+
+    const resetCommentState = (actionType) => {
         setPassword('');
-        if (commentActionType.length > 0) {
+        // 오직 'edit' 또는 'delete' 액션일 때만 특정 상태를 초기화
+        if (actionType === 'edit' || actionType === 'delete') {
             setNickname('');
             setTargetId('');
             setTargetNicknameAndIp('');
@@ -173,10 +188,10 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         setCommentActionType('');
     }
 
-
-    // 댓글 삭제
-    const handleDeleteComment = (commentId) => {
-        setCommentEditorExpanded(true);
+    const finalizeCommentAction = () => {
+        resetCommentState(); // 상태 초기화
+        setCommentEditorExpanded(false); // 댓글창 닫기
+        fetchComments(id, 'URLINFO'); // 댓글 목록 다시 불러오기
     };
 
 

@@ -18,6 +18,7 @@ import MenuItem from "@mui/joy/MenuItem";
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
+import moment from 'moment';
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -32,7 +33,11 @@ const CommentCard = styled(Card)(({ theme }) => ({
 
 export default function Comment({comment, depth, onCommentButtonClick, onEditComment, onDeleteComment}){
     const ipPart = comment.userIp.split('.').slice(0, 2).join('.');
-
+    // 날짜 형식을 'YYYY-MM-DD HH:mm' 형식으로 변환
+    const createdAt = moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss');
+    const updatedAt = moment(comment.updatedAt).format('YYYY-MM-DD HH:mm:ss');
+    // 생성 시간과 수정 시간이 다른지 여부를 통해 댓글이 수정되었는지 판단
+    const isModified = createdAt !== updatedAt;
 
     return(
         <CommentCard orientation="horizontal" variant="outlined" >
@@ -59,7 +64,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                             <Typography level="title-sm" color="neutral">
                                 {comment.nickname}({ipPart})
                                 <Typography  level="body-xs" color="neutral" >
-                                    &nbsp;&middot;&nbsp;<TimeAgo time={comment.updatedAt} />
+                                    &nbsp;&middot;&nbsp;<TimeAgo time={comment.createdAt} />
                                 </Typography>
                             </Typography>
 
@@ -71,6 +76,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                             }}
                         >
                             {comment.text}
+                            {!comment.isDeleted && isModified && <Typography sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>}
                         </Typography>
                         {/*버튼들*/}
                         <Stack direction="row" spacing={1}   alignItems="center">
@@ -115,7 +121,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                     </MenuButton>
                                     <Menu>
                                         <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
-                                        <MenuItem onClick={() => onDeleteComment(comment.id)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
+                                        <MenuItem onClick={() => onDeleteComment(comment)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
                                         <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
                                     </Menu>
                                 </Dropdown>

@@ -32,7 +32,7 @@ export default function MenuConsole({ handleFilterChange, currentFilter }) {
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     {renderButton('전체', [], <WidgetsIcon />)}
                     {renderButton('유튜브', ['youtube'], <YouTubeIcon />)}
-                    {renderButton('뉴스', ['news', 'entertain'], <FeedIcon />)}
+                    {renderButton('뉴스', ['news', 'entertain', 'article'], <FeedIcon />)}
                     {renderButton('인스타', ['instagram.com'], <InstagramIcon />)}
                     {renderButton('커뮤', ['dcinside', 'mania.kr', 'fmkorea'], <ForumIcon />)}
                 </Stack>
