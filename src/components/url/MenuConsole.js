@@ -34,7 +34,10 @@ export default function MenuConsole({ handleFilterChange, currentFilter }) {
                     {renderButton('유튜브', ['youtube'], <YouTubeIcon />)}
                     {renderButton('뉴스', ['news', 'entertain', 'article'], <FeedIcon />)}
                     {renderButton('인스타', ['instagram.com'], <InstagramIcon />)}
-                    {renderButton('커뮤', ['dcinside', 'mania.kr', 'fmkorea'], <ForumIcon />)}
+                    {renderButton('커뮤', ['dcinside.com', 'mania.kr', 'fmkorea.com', 'ppomppu.co.kr',
+                        "instiz.net", "theqoo.net", "clien.net", "mlbpark.donga.com", "humoruniv.com", "bobaedream.co.kr",
+                        "etoland.co.kr", "ilbe.com", "82cook.com", "slrclub.com", "todayhumor.co.kr", "gasengi.com", "ruliweb.com", "inven.co.kr"
+                    ], <ForumIcon />)}
                 </Stack>
             </CardContent>
             <CardOverflow
