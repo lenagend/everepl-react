@@ -115,6 +115,7 @@ export default function CommentEditor({ nickname, onNicknameChange, password, on
                                                 minRows={4}
                                                 maxRows={4}
                                                 value={commentText}
+                                                readOnly={commentActionType === 'delete' ? true : false}
                                                 startDecorator={
                                                     <Stack direction="row" flexWrap="wrap">
                                                         <FormControl sx={{ maxWidth: '50%' }}>

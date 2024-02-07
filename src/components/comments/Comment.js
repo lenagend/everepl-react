@@ -111,21 +111,23 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                 </IconButton>
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                             </Stack>
-                            <Stack direction="row" spacing={0}  alignItems="center">
-                                <Dropdown>
-                                    <MenuButton
-                                        slots={{ root: IconButton }}
-                                        slotProps={{ root: { variant: 'plane'} }}
-                                    >
-                                        <MoreHorizIcon color="action"/>
-                                    </MenuButton>
-                                    <Menu>
-                                        <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
-                                        <MenuItem onClick={() => onDeleteComment(comment)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
-                                        <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
-                                    </Menu>
-                                </Dropdown>
-                            </Stack>
+                            {!comment.isDeleted && (
+                                <Stack direction="row" spacing={0}  alignItems="center">
+                                    <Dropdown>
+                                        <MenuButton
+                                            slots={{ root: IconButton }}
+                                            slotProps={{ root: { variant: 'plane'} }}
+                                        >
+                                            <MoreHorizIcon color="action"/>
+                                        </MenuButton>
+                                        <Menu>
+                                            <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
+                                            <MenuItem onClick={() => onDeleteComment(comment)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
+                                            <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
+                                        </Menu>
+                                    </Dropdown>
+                                </Stack>
+                            )}
                         </Stack>
                         {/*버튼들*/}
                         {comment.replies.length > 0 ? (
