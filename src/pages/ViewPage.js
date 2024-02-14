@@ -44,7 +44,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
         fetchUrlInfo(id);
 
-        fetchComments(id, 'URLINFO');
+        fetchComments(id, 'URLINFO', 1);
     }, [id]);
 
     //댓글과 관련된 로직
@@ -193,7 +193,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const finalizeCommentAction = () => {
         resetCommentState(); // 상태 초기화
         setCommentEditorExpanded(false); // 댓글창 닫기
-        fetchComments(id, 'URLINFO'); // 댓글 목록 다시 불러오기
+        fetchComments(id, 'URLINFO', 1); // 댓글 목록 다시 불러오기
     };
 
 
@@ -201,42 +201,33 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const [commentPage, setCommentPage] = useState(1);
     const [commentSize, setCommentSize] = useState(10);
     const [comments, setComments] = useState([]);
+    const [commentTree, setCommentTree] = useState([]); // 계층적 구조를 가진 댓글 목록
+    const [totalElements, setTotalElements] = useState([]); // 계층적 구조를 가진 댓글 목록
+    const [totalPages, setTotalPages] = useState([]); // 계층적 구조를 가진 댓글 목록
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
-    const fetchComments = (targetId, targetType) => {
-       
+    const fetchComments = (targetId, targetType, page) => {
+
+
         axios.get('http://localhost:8080/api/comment', {
             params: {
-                page: commentPage - 1,
+                page: page - 1,
                 size: commentSize,
                 type: targetType,
                 targetId: targetId
             },
         })
             .then(response => {
+                setTotalElements(response.data.totalElements)
+                setTotalPages(response.data.totalPages)
                 const newComments = response.data.content;
+                // 기존 댓글 목록에 새로운 댓글 추가
+                setComments(prevComments => [...prevComments, ...newComments]);
 
-                if (commentPage === 1) {
-                    // 1페이지의 경우: 새로운 댓글 데이터만으로 commentTree 구성
-                    const commentTree = buildCommentTree(newComments);
-                    setComments({
-                        ...response.data,
-                        content: commentTree
-                    });
-                } else {
-                    // 2페이지 이후의 경우: 기존 댓글 목록과 새로운 댓글 데이터를 합침
-                    console.log(comments);
-                    const combinedComments = [...comments.content, ...newComments];
-
-                    const commentTree = buildCommentTree(combinedComments);
-
-                    // setComments(prevState => ({
-                    //     ...prevState,
-                    //     content: commentTree,
-                    //     totalPages: response.data.totalPages,
-                    //     totalElements: response.data.totalElements
-                    // }));
-                }
+                //새로운 댓글을 포함해 전체 댓글 목록에 대해 자식 관계 설정
+                const updatedCommentTree = buildCommentTree([...comments, ...newComments]);
+                // 계층적 구조가 설정된 댓글 목록 업데이트
+                setCommentTree(updatedCommentTree);
 
                 setIsCommentsLoading(false);
             })
@@ -271,13 +262,10 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     };
 
     // 페이지 변경 핸들러
-    useEffect(() => {
-        // 페이지 번호가 변경될 때마다 새로운 댓글을 불러옵니다.
-        fetchComments(id, 'URLINFO');
-    }, [commentPage]); // commentPage가 변경될 때만 이 효과를 실행합니다.
-
     const handleCommentPageChange = () => {
-        setCommentPage(prevPage => prevPage + 1); // 페이지 번호 업데이트
+        const nextPage = commentPage + 1;
+        setCommentPage(nextPage); // 페이지 번호 업데이트
+        fetchComments(id, 'URLINFO', nextPage); // 수정된 fetchComments 함수 호출
     };
 
 
@@ -309,7 +297,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             )}
             {isCommentsLoading ? (
                 <LoadingUrlCardList/>
-            ) : comments.content.length === 0 ? (
+            ) : comments.length === 0 ? (
                 <NotExistCommentList/>
             ) : (
                 <Card sx={{ p: 1.5, gap: 2, pt: 0}}>
@@ -324,13 +312,13 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                         }}
                     >
                         <Typography level="title-md" variant="soft"  color="success" >
-                            {comments.totalElements}개의 댓글이 있습니다.
+                            {totalElements}개의 댓글이 있습니다.
                         </Typography>
                     </CardOverflow>
                     <CommentList
-                        comments={comments.content}
+                        comments={commentTree}
                         depth={0}
-                        commentCount={comments.totalElements}
+                        commentCount={totalElements}
                         onCommentButtonClick={handleCommentButtonClick}
                         onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
                     />
@@ -342,11 +330,11 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                             borderColor: 'divider',
                         }}
                     >
-                        <Button disabled={commentPage === comments.totalPages ? true : false}
+                        <Button disabled={commentPage === totalPages ? true : false}
                                 variant="solid" startDecorator={<Add />}
                                 onClick={handleCommentPageChange}
                         >
-                            더보기 [{commentPage}/{comments.totalPages}]
+                            더보기 [{commentPage}/{totalPages}]
                         </Button>
                     </CardOverflow>
                 </Card>
