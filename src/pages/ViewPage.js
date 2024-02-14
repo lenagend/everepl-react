@@ -18,6 +18,8 @@ import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import {Add} from "@mui/icons-material";
+import Button from "@mui/joy/Button";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -202,6 +204,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
     const fetchComments = (targetId, targetType) => {
+       
         axios.get('http://localhost:8080/api/comment', {
             params: {
                 page: commentPage - 1,
@@ -211,14 +214,30 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             },
         })
             .then(response => {
-                // 댓글 목록만 계층적 구조로 변환
-                const commentTree = buildCommentTree(response.data.content);
+                const newComments = response.data.content;
 
-                // 페이지에 관한 데이터를 유지하면서, 댓글 목록만 업데이트
-                setComments({
-                    ...response.data, // 기존 페이지 데이터 유지
-                    content: commentTree // 댓글 목록만 업데이트
-                });
+                if (commentPage === 1) {
+                    // 1페이지의 경우: 새로운 댓글 데이터만으로 commentTree 구성
+                    const commentTree = buildCommentTree(newComments);
+                    setComments({
+                        ...response.data,
+                        content: commentTree
+                    });
+                } else {
+                    // 2페이지 이후의 경우: 기존 댓글 목록과 새로운 댓글 데이터를 합침
+                    console.log(comments);
+                    const combinedComments = [...comments.content, ...newComments];
+
+                    const commentTree = buildCommentTree(combinedComments);
+
+                    // setComments(prevState => ({
+                    //     ...prevState,
+                    //     content: commentTree,
+                    //     totalPages: response.data.totalPages,
+                    //     totalElements: response.data.totalElements
+                    // }));
+                }
+
                 setIsCommentsLoading(false);
             })
             .catch(error => {
@@ -252,9 +271,15 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     };
 
     // 페이지 변경 핸들러
-    const handleCommentPageChange = (event, newPage) => {
-        setCommentPage(newPage);
+    useEffect(() => {
+        // 페이지 번호가 변경될 때마다 새로운 댓글을 불러옵니다.
+        fetchComments(id, 'URLINFO');
+    }, [commentPage]); // commentPage가 변경될 때만 이 효과를 실행합니다.
+
+    const handleCommentPageChange = () => {
+        setCommentPage(prevPage => prevPage + 1); // 페이지 번호 업데이트
     };
+
 
 
     const isMobile = useMediaQuery('(max-width:600px)');
@@ -317,13 +342,12 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                             borderColor: 'divider',
                         }}
                     >
-                        <Pagination
-                            sx={{ mx: 'auto' }}
-                            count={comments.totalPages} // 전체 페이지 수
-                            page={commentPage} // 현재 페이지
-                            onChange={handleCommentPageChange} // 페이지 변경 핸들러
-                            size={isMobile ? "small" : "large"}
-                        />
+                        <Button disabled={commentPage === comments.totalPages ? true : false}
+                                variant="solid" startDecorator={<Add />}
+                                onClick={handleCommentPageChange}
+                        >
+                            더보기 [{commentPage}/{comments.totalPages}]
+                        </Button>
                     </CardOverflow>
                 </Card>
             )}
