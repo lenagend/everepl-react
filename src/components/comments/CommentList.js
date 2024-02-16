@@ -1,7 +1,7 @@
 import Comment from "./Comment";
 import * as React from "react";
 import CardContent from "@mui/joy/CardContent";
-export default function CommentList({comments, depth, onCommentButtonClick, onEditComment, onDeleteComment}) {
+export default function CommentList({comments, depth, fetchCommentsData, onCommentButtonClick, onEditComment, onDeleteComment}) {
 
     return(
             <CardContent>
@@ -10,6 +10,7 @@ export default function CommentList({comments, depth, onCommentButtonClick, onEd
                         <Comment
                             comment={comment}
                             depth={depth}
+                            fetchCommentsData={fetchCommentsData}
                             onCommentButtonClick={onCommentButtonClick}
                             onEditComment={onEditComment}
                             onDeleteComment={onDeleteComment}

@@ -201,65 +201,62 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     const [commentPage, setCommentPage] = useState(1);
     const [commentSize, setCommentSize] = useState(10);
     const [comments, setComments] = useState([]);
-    const [commentTree, setCommentTree] = useState([]); // 계층적 구조를 가진 댓글 목록
-    const [totalElements, setTotalElements] = useState([]); // 계층적 구조를 가진 댓글 목록
-    const [totalPages, setTotalPages] = useState([]); // 계층적 구조를 가진 댓글 목록
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
+    const fetchCommentsData = async (targetId, targetType, page, commentSize) => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/comment', {
+                params: {
+                    page: page - 1,
+                    size: commentSize,
+                    type: targetType,
+                    targetId: targetId
+                },
+            });
+            return response.data; // 데이터 반환
+        } catch (error) {
+            throw new Error('댓글 정보를 불러오는데 실패했습니다.'); // 에러 처리
+        }
+    };
+
     const fetchComments = (targetId, targetType, page) => {
+        setIsCommentsLoading(true);
 
-
-        axios.get('http://localhost:8080/api/comment', {
-            params: {
-                page: page - 1,
-                size: commentSize,
-                type: targetType,
-                targetId: targetId
-            },
-        })
-            .then(response => {
-                setTotalElements(response.data.totalElements)
-                setTotalPages(response.data.totalPages)
-                const newComments = response.data.content;
-                // 기존 댓글 목록에 새로운 댓글 추가
-                setComments(prevComments => [...prevComments, ...newComments]);
-
-                //새로운 댓글을 포함해 전체 댓글 목록에 대해 자식 관계 설정
-                const updatedCommentTree = buildCommentTree([...comments, ...newComments]);
-                // 계층적 구조가 설정된 댓글 목록 업데이트
-                setCommentTree(updatedCommentTree);
-
+        fetchCommentsData(targetId, targetType, page, commentSize)
+            .then(data => {
+                setComments(data); // 상태 업데이트
                 setIsCommentsLoading(false);
             })
             .catch(error => {
-                setErrorMessage({ fetchError: '댓글 정보를 불러오는데 실패했습니다.' });
-                setIsCommentsLoading(true);
+                setErrorMessage({ fetchError: error.message });
+                setIsCommentsLoading(false);
             });
     };
 
-    const buildCommentTree = (comments) => {
-        let commentMap = {};
 
-        // 먼저 모든 댓글을 map에 등록
-        comments.forEach(comment => {
-            commentMap[comment.id] = {...comment, replies: []};
-        });
-
-        // 각 댓글에 대해 자식 댓글을 찾아 매핑
-        comments.forEach(comment => {
-            // 댓글의 path에서 마지막 ID를 제거하여 부모 댓글의 path를 찾음
-            const pathParts = comment.path.split('/');
-            if (pathParts.length > 2) { // 최소 게시물 ID와 댓글 ID가 포함되어 있어야 함
-                pathParts.pop(); // 마지막 ID 제거
-                const parentPath = pathParts.join('/');
-                const parentId = Object.values(commentMap).find(c => c.path === parentPath).id;
-                commentMap[parentId].replies.push(commentMap[comment.id]);
-            }
-        });
-
-        // 최상위 댓글만 반환
-        return Object.values(commentMap).filter(comment => comment.path.split('/').length === 2);
-    };
+    // const buildCommentTree = (comments) => {
+    //     let commentMap = {};
+    //
+    //     // 먼저 모든 댓글을 map에 등록
+    //     comments.forEach(comment => {
+    //         commentMap[comment.id] = {...comment, replies: []};
+    //     });
+    //
+    //     // 각 댓글에 대해 자식 댓글을 찾아 매핑
+    //     comments.forEach(comment => {
+    //         // 댓글의 path에서 마지막 ID를 제거하여 부모 댓글의 path를 찾음
+    //         const pathParts = comment.path.split('/');
+    //         if (pathParts.length > 2) { // 최소 게시물 ID와 댓글 ID가 포함되어 있어야 함
+    //             pathParts.pop(); // 마지막 ID 제거
+    //             const parentPath = pathParts.join('/');
+    //             const parentId = Object.values(commentMap).find(c => c.path === parentPath).id;
+    //             commentMap[parentId].replies.push(commentMap[comment.id]);
+    //         }
+    //     });
+    //
+    //     // 최상위 댓글만 반환
+    //     return Object.values(commentMap).filter(comment => comment.path.split('/').length === 2);
+    // };
 
     // 페이지 변경 핸들러
     const handleCommentPageChange = () => {
@@ -312,13 +309,14 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                         }}
                     >
                         <Typography level="title-md" variant="soft"  color="success" >
-                            {totalElements}개의 댓글이 있습니다.
+                            {comments.totalElements}개의 댓글이 있습니다.
                         </Typography>
                     </CardOverflow>
                     <CommentList
-                        comments={commentTree}
+                        comments={comments.content}
                         depth={0}
-                        commentCount={totalElements}
+                        fetchCommentsData={fetchCommentsData}
+                        commentCount={comments.totalElements}
                         onCommentButtonClick={handleCommentButtonClick}
                         onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
                     />
@@ -330,12 +328,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                             borderColor: 'divider',
                         }}
                     >
-                        <Button disabled={commentPage === totalPages ? true : false}
-                                variant="solid" startDecorator={<Add />}
-                                onClick={handleCommentPageChange}
-                        >
-                            더보기 [{commentPage}/{totalPages}]
-                        </Button>
+
                     </CardOverflow>
                 </Card>
             )}
