@@ -10,17 +10,13 @@ import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import CommentEditor from "../components/menu/CommentEditor";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
-import { IconButton, Snackbar, Typography} from "@mui/joy";
+import {ButtonGroup, IconButton, Snackbar, Typography} from "@mui/joy";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import SpeedDial from '@mui/material/SpeedDial';
-import SpeedDialIcon from '@mui/material/SpeedDialIcon';
-import SpeedDialAction from '@mui/material/SpeedDialAction';
-import EditIcon from '@mui/icons-material/Edit';
-import Box from "@mui/material/Box";
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import ShareIcon from '@mui/icons-material/Share';
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import Button from "@mui/joy/Button";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -257,13 +253,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         setCommentEditorExpanded(true);
     }
 
-    //플로팅버튼들
-    const floatingButtons = [
-        { icon: <FavoriteRoundedIcon />, name: '좋아요' },
-        { icon: <CollectionsBookmarkIcon />, name: '북마크' },
-        { icon: <ShareIcon />, name: '공유' },
-    ];
-
     return(
         <Stack spacing={2}>
             {isUrlCardLoading ? (
@@ -281,22 +270,18 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                     onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
                 />
             )}
-            <Box>
-                <SpeedDial
-                    ariaLabel="SpeedDial openIcon example"
-                    icon={<SpeedDialIcon/>}
-                    direction="right"
-
+            <Stack direction="row" justifyContent="flex-end">
+                <ButtonGroup
+                    color="primary"
+                    variant="soft"
+                    spacing="0.5rem"
                 >
-                    {floatingButtons.map((action) => (
-                        <SpeedDialAction
-                            key={action.name}
-                            icon={action.icon}
-                            tooltipTitle={action.name}
-                        />
-                    ))}
-                </SpeedDial>
-            </Box>
+                    <IconButton><FavoriteBorderOutlinedIcon/></IconButton>
+                    <IconButton><CollectionsBookmarkIcon/></IconButton>
+                    <Button>신고</Button>
+                    <IconButton><ShareIcon/></IconButton>
+                </ButtonGroup>
+            </Stack>
             <HomePage
                 page={page}
                 currentFilter={currentFilter}
