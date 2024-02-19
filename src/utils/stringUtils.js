@@ -40,3 +40,24 @@ export function truncateString(str, num) {
     }
     return str.slice(0, num) + '...';
 }
+
+export function formatIpAddress(ipAddress) {
+    if (!ipAddress) {
+        return 'N/A'; // IP 주소가 없는 경우 대체 텍스트
+    }
+
+    // IPv4 주소인 경우
+    if (ipAddress.includes('.')) {
+        // 주소의 앞부분만 추출
+        return ipAddress.split('.').slice(0, 2).join('.');
+    }
+    // IPv6 주소인 경우
+    else if (ipAddress.includes(':')) {
+        // 여기에 IPv6 주소를 처리하는 로직을 추가할 수 있음
+        // 예: 앞부분을 추출하거나, 특정 패턴을 대체
+        return ipAddress; // 여기서는 단순히 전체 IPv6 주소를 반환하고 있음
+    }
+
+    // 알 수 없는 형식인 경우
+    return ipAddress;
+}

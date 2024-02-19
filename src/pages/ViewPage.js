@@ -9,17 +9,18 @@ import LoadingUrlCard from "../components/loading/LoadingUrlCard";
 import HomePage from "./HomePage";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import CommentEditor from "../components/menu/CommentEditor";
-import Card from "@mui/joy/Card";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
-import NotExistCommentList from "../components/loading/NotExistCommentList";
-import {CardContent, CardOverflow, IconButton, Snackbar, Typography} from "@mui/joy";
-import {Pagination, useMediaQuery} from "@mui/material";
-import HeartBrokenRoundedIcon from '@mui/icons-material/HeartBrokenRounded';
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import { IconButton, Snackbar, Typography} from "@mui/joy";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import {Add} from "@mui/icons-material";
-import Button from "@mui/joy/Button";
+import SpeedDial from '@mui/material/SpeedDial';
+import SpeedDialIcon from '@mui/material/SpeedDialIcon';
+import SpeedDialAction from '@mui/material/SpeedDialAction';
+import EditIcon from '@mui/icons-material/Edit';
+import Box from "@mui/material/Box";
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import ShareIcon from '@mui/icons-material/Share';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -233,41 +234,12 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             });
     };
 
-
-    // const buildCommentTree = (comments) => {
-    //     let commentMap = {};
-    //
-    //     // 먼저 모든 댓글을 map에 등록
-    //     comments.forEach(comment => {
-    //         commentMap[comment.id] = {...comment, replies: []};
-    //     });
-    //
-    //     // 각 댓글에 대해 자식 댓글을 찾아 매핑
-    //     comments.forEach(comment => {
-    //         // 댓글의 path에서 마지막 ID를 제거하여 부모 댓글의 path를 찾음
-    //         const pathParts = comment.path.split('/');
-    //         if (pathParts.length > 2) { // 최소 게시물 ID와 댓글 ID가 포함되어 있어야 함
-    //             pathParts.pop(); // 마지막 ID 제거
-    //             const parentPath = pathParts.join('/');
-    //             const parentId = Object.values(commentMap).find(c => c.path === parentPath).id;
-    //             commentMap[parentId].replies.push(commentMap[comment.id]);
-    //         }
-    //     });
-    //
-    //     // 최상위 댓글만 반환
-    //     return Object.values(commentMap).filter(comment => comment.path.split('/').length === 2);
-    // };
-
     // 페이지 변경 핸들러
     const handleCommentPageChange = () => {
         const nextPage = commentPage + 1;
         setCommentPage(nextPage); // 페이지 번호 업데이트
         fetchComments(id, 'URLINFO', nextPage); // 수정된 fetchComments 함수 호출
     };
-
-
-
-    const isMobile = useMediaQuery('(max-width:600px)');
 
     //댓글창 열었다 닫기
     const [commentEditorExpanded, setCommentEditorExpanded] = React.useState(false);
@@ -285,6 +257,13 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         setCommentEditorExpanded(true);
     }
 
+    //플로팅버튼들
+    const floatingButtons = [
+        { icon: <FavoriteRoundedIcon />, name: '좋아요' },
+        { icon: <CollectionsBookmarkIcon />, name: '북마크' },
+        { icon: <ShareIcon />, name: '공유' },
+    ];
+
     return(
         <Stack spacing={2}>
             {isUrlCardLoading ? (
@@ -294,67 +273,30 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             )}
             {isCommentsLoading ? (
                 <LoadingUrlCardList/>
-            ) : comments.length === 0 ? (
-                <NotExistCommentList/>
-            ) : (
-                <Card sx={{ p: 1.5, gap: 2, pt: 0}}>
-                    <CardOverflow
-                        color="primary"
-                        sx={{
-                            pt: 2.5,
-                            pb: 1,
-                            px: 1.5,
-                            borderBottom: '1px solid',
-                            borderColor: 'divider',
-                        }}
-                    >
-                        <Typography level="title-md" variant="soft"  color="success" >
-                            {comments.totalElements}개의 댓글이 있습니다.
-                        </Typography>
-                    </CardOverflow>
-                    <CommentList
-                        comments={comments.content}
-                        depth={0}
-                        fetchCommentsData={fetchCommentsData}
-                        commentCount={comments.totalElements}
-                        onCommentButtonClick={handleCommentButtonClick}
-                        onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
-                    />
-                    <CardOverflow
-                        color="primary"
-                        sx={{
-                            p: 2,
-                            borderTop: '1px solid',
-                            borderColor: 'divider',
-                        }}
-                    >
-
-                    </CardOverflow>
-                </Card>
+            ) :  (
+                <CommentList
+                    comments={comments}
+                    depth={0}
+                    onCommentButtonClick={handleCommentButtonClick}
+                    onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
+                />
             )}
-            <Card>
-                <CardContent sx={{textAlign: 'center'}}>
-                    <Typography level="title-md" color="primary">
-                        이 페이지가 마음에 드셨나요..?
-                    </Typography>
-                    <Stack direction="row" justifyContent="center"
-                           alignItems="center"
-                           spacing={2}>
+            <Box>
+                <SpeedDial
+                    ariaLabel="SpeedDial openIcon example"
+                    icon={<SpeedDialIcon/>}
+                    direction="right"
 
-                        <IconButton variant="plain">
-                            <HeartBrokenRoundedIcon color="action" sx={{fontSize: 40}}/>
-                        </IconButton>
-                        <Typography level="title-lg">
-                            {urlInfo? (
-                                urlInfo.likeCount
-                            ) : 0}
-                        </Typography>
-                        <IconButton variant="plain" >
-                            <FavoriteRoundedIcon color="action" sx={{fontSize: 40}}/>
-                        </IconButton>
-                    </Stack>
-                </CardContent>
-            </Card>
+                >
+                    {floatingButtons.map((action) => (
+                        <SpeedDialAction
+                            key={action.name}
+                            icon={action.icon}
+                            tooltipTitle={action.name}
+                        />
+                    ))}
+                </SpeedDial>
+            </Box>
             <HomePage
                 page={page}
                 currentFilter={currentFilter}
@@ -400,6 +342,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 ))}
                 </Stack>
             </Snackbar>
+
         </Stack>
     )
 }
