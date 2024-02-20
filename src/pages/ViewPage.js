@@ -17,6 +17,7 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import ShareIcon from '@mui/icons-material/Share';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import Button from "@mui/joy/Button";
+import LikeButton from "../components/iconButtons/LikeButton";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -276,7 +277,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                     variant="soft"
                     spacing="0.5rem"
                 >
-                    <IconButton><FavoriteBorderOutlinedIcon/></IconButton>
+                    <LikeButton targetId={id} targetType='URLINFO'/>
                     <IconButton><CollectionsBookmarkIcon/></IconButton>
                     <Button>신고</Button>
                     <IconButton><ShareIcon/></IconButton>
