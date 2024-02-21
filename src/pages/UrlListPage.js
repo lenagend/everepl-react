@@ -1,5 +1,5 @@
 import * as React from "react";
-import MenuConsole from "../components/url/MenuConsole";
+import MenuConsole from "../components/menu/MenuConsole";
 import UrlListCard from "../components/url/UrlListCard";
 import Stack from "@mui/joy/Stack";
 import {useEffect} from "react";
@@ -7,7 +7,7 @@ import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
 
-const HomePage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
+const UrlListPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
 
     useEffect(() => {
         fetchUrlInfos();
@@ -33,4 +33,4 @@ const HomePage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     )
 }
 
-export default HomePage;
+export default UrlListPage;

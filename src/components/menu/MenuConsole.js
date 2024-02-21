@@ -10,8 +10,11 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import FeedIcon from '@mui/icons-material/Feed';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import InstagramIcon from '@mui/icons-material/Instagram';
+import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import {useNavigate} from "react-router-dom";
 
 export default function MenuConsole({ handleFilterChange, currentFilter }) {
+    const navigate = useNavigate();
 
     const renderButton = (label, filter, icon) => (
         <Badge color="danger" invisible={currentFilter.join(',') !== filter.join(',')}>
@@ -26,11 +29,17 @@ export default function MenuConsole({ handleFilterChange, currentFilter }) {
         </Badge>
     );
 
+    const handleBookmarkButtonClick = () => {
+        navigate('/bookmark');
+    }
+
     return (
         <Card orientation="horizontal" variant="outlined">
             <CardContent>
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     {renderButton('전체', [], <WidgetsIcon />)}
+                    <Button size="sm" variant="soft" startDecorator={<CollectionsBookmarkIcon />}
+                        onClick={handleBookmarkButtonClick}>북마크</Button>
                     {renderButton('유튜브', ['youtube'], <YouTubeIcon />)}
                     {renderButton('뉴스', ['news', 'entertain', 'article'], <FeedIcon />)}
                     {renderButton('인스타', ['instagram.com'], <InstagramIcon />)}

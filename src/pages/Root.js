@@ -4,7 +4,7 @@ import {Routes, Route, useNavigate, useLocation} from 'react-router-dom';
 import * as React from "react";
 import {useEffect, useState} from "react";
 import ViewPage from "./ViewPage";
-import HomePage from "./HomePage";
+import UrlListPage from "./UrlListPage";
 import axios from "axios";
 import NotFoundPage from "./NotFoundPage";
 import WildcardPage from "./WildcardPage";
@@ -12,6 +12,7 @@ import Stack from "@mui/joy/Stack";
 import LoadingProgressModal from "../components/loading/LoadingProgressModal";
 import qs from "qs";
 import PolicyPage from "./PolicyPage";
+import BookmarkPage from "./BookmarkPage";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -114,7 +115,7 @@ export default function Root(){
                 }}}>
                 <Stack spacing={2}>
                 <Routes>
-                    <Route path="/" element={<HomePage
+                    <Route path="/" element={<UrlListPage
                         page={page}
                         currentFilter={currentFilter}
                         currentSort={currentSort}
@@ -138,6 +139,7 @@ export default function Root(){
                     />} />
                     {/*<Route path="/login" element={<LoginPage />} />*/}
                     <Route path="/policy" element={<PolicyPage />} />
+                    <Route path="/bookmark" element={<BookmarkPage />} />
                     <Route path="/404" element={<NotFoundPage />} />
                     <Route path="*" element={<WildcardPage />} />
                 </Routes>

@@ -6,7 +6,7 @@ import Stack from "@mui/joy/Stack";
 import CommentList from "../components/comments/CommentList";
 import axios from "axios";
 import LoadingUrlCard from "../components/loading/LoadingUrlCard";
-import HomePage from "./HomePage";
+import UrlListPage from "./UrlListPage";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import CommentEditor from "../components/menu/CommentEditor";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
@@ -15,9 +15,9 @@ import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import ShareIcon from '@mui/icons-material/Share';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import Button from "@mui/joy/Button";
 import LikeButton from "../components/iconButtons/LikeButton";
+import BookmarkButton from "../components/iconButtons/BookmarkButton";
 
 const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
@@ -278,12 +278,12 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                     spacing="0.5rem"
                 >
                     <LikeButton targetId={id} targetType='URLINFO'/>
-                    <IconButton><CollectionsBookmarkIcon/></IconButton>
+                    <BookmarkButton targetId={id} targetType='URLINFO'/>
                     <Button>신고</Button>
                     <IconButton><ShareIcon/></IconButton>
                 </ButtonGroup>
             </Stack>
-            <HomePage
+            <UrlListPage
                 page={page}
                 currentFilter={currentFilter}
                 currentSort={currentSort}
