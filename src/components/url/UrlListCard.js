@@ -10,7 +10,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {Pagination, useMediaQuery} from "@mui/material";
 
-export default function UrlListCard({urlInfos, page, currentSort, handlePageChange, handleSortChange}){
+export default function UrlListCard({urlInfos, page, currentSort, handlePageChange, handleSortChange, isBookmarkPage}){
     const isMobile = useMediaQuery('(max-width:600px)');
 
     const renderButton = (label, sort, icon) => (
@@ -28,19 +28,21 @@ export default function UrlListCard({urlInfos, page, currentSort, handlePageChan
 
     return(
         <Card sx={{p: 0, mt: 2, gap: 0}}>
-            <CardOverflow
-                color="primary"
-                sx={{
-                    p: 1,
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-                }}
-            >
-                <Stack direction="row" spacing={1} justifyContent="flex-end" flexWrap="wrap" useFlexGap>
-                    {renderButton('인기', ['updatedDate,desc', 'popularityScore,desc'], <AutoAwesomeIcon />)}
-                    {renderButton('최신', ['updatedAt,desc'], <UploadFileIcon />)}
-                </Stack>
-            </CardOverflow>
+            {!isBookmarkPage && (
+                <CardOverflow
+                    color="primary"
+                    sx={{
+                        p: 1,
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
+                    }}
+                >
+                    <Stack direction="row" spacing={1} justifyContent="flex-end" flexWrap="wrap" useFlexGap>
+                        {renderButton('인기', ['updatedDate,desc', 'popularityScore,desc'], <AutoAwesomeIcon />)}
+                        {renderButton('최신', ['updatedAt,desc'], <UploadFileIcon />)}
+                    </Stack>
+                </CardOverflow>
+            )}
             <CardContent>
                 <Stack sx={{ borderRadius: 3 }} divider={<Divider />}>
                     {urlInfos.content.map((urlInfo, index) => (

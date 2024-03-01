@@ -10,16 +10,16 @@ import FeedIcon from '@mui/icons-material/Feed';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import {useNavigate} from "react-router-dom";
 
-export default function BookmarkMenuConsole() {
+export default function BookmarkMenuConsole({ currentTargetType , setTargetType }) {
     const navigate = useNavigate();
 
-    const renderButton = (label, filter, icon) => (
-        <Badge color="danger" invisible={true}>
+    const renderButton = (label, targetType, icon) => (
+        <Badge color="danger" invisible={currentTargetType !== targetType}>
             <Button
                 size="sm"
                 variant="soft"
                 startDecorator={icon}
-
+                onClick={() => setTargetType(targetType)}
             >
                 {label}
             </Button>
@@ -36,8 +36,8 @@ export default function BookmarkMenuConsole() {
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     <Button size="sm" variant="soft" startDecorator={<HomeIcon />}
                         onClick={handleHomeButtonClick}>홈으로</Button>
-                    {renderButton('웹페이지', ['news', 'entertain', 'article'], <FeedIcon />)}
-                    {renderButton('댓글', ['news', 'entertain', 'article'], <ChatBubbleIcon />)}
+                    {renderButton('웹페이지', 'URLINFO', <FeedIcon />)}
+                    {renderButton('댓글', 'COMMENT', <ChatBubbleIcon />)}
                 </Stack>
             </CardContent>
             <CardOverflow
