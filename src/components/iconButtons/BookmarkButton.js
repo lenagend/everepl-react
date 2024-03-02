@@ -6,7 +6,7 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {useState} from "react";
 import Box from "@mui/joy/Box";
 
-export default function BookmarkButton({ targetId, targetType }) {
+export default function BookmarkButton({ targetId, targetType, buttonType }) {
 
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [message, setMessage] = useState('');
@@ -46,7 +46,12 @@ export default function BookmarkButton({ targetId, targetType }) {
 
     return (
         <Box>
-        <IconButton onClick={handleBookmarkClick}>
+        <IconButton
+            sx={{
+                "--IconButton-size": "20px",
+                ml: -0.5
+            }}
+            onClick={handleBookmarkClick}>
             <CollectionsBookmarkIcon />
         </IconButton>
 

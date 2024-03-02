@@ -19,6 +19,7 @@ import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
 import moment from 'moment';
 import Box from "@mui/material/Box";
 import {formatIpAddress} from "../../utils/stringUtils";
+import BookmarkButton from "../iconButtons/BookmarkButton";
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -114,7 +115,10 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                     <FavoriteTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
                                 </IconButton>
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
-                            </Stack>
+                                </Stack>
+                                <Stack direction="row" spacing={0}  alignItems="center">
+                                    <BookmarkButton />
+                                </Stack>
                             {!comment.isDeleted && (
                                 <Stack direction="row" spacing={0}  alignItems="center">
                                     <Dropdown>
