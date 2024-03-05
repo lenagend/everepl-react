@@ -4,7 +4,8 @@ import * as React from "react";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {useState} from "react";
-import Box from "@mui/joy/Box";
+import CollectionsBookmarkTwoToneIcon from '@mui/icons-material/CollectionsBookmarkTwoTone';
+import Stack from "@mui/joy/Stack";
 
 export default function BookmarkButton({ targetId, targetType, buttonType }) {
 
@@ -45,14 +46,22 @@ export default function BookmarkButton({ targetId, targetType, buttonType }) {
     }
 
     return (
-        <Box>
+        <Stack justifyContent="center">
         <IconButton
             sx={{
-                "--IconButton-size": "20px",
-                ml: -0.5
+                "--IconButton-size": buttonType === 'comment' && "20px",
+                ml: buttonType === 'comment' && -0.5
             }}
             onClick={handleBookmarkClick}>
-            <CollectionsBookmarkIcon />
+            {buttonType === 'comment' ? (
+                <CollectionsBookmarkTwoToneIcon
+                    sx={{
+                        fontSize:  buttonType === 'comment' && 20
+                    }}
+                />
+            ) : (
+                <CollectionsBookmarkIcon/>
+            )}
         </IconButton>
 
         <Snackbar
@@ -71,6 +80,6 @@ export default function BookmarkButton({ targetId, targetType, buttonType }) {
         >
             <Typography color="neutral" level="title-md" >{message}</Typography>
         </Snackbar>
-        </Box>
+        </Stack>
     );
 }

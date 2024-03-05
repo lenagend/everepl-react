@@ -8,6 +8,7 @@ import {Route, useNavigate} from "react-router-dom";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
 import UrlListCard from "../components/url/UrlListCard";
+import NotExistBookmarkUrlCardList from "../components/loading/NotExistBookmarkUrlCardList";
 
 const BookmarkPage = () => {
     //게시물목록의 페이징(뷰 페이지에서도 사용하기 위해 루트컴포넌트로 올림)
@@ -31,8 +32,6 @@ const BookmarkPage = () => {
                 // localStorage에서 bookmarks를 가져옵니다.
                 const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
                 const targetIds = bookmarks.map(bookmark => bookmark.targetId);
-                console.log(bookmarks);
-                console.log(targetIds);
 
                 const response = await axios.post('http://localhost:8080/api/bookmarks/process', {
                     targetType,
@@ -61,8 +60,8 @@ const BookmarkPage = () => {
                />
                 {isDataLoading ? (
                     <LoadingUrlCardList/>
-                ) : datas.length === 0 ? (
-                    <NotExistUrlCardList/>
+                ) : datas.content.length === 0 ? (
+                    <NotExistBookmarkUrlCardList/>
                 ) : (
                     <UrlListCard urlInfos={datas} page={page} isBookmarkPage={true}/>
                 )}
