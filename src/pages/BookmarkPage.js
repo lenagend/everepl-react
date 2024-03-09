@@ -7,7 +7,9 @@ import UrlListPage from "./UrlListPage";
 import {Route, useNavigate} from "react-router-dom";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
+import BookmarkCommentList from "../components/comments/BookmarkCommentList";
 import UrlListCard from "../components/url/UrlListCard";
+import BookmarCommentList from "../components/comments/BookmarkCommentList";
 import NotExistBookmarkUrlCardList from "../components/loading/NotExistBookmarkUrlCardList";
 
 const BookmarkPage = () => {
@@ -52,19 +54,24 @@ const BookmarkPage = () => {
         fetchBookmarks();
     }, [page, size, targetType]);
 
+    const renderContent = () => {
+        if (datas.content.length === 0) {
+            return <NotExistBookmarkUrlCardList />;
+        } else if (targetType === 'URLINFO') {
+            return <UrlListPage urlInfos={datas} page={page} />;
+        } else if (targetType === 'COMMENT') {
+            return <BookmarkCommentList comments={datas} page={page} />;
+        }
+    };
     return(
             <Stack spacing={2}>
                <BookmarkMenuConsole
                 currentTargetType={targetType}
                 setTargetType={setTargetType}
                />
-                {isDataLoading ? (
-                    <LoadingUrlCardList/>
-                ) : datas.content.length === 0 ? (
-                    <NotExistBookmarkUrlCardList/>
-                ) : (
-                    <UrlListCard urlInfos={datas} page={page} isBookmarkPage={true}/>
-                )}
+                {isDataLoading && (
+                    <LoadingUrlCardList />
+                ) }
             </Stack>
     )
 }
