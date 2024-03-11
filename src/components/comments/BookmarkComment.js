@@ -32,7 +32,7 @@ const CommentCard = styled(Card)(({ theme }) => ({
     overflow: 'auto',
 }));
 
-export default function BookmarkComment({comment, depth, onCommentButtonClick, onEditComment, onDeleteComment}){
+export default function BookmarkComment({comment}){
     const ipPart = formatIpAddress(comment.userIp);
     const parrentIpPard = formatIpAddress(comment.parentCommentUserIp);
 
@@ -44,9 +44,6 @@ export default function BookmarkComment({comment, depth, onCommentButtonClick, o
 
     return(
         <CommentCard orientation="horizontal" variant="outlined" >
-            <Box sx={{width: (comment.path.length - 3) * 10}}>
-
-            </Box>
             <Stack>
                 <AspectRatio ratio="1" sx={{ width: {
                         xs: 30,
@@ -86,25 +83,7 @@ export default function BookmarkComment({comment, depth, onCommentButtonClick, o
                         </Typography>
                         <Stack direction="row" spacing={1}   alignItems="center">
                                 <Stack direction="row" spacing={0}  alignItems="center">
-                                    {comment.path.length <= 9 ? (
-                                        <IconButton  variant="plain" sx={{
-                                            "--IconButton-size": "20px",
-                                            ml: -0.5
-                                        }}
-                                        onClick={() => onCommentButtonClick(`${comment.nickname}(${ipPart})`, comment.id, 'COMMENT')}
-                                        >
-                                            <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
-                                        </IconButton>
-                                    ): (
-                                        <IconButton  variant="plain" sx={{
-                                            "--IconButton-size": "20px",
-                                            ml: -0.5
-                                        }}
-                                        disabled
-                                        >
-                                            <CommentsDisabledTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
-                                        </IconButton>
-                                    )}
+
                                     <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
                                 </Stack>
                                 <Stack direction="row" spacing={0}  alignItems="center">
@@ -119,23 +98,6 @@ export default function BookmarkComment({comment, depth, onCommentButtonClick, o
                                 <Stack direction="row" spacing={0}  alignItems="center">
                                     <BookmarkButton targetId={comment.id} targetType='COMMENT' buttonType="comment"/>
                                 </Stack>
-                            {!comment.isDeleted && (
-                                <Stack direction="row" spacing={0}  alignItems="center">
-                                    <Dropdown>
-                                        <MenuButton
-                                            slots={{ root: IconButton }}
-                                            slotProps={{ root: { variant: 'plane'} }}
-                                        >
-                                            <MoreHorizIcon color="action"/>
-                                        </MenuButton>
-                                        <Menu>
-                                            <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
-                                            <MenuItem onClick={() => onDeleteComment(comment)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
-                                            <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
-                                        </Menu>
-                                    </Dropdown>
-                                </Stack>
-                            )}
                         </Stack>
                     </Stack>
                 </Stack>

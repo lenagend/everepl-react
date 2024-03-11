@@ -21,6 +21,11 @@ const BookmarkPage = () => {
     const [targetType, setTargetType] = useState('URLINFO');
     const navigate = useNavigate();
 
+    const handleTargetType = (targetType) => {
+        setIsDataLoading(true);
+        setTargetType(targetType);
+    }
+
     // 페이지 변경 핸들러
     const handlePageChange = (event, newPage) => {
         setPage(newPage);
@@ -29,7 +34,6 @@ const BookmarkPage = () => {
 
     useEffect(() => {
         const fetchBookmarks = async () => {
-            setIsDataLoading(true);
             try {
                 // localStorage에서 bookmarks를 가져옵니다.
                 const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
@@ -43,7 +47,6 @@ const BookmarkPage = () => {
                 });
 
                 setDatas(response.data);
-                console.log(response.data);
             } catch (error) {
                 console.error('Error fetching bookmarks:', error);
             } finally {
@@ -52,26 +55,31 @@ const BookmarkPage = () => {
         };
 
         fetchBookmarks();
-    }, [page, size, targetType]);
+    }, [page, targetType]);
 
     const renderContent = () => {
+        console.log(isDataLoading);
         if (datas.content.length === 0) {
             return <NotExistBookmarkUrlCardList />;
         } else if (targetType === 'URLINFO') {
-            return <UrlListPage urlInfos={datas} page={page} />;
+            return <UrlListCard urlInfos={datas} page={page} isBookmarkPage={true}/>;
         } else if (targetType === 'COMMENT') {
             return <BookmarkCommentList comments={datas} page={page} />;
         }
     };
+
     return(
             <Stack spacing={2}>
                <BookmarkMenuConsole
                 currentTargetType={targetType}
-                setTargetType={setTargetType}
+                handleTargetType={handleTargetType}
+
                />
-                {isDataLoading && (
+                {isDataLoading ? (
                     <LoadingUrlCardList />
-                ) }
+                ) : (
+                    renderContent()
+                )}
             </Stack>
     )
 }

@@ -1,43 +1,23 @@
-import Comment from "./Comment";
 import * as React from "react";
 import Stack from "@mui/joy/Stack";
 import Card from "@mui/joy/Card";
-import {CardOverflow, Divider, Typography} from "@mui/joy";
+import { Divider } from "@mui/joy";
 import CardContent from "@mui/joy/CardContent";
-import NotExistCommentList from "../loading/NotExistCommentList";
+import BookmarkComment from "./BookmarkComment";
 export default function BookmarkCommentList({comments}) {
 
     return(
-        <Card sx={{ p: 1.5, pt: 0}}>
-            <CardOverflow
-                color="primary"
-                sx={{
-                    pt: 2.5,
-                    pb: 1,
-                    px: 1.5,
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
-                }}
-            >
-                <Typography level="title-md" variant="soft"  color="success" >
-                    {comments.totalElements}개의 댓글이 있습니다.
-                </Typography>
-            </CardOverflow>
+        <Card sx={{ p: 1.5, pt: 2}}>
             <CardContent>
-                {comments.totalElements > 0 ? (
-                    <Stack spacing={1} divider={<Divider orientation="horizontal" />}>
-                        {comments.content.map((comment) => (
-                            <React.Fragment key={comment.id}>
-                                <Comment
-                                    comment={comment}
-                                />
-                            </React.Fragment>
-                        ))}
-                    </Stack>
-                ) : (
-                    <NotExistCommentList />
-                )}
-
+                <Stack spacing={1} divider={<Divider orientation="horizontal" />}>
+                    {comments.content.map((comment) => (
+                        <React.Fragment key={comment.id}>
+                            <BookmarkComment
+                                comment={comment}
+                            />
+                        </React.Fragment>
+                    ))}
+                </Stack>
             </CardContent>
         </Card>
     );

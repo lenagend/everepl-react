@@ -10,7 +10,7 @@ import FeedIcon from '@mui/icons-material/Feed';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import {useNavigate} from "react-router-dom";
 
-export default function BookmarkMenuConsole({ currentTargetType , setTargetType }) {
+export default function BookmarkMenuConsole({ currentTargetType , handleTargetType }) {
     const navigate = useNavigate();
 
     const renderButton = (label, targetType, icon) => (
@@ -19,7 +19,7 @@ export default function BookmarkMenuConsole({ currentTargetType , setTargetType 
                 size="sm"
                 variant="soft"
                 startDecorator={icon}
-                onClick={() => setTargetType(targetType)}
+                onClick={() => handleTargetType(targetType)}
             >
                 {label}
             </Button>
