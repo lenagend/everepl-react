@@ -19,7 +19,7 @@ export default function CommentList({comments, depth, onCommentButtonClick, onEd
                     borderColor: 'divider',
                 }}
             >
-                <Typography level="title-md" variant="soft"  color="success" >
+                <Typography level="title-md" variant="soft" color="neutral" >
                     {comments.totalElements}개의 댓글이 있습니다.
                 </Typography>
             </CardOverflow>

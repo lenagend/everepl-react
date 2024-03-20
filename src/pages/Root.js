@@ -105,14 +105,17 @@ export default function Root(){
             },
             pb: {
                 xs: 7
-            }
+            },
+            backgroundColor: '#F0F4F8',
+            minHeight : '100vh'
         }}>
             <LoadingProgressModal isLoading={isViewPageLoading}/>
             <Appbar url={url} setUrl={setUrl} onSearch={handleSearch} />
             <Container maxWidth="md" sx={{p: {
                      xs: 0.5,
                     sm: 1
-                }}}>
+                }
+            }}>
                 <Stack spacing={2}>
                 <Routes>
                     <Route path="/" element={<UrlListPage

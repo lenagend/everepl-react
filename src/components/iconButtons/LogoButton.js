@@ -1,13 +1,14 @@
-import Box from "@mui/material/Box";
+import Link from "@mui/joy/Link";
+import KeyboardAltRoundedIcon from '@mui/icons-material/KeyboardAltRounded';
 
 export default function LogoButton({width}){
-    const logo = '/images/logo/logo.png'
-    const handleClick = () => {
-        window.location.href="/";
-    };
+
     return(
-        <Box onClick={handleClick} sx={{ cursor: 'pointer', width: width }}>
-            <img src={logo} alt="logo" style={{ width: '100%' }} />
-        </Box>
+        <Link
+            underline="none"
+            href="/"
+        >
+            <KeyboardAltRoundedIcon fontSize="large" sx={{ color : 'white'}} />
+        </Link>
     )
 }

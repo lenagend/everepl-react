@@ -39,7 +39,7 @@ export default function MenuConsole({ handleFilterChange, currentFilter }) {
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     {renderButton('전체', [], <WidgetsIcon />)}
                     <Button size="sm" variant="soft" startDecorator={<CollectionsBookmarkIcon />}
-                        onClick={handleBookmarkButtonClick}>북마크</Button>
+                        onClick={handleBookmarkButtonClick}>My</Button>
                     {renderButton('유튜브', ['youtube'], <YouTubeIcon />)}
                     {renderButton('뉴스', ['news', 'entertain', 'article'], <FeedIcon />)}
                     {renderButton('인스타', ['instagram.com'], <InstagramIcon />)}

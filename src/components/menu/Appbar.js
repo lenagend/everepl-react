@@ -8,7 +8,6 @@ import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import LogoButton from "../iconButtons/LogoButton";
 import {RateReview} from "@mui/icons-material";
 import {InputAdornment} from "@mui/material";
@@ -17,7 +16,7 @@ import {useNavigate} from "react-router-dom";
 
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
-    borderRadius: 20,
+    borderRadius: 5,
     backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
         backgroundColor: alpha(theme.palette.common.white, 0.25),
@@ -137,7 +136,7 @@ export default function Appbar({ url, setUrl }) {
 
     return (
         <Box sx={{ flexGrow: 1,  position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
-            <AppBar position="static">
+            <AppBar position="static" sx={{backgroundColor: '#051423'}}>
                 <Toolbar>
                     <Box sx={{ flexGrow: 1 }} />
                     <LogoButton width={'80px'}/>
@@ -146,6 +145,7 @@ export default function Appbar({ url, setUrl }) {
                             placeholder="URL을 붙여넣으세요…"
                             inputProps={{ 'aria-label': 'search' }}
                             value={inputValue}
+
                             onChange={handleInputChange}
                             onKeyDown={handleSubmitOnEnter}
                             startAdornment={
@@ -161,36 +161,36 @@ export default function Appbar({ url, setUrl }) {
                             }
                         />
                     </Search>
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    {/*<Box sx={{ display: { xs: 'none', md: 'flex' } }}>*/}
 
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <RateReview />
-                        </IconButton>
-                    </Box>
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton>
-                    </Box>
+                    {/*    <IconButton*/}
+                    {/*        size="large"*/}
+                    {/*        edge="end"*/}
+                    {/*        aria-label="account of current user"*/}
+                    {/*        aria-controls={menuId}*/}
+                    {/*        aria-haspopup="true"*/}
+                    {/*        onClick={handleProfileMenuOpen}*/}
+                    {/*        color="inherit"*/}
+                    {/*    >*/}
+                    {/*        <RateReview />*/}
+                    {/*    </IconButton>*/}
+                    {/*</Box>*/}
+                    {/*<Box sx={{ display: { xs: 'flex', md: 'none' } }}>*/}
+                    {/*    <IconButton*/}
+                    {/*        size="large"*/}
+                    {/*        aria-label="show more"*/}
+                    {/*        aria-controls={mobileMenuId}*/}
+                    {/*        aria-haspopup="true"*/}
+                    {/*        onClick={handleMobileMenuOpen}*/}
+                    {/*        color="inherit"*/}
+                    {/*    >*/}
+                    {/*        <MoreIcon />*/}
+                    {/*    </IconButton>*/}
+                    {/*</Box>*/}
                     <Box sx={{ flexGrow: 1 }} />
                 </Toolbar>
             </AppBar>
-            {renderMobileMenu}
+            {/*{renderMobileMenu}*/}
         </Box>
     );
 }

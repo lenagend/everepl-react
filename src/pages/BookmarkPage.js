@@ -3,13 +3,10 @@ import Stack from "@mui/joy/Stack";
 import BookmarkMenuConsole from "../components/menu/BookmarkMenuConsole";
 import {useEffect, useState} from "react";
 import axios from "axios";
-import UrlListPage from "./UrlListPage";
 import {Route, useNavigate} from "react-router-dom";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
-import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
 import BookmarkCommentList from "../components/comments/BookmarkCommentList";
 import UrlListCard from "../components/url/UrlListCard";
-import BookmarCommentList from "../components/comments/BookmarkCommentList";
 import NotExistBookmarkUrlCardList from "../components/loading/NotExistBookmarkUrlCardList";
 
 const BookmarkPage = () => {
@@ -17,14 +14,20 @@ const BookmarkPage = () => {
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(20);
     const [datas, setDatas] = useState([]);
-    const [isDataLoading, setIsDataLoading] = useState(true);
+    const [isDataLoading, setIsDataLoading] = useState(false);
     const [targetType, setTargetType] = useState('URLINFO');
     const navigate = useNavigate();
+    const [reloadTrigger, setReloadTrigger] = useState(Date.now());
 
-    const handleTargetType = (targetType) => {
-        setIsDataLoading(true);
-        setTargetType(targetType);
-    }
+    const handleTargetType = (newTargetType) => {
+        if(targetType !== newTargetType){
+            setDatas([]);
+        }
+        setTargetType(newTargetType);
+        setPage(1);
+        navigate("/bookmark");
+    };
+
 
     // 페이지 변경 핸들러
     const handlePageChange = (event, newPage) => {
@@ -34,6 +37,7 @@ const BookmarkPage = () => {
 
     useEffect(() => {
         const fetchBookmarks = async () => {
+            setIsDataLoading(true);
             try {
                 // localStorage에서 bookmarks를 가져옵니다.
                 const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
@@ -58,8 +62,7 @@ const BookmarkPage = () => {
     }, [page, targetType]);
 
     const renderContent = () => {
-        console.log(isDataLoading);
-        if (datas.content.length === 0) {
+        if (!datas || !datas.content || datas.content.length === 0) {
             return <NotExistBookmarkUrlCardList />;
         } else if (targetType === 'URLINFO') {
             return <UrlListCard urlInfos={datas} page={page} isBookmarkPage={true}/>;

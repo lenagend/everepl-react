@@ -36,8 +36,8 @@ export default function BookmarkMenuConsole({ currentTargetType , handleTargetTy
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     <Button size="sm" variant="soft" startDecorator={<HomeIcon />}
                         onClick={handleHomeButtonClick}>홈으로</Button>
-                    {renderButton('웹페이지', 'URLINFO', <FeedIcon />)}
-                    {renderButton('댓글', 'COMMENT', <ChatBubbleIcon />)}
+                    {renderButton('북마크', 'URLINFO', <FeedIcon />)}
+                    {renderButton('쓴 댓글', 'COMMENT', <ChatBubbleIcon />)}
                 </Stack>
             </CardContent>
             <CardOverflow

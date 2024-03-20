@@ -7,19 +7,10 @@ import Card from "@mui/joy/Card";
 import AspectRatio from "@mui/joy/AspectRatio";
 import TimeAgo from "../../utils/TimeAgo";
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
-import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
-import CommentsDisabledTwoToneIcon from '@mui/icons-material/CommentsDisabledTwoTone';
-import MenuButton from "@mui/joy/MenuButton";
-import Menu from "@mui/joy/Menu";
-import MenuItem from "@mui/joy/MenuItem";
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
 import moment from 'moment';
-import Box from "@mui/material/Box";
 import {formatIpAddress} from "../../utils/stringUtils";
-import BookmarkButton from "../iconButtons/BookmarkButton";
+import Link from "@mui/joy/Link";
+import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
 
 const CommentCard = styled(Card)(({ theme }) => ({
     '& .css-14d6vet-MuiCardContent-root:last-child': {
@@ -43,6 +34,12 @@ export default function BookmarkComment({comment}){
     const isModified = createdAt !== updatedAt;
 
     return(
+        <Link
+            underline="none"
+            href={comment.rootUrl}
+            sx={{ zIndex: 5}}
+
+        >
         <CommentCard orientation="horizontal" variant="outlined" >
             <Stack>
                 <AspectRatio ratio="1" sx={{ width: {
@@ -69,6 +66,7 @@ export default function BookmarkComment({comment}){
                             </Typography>
 
                         </Stack>
+
                         <Typography
                             level="body-sm"
                             pr={{
@@ -81,9 +79,10 @@ export default function BookmarkComment({comment}){
                             {comment.text}
                             {!comment.isDeleted && isModified && <Typography sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>}
                         </Typography>
+
                         <Stack direction="row" spacing={1}   alignItems="center">
                                 <Stack direction="row" spacing={0}  alignItems="center">
-
+                                    <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
                                     <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
                                 </Stack>
                                 <Stack direction="row" spacing={0}  alignItems="center">
@@ -95,13 +94,11 @@ export default function BookmarkComment({comment}){
                                 </IconButton>
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                                 </Stack>
-                                <Stack direction="row" spacing={0}  alignItems="center">
-                                    <BookmarkButton targetId={comment.id} targetType='COMMENT' buttonType="comment"/>
-                                </Stack>
                         </Stack>
                     </Stack>
                 </Stack>
             </CardContent>
         </CommentCard>
+        </Link>
     );
 }

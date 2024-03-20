@@ -10,12 +10,10 @@ export default function BookmarkCommentList({comments}) {
         <Card sx={{ p: 1.5, pt: 2}}>
             <CardContent>
                 <Stack spacing={1} divider={<Divider orientation="horizontal" />}>
-                    {comments.content.map((comment) => (
-                        <React.Fragment key={comment.id}>
+                    {comments.content.map((comment, index) => (
                             <BookmarkComment
-                                comment={comment}
+                                key={index} comment={comment}
                             />
-                        </React.Fragment>
                     ))}
                 </Stack>
             </CardContent>

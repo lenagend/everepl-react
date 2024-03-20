@@ -116,9 +116,6 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                 </IconButton>
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                                 </Stack>
-                                <Stack direction="row" spacing={0}  alignItems="center">
-                                    <BookmarkButton targetId={comment.id} targetType='COMMENT' buttonType="comment"/>
-                                </Stack>
                             {!comment.isDeleted && (
                                 <Stack direction="row" spacing={0}  alignItems="center">
                                     <Dropdown>
