@@ -19,18 +19,6 @@ import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
 import moment from 'moment';
 import Box from "@mui/material/Box";
 import {formatIpAddress} from "../../utils/stringUtils";
-import BookmarkButton from "../iconButtons/BookmarkButton";
-
-const CommentCard = styled(Card)(({ theme }) => ({
-    '& .css-14d6vet-MuiCardContent-root:last-child': {
-        paddingBottom: 0
-    },
-    padding: 0,
-    border: 'none',
-    background: 'none',
-    gap: 0,
-    overflow: 'auto',
-}));
 
 export default function Comment({comment, depth, onCommentButtonClick, onEditComment, onDeleteComment}){
     const ipPart = formatIpAddress(comment.userIp);
@@ -43,10 +31,20 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
     const isModified = createdAt !== updatedAt;
 
     return(
-        <CommentCard orientation="horizontal" variant="outlined" >
-            <Box sx={{width: (comment.path.length - 3) * 10}}>
+        <Box>
+        <Card orientation="horizontal" variant="soft" color="neutral" sx={{
+            overflow: 'auto',
+            padding: 1,
+            ml : (comment.path.length - 3) * 1,
+            '& .css-14d6vet-MuiCardContent-root:last-child': {
+                paddingBottom: 0
+            },
+            gap: 0,
+            border: '1px dotted #0A2744'
+        }}>
+            {/*<Box sx={{width: (comment.path.length - 3) * 10}}>*/}
 
-            </Box>
+            {/*</Box>*/}
             <Stack>
                 <AspectRatio ratio="1" sx={{ width: {
                         xs: 30,
@@ -137,6 +135,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                     </Stack>
                 </Stack>
             </CardContent>
-        </CommentCard>
+        </Card>
+        </Box>
     );
 }

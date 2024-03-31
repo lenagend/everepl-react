@@ -14,18 +14,26 @@ export default function CommentList({comments, depth, onCommentButtonClick, onEd
                 sx={{
                     pt: 2.5,
                     pb: 1,
-                    px: 1.5,
+                    px: 1,
                     borderBottom: '1px solid',
                     borderColor: 'divider',
+
                 }}
             >
-                <Typography level="title-md" variant="soft" color="neutral" >
+                <Typography level="title-md" sx={{
+                    background: '#0A2744',
+                    color: '#E3EFFB',
+                    p: 0.5,
+                    px: 1.5,
+                    borderRadius: 8,
+                    fontWeight: 600
+                }}>
                     {comments.totalElements}개의 댓글이 있습니다.
                 </Typography>
             </CardOverflow>
-            <CardContent>
+            <CardContent sx={{background: 'none'}}>
                 {comments.totalElements > 0 ? (
-                    <Stack spacing={1} divider={<Divider orientation="horizontal" />}>
+                    <Stack spacing={1}>
                         {comments.content.map((comment) => (
                             <React.Fragment key={comment.id}>
                                 <Comment
