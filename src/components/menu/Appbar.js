@@ -13,7 +13,8 @@ import {RateReview} from "@mui/icons-material";
 import {InputAdornment} from "@mui/material";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Stack from "@mui/joy/Stack";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 5,
@@ -47,6 +48,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(0)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
+        maxWidth: 850,
         [theme.breakpoints.up('md')]: {
             width: '100ch',
         },
@@ -137,15 +139,13 @@ export default function Appbar({ url, setUrl }) {
     return (
         <Box sx={{ flexGrow: 1,  position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
             <AppBar position="static" sx={{backgroundColor: '#051423'}}>
-                <Toolbar>
-                    <Box sx={{ flexGrow: 1 }} />
-                    <LogoButton width={'80px'}/>
+                    <Stack direction="row" sx={{p: 1.5}} alignItems="center" justifyContent="center" spacing={1}>
+                    <LogoButton width={'45px'} variant={"soft"}/>
                     <Search>
                         <StyledInputBase
                             placeholder="URL을 붙여넣으세요…"
                             inputProps={{ 'aria-label': 'search' }}
                             value={inputValue}
-
                             onChange={handleInputChange}
                             onKeyDown={handleSubmitOnEnter}
                             startAdornment={
@@ -161,34 +161,33 @@ export default function Appbar({ url, setUrl }) {
                             }
                         />
                     </Search>
-                    {/*<Box sx={{ display: { xs: 'none', md: 'flex' } }}>*/}
+                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
 
-                    {/*    <IconButton*/}
-                    {/*        size="large"*/}
-                    {/*        edge="end"*/}
-                    {/*        aria-label="account of current user"*/}
-                    {/*        aria-controls={menuId}*/}
-                    {/*        aria-haspopup="true"*/}
-                    {/*        onClick={handleProfileMenuOpen}*/}
-                    {/*        color="inherit"*/}
-                    {/*    >*/}
-                    {/*        <RateReview />*/}
-                    {/*    </IconButton>*/}
-                    {/*</Box>*/}
-                    {/*<Box sx={{ display: { xs: 'flex', md: 'none' } }}>*/}
-                    {/*    <IconButton*/}
-                    {/*        size="large"*/}
-                    {/*        aria-label="show more"*/}
-                    {/*        aria-controls={mobileMenuId}*/}
-                    {/*        aria-haspopup="true"*/}
-                    {/*        onClick={handleMobileMenuOpen}*/}
-                    {/*        color="inherit"*/}
-                    {/*    >*/}
-                    {/*        <MoreIcon />*/}
-                    {/*    </IconButton>*/}
-                    {/*</Box>*/}
-                    <Box sx={{ flexGrow: 1 }} />
-                </Toolbar>
+                        <IconButton
+                            size="large"
+                            edge="end"
+                            aria-label="account of current user"
+                            aria-controls={menuId}
+                            aria-haspopup="true"
+                            onClick={handleProfileMenuOpen}
+                            color="inherit"
+                        >
+                            <RateReview />
+                        </IconButton>
+                    </Box>
+                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+                        <IconButton
+                            size="large"
+                            aria-label="show more"
+                            aria-controls={mobileMenuId}
+                            aria-haspopup="true"
+                            onClick={handleMobileMenuOpen}
+                            color="inherit"
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+                    </Box>
+                    </Stack>
             </AppBar>
             {/*{renderMobileMenu}*/}
         </Box>
