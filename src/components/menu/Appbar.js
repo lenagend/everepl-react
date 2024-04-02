@@ -139,7 +139,7 @@ export default function Appbar({ url, setUrl }) {
     return (
         <Box sx={{ flexGrow: 1,  position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
             <AppBar position="static" sx={{backgroundColor: '#051423'}}>
-                    <Stack direction="row" sx={{p: 1.5}} alignItems="center" justifyContent="center" spacing={1}>
+                    <Stack direction="row" sx={{p: 1.5}} alignItems="center" justifyContent="center" spacing={2}>
                     <LogoButton width={'45px'} variant={"soft"}/>
                     <Search>
                         <StyledInputBase
