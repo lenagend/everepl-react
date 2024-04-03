@@ -13,16 +13,22 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import {useNavigate} from "react-router-dom";
 
-export default function MenuConsole({ handleFilterChange, currentFilter }) {
+export default function MenuConsole({ handleFilterChange, currentFilterKey }) {
     const navigate = useNavigate();
 
-    const renderButton = (label, filter, icon) => (
-        <Badge color="danger" invisible={currentFilter.join(',') !== filter.join(',')}>
+    // 식별자 기반으로 필터 변경 처리
+    const handleChange = (filterIdentifier) => {
+        handleFilterChange(filterIdentifier);
+    };
+
+    // 필터 식별자에 맞는 버튼을 렌더링하는 함수
+    const renderButton = (label, filterIdentifier, icon) => (
+        <Badge color="danger" invisible={currentFilterKey !== filterIdentifier}>
             <Button
                 size="sm"
                 variant="soft"
                 startDecorator={icon}
-                onClick={() => handleFilterChange(filter)}
+                onClick={() => handleChange(filterIdentifier)}
             >
                 {label}
             </Button>
@@ -31,22 +37,19 @@ export default function MenuConsole({ handleFilterChange, currentFilter }) {
 
     const handleBookmarkButtonClick = () => {
         navigate('/bookmark');
-    }
+    };
 
     return (
         <Card orientation="horizontal" variant="outlined">
             <CardContent>
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
-                    {renderButton('전체', [], <WidgetsIcon />)}
+                    {renderButton('전체', 'all', <WidgetsIcon />)}
                     <Button size="sm" variant="soft" startDecorator={<CollectionsBookmarkIcon />}
-                        onClick={handleBookmarkButtonClick}>My</Button>
-                    {renderButton('유튜브', ['youtube'], <YouTubeIcon />)}
-                    {renderButton('뉴스', ['news', 'entertain', 'article'], <FeedIcon />)}
-                    {renderButton('인스타', ['instagram.com'], <InstagramIcon />)}
-                    {renderButton('커뮤', ['dcinside.com', 'mania.kr', 'fmkorea.com', 'ppomppu.co.kr',
-                        "instiz.net", "theqoo.net", "clien.net", "mlbpark.donga.com", "humoruniv.com", "bobaedream.co.kr",
-                        "etoland.co.kr", "ilbe.com", "82cook.com", "slrclub.com", "todayhumor.co.kr", "gasengi.com", "ruliweb.com", "inven.co.kr"
-                    ], <ForumIcon />)}
+                            onClick={handleBookmarkButtonClick}>My</Button>
+                    {renderButton('유튜브', 'youtube', <YouTubeIcon />)}
+                    {renderButton('뉴스', 'news', <FeedIcon />)}
+                    {renderButton('인스타', 'instagram', <InstagramIcon />)}
+                    {renderButton('커뮤', 'community', <ForumIcon />)}  {/* '커뮤' 필터 식별자를 'community'로 설정 */}
                 </Stack>
             </CardContent>
             <CardOverflow

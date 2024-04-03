@@ -26,8 +26,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function CommentEditor({ nickname, onNicknameChange, password, onPasswordChange,
-                                          commentText, onCommentChange, onSubmit, targetNicknameAndIp,
+export default function CommentEditor({   commentText, onCommentChange, onSubmit, targetNicknameAndIp,
                                           handleCommentExpandClick, commentEditorExpanded, handleCommentButtonClick,
                                           commentActionType, resetCommentState }) {
 
@@ -112,32 +111,10 @@ export default function CommentEditor({ nickname, onNicknameChange, password, on
                                             <Textarea
                                                 placeholder="여기에 댓글을 달아주세요..."
                                                 onChange={(event) => onCommentChange(event.target.value)}
-                                                minRows={4}
-                                                maxRows={4}
+                                                minRows={5}
+                                                maxRows={5}
                                                 value={commentText}
                                                 readOnly={commentActionType === 'delete' ? true : false}
-                                                startDecorator={
-                                                    <Stack direction="row" flexWrap="wrap">
-                                                        <FormControl sx={{ maxWidth: '50%' }}>
-                                                            <Input
-                                                                placeholder="닉네임"
-                                                                size="sm"
-                                                                onChange={(event) => onNicknameChange(event.target.value)}
-                                                                value={nickname}
-                                                                disabled={commentActionType? true : false}
-                                                            />
-                                                        </FormControl>
-                                                        <FormControl sx={{ maxWidth: '50%' }}>
-                                                            <Input
-                                                                placeholder="비밀번호"
-                                                                size="sm"
-                                                                type="password"
-                                                                onChange={(event) => onPasswordChange(event.target.value)}
-                                                                value={password}
-                                                            />
-                                                        </FormControl>
-                                                    </Stack>
-                                                }
                                                 sx={{ width: '100%' }}
                                             />
                                         </Box>

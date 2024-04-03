@@ -10,16 +10,16 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {Pagination, useMediaQuery} from "@mui/material";
 
-export default function UrlListCard({urlInfos, page, currentSort, handlePageChange, handleSortChange, isBookmarkPage}){
+export default function UrlListCard({urlInfos, page, currentSortKey, handlePageChange, handleSortChange, isBookmarkPage}){
     const isMobile = useMediaQuery('(max-width:600px)');
 
-    const renderButton = (label, sort, icon) => (
-        <Badge color="danger" invisible={currentSort.join(',') !== sort.join(',')}>
+    const renderButton = (label, sortKey, icon) => (
+        <Badge color="danger" invisible={currentSortKey !== sortKey}>
             <Button
                 size="sm"
                 variant="soft"
                 startDecorator={icon}
-                onClick={() => handleSortChange(sort)}
+                onClick={() => handleSortChange(sortKey)}
             >
                 {label}
             </Button>
@@ -38,8 +38,8 @@ export default function UrlListCard({urlInfos, page, currentSort, handlePageChan
                     }}
                 >
                     <Stack direction="row" spacing={1} justifyContent="flex-end" flexWrap="wrap" useFlexGap>
-                        {renderButton('인기', ['updatedDate,desc', 'popularityScore,desc'], <AutoAwesomeIcon />)}
-                        {renderButton('최신', ['updatedAt,desc'], <UploadFileIcon />)}
+                        {renderButton('인기', 'popularity', <AutoAwesomeIcon />)}
+                        {renderButton('최신', 'latest', <UploadFileIcon />)}
                     </Stack>
                 </CardOverflow>
             )}

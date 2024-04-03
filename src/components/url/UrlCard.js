@@ -5,7 +5,7 @@ import AspectRatio from "@mui/joy/AspectRatio";
 import Link from "@mui/joy/Link";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
-import {useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams, useLocation} from "react-router-dom";
 import {CardOverflow, IconButton} from "@mui/joy";
 import {useMediaQuery} from "@mui/material";
 import {truncateString} from "../../utils/stringUtils";
@@ -13,25 +13,25 @@ import TimeAgo from "../../utils/TimeAgo";
 import ChatBubbleTwoToneIcon from "@mui/icons-material/ChatBubbleTwoTone";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import Box from "@mui/joy/Box";
 import YouTubeEmbed from "../embeds/YouTubeEmbed";
 import InstagramEmbed from "../embeds/InstagramEmbed";
 
 
 export default function UrlCard({ isListItem, urlInfo }) {
     const navigate = useNavigate();
+    const location = useLocation();
     const isMobile = useMediaQuery('(max-width:600px)');
     const { id } = useParams();
 
     const handleCardClick = () => {
         if (isListItem) {
-            // 리스트 아이템일 경우, navigate를 사용
-            navigate(`/view/${urlInfo.id}`);
+            // 현재 URL의 쿼리 파라미터를 그대로 사용
+            navigate(`/view/${urlInfo.id}${location.search}`);
         } else {
-            // 리스트 아이템이 아닐 경우, 페이지 새로고침
-            window.location.href = `/view/${urlInfo.id}`;
+            // 현재 URL의 쿼리 파라미터를 그대로 사용하여 페이지 새로고침
+            window.location.href = `/view/${urlInfo.id}${location.search}`;
         }
-    }
+    };
 
     return (
 

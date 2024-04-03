@@ -7,11 +7,11 @@ import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
 
-const UrlListPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
+const UrlListPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
 
     useEffect(() => {
         fetchUrlInfos();
-    }, [page, currentFilter, currentSort]);
+    }, [page, currentFilterKey, currentSortKey]);
 
     useEffect(() => {
         handleScrollToTop();
@@ -19,13 +19,13 @@ const UrlListPage = ({ page, currentFilter, currentSort, onSortChange, onPageCha
 
     return(
             <Stack spacing={2}>
-                <MenuConsole handleFilterChange={onFilterChange} currentFilter={currentFilter}/>
+                <MenuConsole handleFilterChange={onFilterChange} currentFilterKey={currentFilterKey}/>
                 {isUrlInfosLoading ? (
                     <LoadingUrlCardList/>
                 ) : urlInfos.content.length === 0 ? (
                     <NotExistUrlCardList/>
                 ) : (
-                    <UrlListCard urlInfos={urlInfos} page={page} currentSort={currentSort} handlePageChange={onPageChange} handleSortChange={onSortChange} isBookmarkPage={false}/>
+                    <UrlListCard urlInfos={urlInfos} page={page} currentSortKey={currentSortKey} handlePageChange={onPageChange} handleSortChange={onSortChange} isBookmarkPage={false}/>
                 )}
 
 

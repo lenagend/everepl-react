@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import UrlCard from "../components/url/UrlCard";
 import Stack from "@mui/joy/Stack";
 import CommentList from "../components/comments/CommentList";
@@ -13,17 +13,21 @@ import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import {ButtonGroup, IconButton, Snackbar, Typography} from "@mui/joy";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import ShareIcon from '@mui/icons-material/Share';
 import Button from "@mui/joy/Button";
 import LikeButton from "../components/iconButtons/LikeButton";
 import BookmarkButton from "../components/iconButtons/BookmarkButton";
+import { useNavigate } from 'react-router-dom';
+import {useAuth} from "../security/AuthProvider";
 
-const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
+const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     //urlInfo를 불러오는 로직
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
+    const { user } = useAuth(); // 로그인 상태 확인을 위한 user 객체
+    const navigate = useNavigate();
+    const location = useLocation();
 
     const fetchUrlInfo = (id) => {
         axios.get(`http://localhost:8080/api/url/${id}`)
@@ -46,37 +50,15 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     }, [id]);
 
     //댓글과 관련된 로직
-    const [nickname, setNickname] = useState('');
-    const [password, setPassword] = useState('');
     const [commentText, setCommentText] = useState('');
     const [targetId, setTargetId] = useState('');
     const [targetType, setTargetType] = useState('');
     const [targetNicknameAndIp, setTargetNicknameAndIp] = useState('');
 
-    const handlePasswordChange = (password) => {
-        // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
-        if (password.length <= 15) {
-            setPassword(password);
-        }
-    };
-
-    const handleNicknameChange = (nickname) => {
-        // 입력된 값의 길이가 15글자 이하인 경우에만 상태를 업데이트합니다.
-        if (nickname.length <= 8) {
-            setNickname(nickname);
-        }
-    };
 
     const validate = () => {
         let tempErrors = {};
-        if (!nickname) tempErrors.nickname = '닉네임을 입력해주세요.';
-        else if (nickname.length < 2 || nickname.length > 8) {
-            tempErrors.nickname = '닉네임은 2글자 이상 입력해주세요.';
-        }
-        if (!password) tempErrors.password = '비밀번호를 입력해주세요.';
-        else if (password.length < 4 || password.length > 15) {
-            tempErrors.password = '비밀번호는 4글자 이상 입력해주세요.';
-        }
+
         if (!commentText) tempErrors.text = '텍스트를 입력해주세요.';
 
         // 오류가 있을 경우에만 실행
@@ -99,7 +81,14 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
 
     const handleSubmit = async () => {
-        // 먼저 유효성 검사를 실행합니다.
+        if (!user) {
+            // 로그인이 필요한 액션이므로, 사용자를 로그인 페이지로 리다이렉트
+            // 로그인 후 이 페이지로 돌아올 수 있도록 현재 경로를 상태로 전달
+            navigate('/login', { state: { from: location.pathname } });
+            return; // 함수 실행 종료
+        }
+
+        // 유효성 검사를 실행합니다.
         const isValid = validate();
 
         // 유효성 검사를 통과하지 못했다면, 요청을 중단합니다.
@@ -109,15 +98,12 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             if (commentActionType === 'edit') {
                 // 수정 요청
                 response = await axios.patch('http://localhost:8080/api/comment', {
-                    nickname: nickname,
                     text: commentText,
-                    password: password,
                     targetId: targetId
                 });
             }else if (commentActionType === 'delete') {
                 // 삭제 요청
                 response = await axios.patch('http://localhost:8080/api/comment', {
-                    password: password,
                     targetId: targetId,
                     isDeleted: true
                 });
@@ -125,9 +111,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             else {
                 // 생성 요청
                 response = await axios.post('http://localhost:8080/api/comment', {
-                    nickname: nickname,
                     text: commentText,
-                    password: password,
                     type: targetType || 'URLINFO',
                     targetId: targetId || id
                 })
@@ -186,7 +170,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
     const handleCommentAction = (comment, actionType) => {
         resetCommentState(actionType);
-        setNickname(comment.nickname);
         setCommentText(comment.text);
         setTargetId(comment.id);
         setCommentActionType(actionType);
@@ -202,10 +185,8 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     };
 
     const resetCommentState = (actionType) => {
-        setPassword('');
         // 오직 'edit' 또는 'delete' 액션일 때만 특정 상태를 초기화
         if (actionType === 'edit' || actionType === 'delete') {
-            setNickname('');
             setTargetId('');
             setTargetNicknameAndIp('');
         }
@@ -215,7 +196,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
 
     const finalizeCommentAction = () => {
         resetCommentState(); // 상태 초기화
-        setCommentEditorExpanded(false); // 댓글창 닫기
+        handleToggleCommentEditor(false); // 댓글창 닫기
         fetchComments(id, 'URLINFO', 1); // 댓글 목록 다시 불러오기
     };
 
@@ -266,8 +247,30 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
     //댓글창 열었다 닫기
     const [commentEditorExpanded, setCommentEditorExpanded] = React.useState(false);
 
+    const handleToggleCommentEditor = (expand) => {
+        // 로그인 상태 확인
+        if (!user) {
+            // 사용자가 로그인하지 않았다면 로그인 페이지로 리다이렉트
+            navigate('/login', { state: { from: location.pathname } });
+            return; // 함수 실행 종료
+        }
+
+        // 파라미터에 따라 댓글창 상태 설정
+        if (expand === true) {
+            // 댓글창을 무조건 열기
+            setCommentEditorExpanded(true);
+        } else if (expand === false) {
+            // 댓글창을 무조건 닫기
+            setCommentEditorExpanded(false);
+        } else {
+            // 파라미터가 제공되지 않거나 null인 경우, 댓글창 상태 토글
+            setCommentEditorExpanded(prev => !prev);
+        }
+    };
+
+
     const handleCommentExpandClick = () => {
-        setCommentEditorExpanded(!commentEditorExpanded);
+        handleToggleCommentEditor();
     };
 
     //대댓글 클릭
@@ -276,7 +279,7 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
         setTargetId(targetId);
         setTargetType(targetType);
         setCommentActionType('');
-        setCommentEditorExpanded(true);
+        handleToggleCommentEditor(true);
     }
 
     return(
@@ -310,8 +313,8 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
             </Stack>
             <UrlListPage
                 page={page}
-                currentFilter={currentFilter}
-                currentSort={currentSort}
+                currentFilterKey={currentFilterKey}
+                currentSortKey={currentSortKey}
                 onSortChange={onSortChange}
                 onPageChange={onPageChange}
                 onFilterChange={onFilterChange}
@@ -320,10 +323,6 @@ const ViewPage = ({ page, currentFilter, currentSort, onSortChange, onPageChange
                 isUrlInfosLoading={isUrlInfosLoading}
             />
             <CommentEditor
-                nickname={nickname}
-                onNicknameChange={handleNicknameChange}
-                password={password}
-                onPasswordChange={handlePasswordChange}
                 commentText={commentText}
                 onCommentChange={setCommentText}
                 onSubmit={handleSubmit}
