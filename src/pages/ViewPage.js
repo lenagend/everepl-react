@@ -25,7 +25,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
-    const { user } = useAuth(); // 로그인 상태 확인을 위한 user 객체
+    const { user, axiosInstance } = useAuth(); // 로그인 상태 확인을 위한 user 객체
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -79,71 +79,74 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
         setErrorMessage({});
     }
 
+    const actionWordMapping = {
+        edit: '수정',
+        delete: '삭제',
+        default: '저장',
+    };
+
+    // API 요청에 대한 함수들
+    const createComment = async () => {
+        return await axiosInstance.post('http://localhost:8080/api/comment', {
+            text: commentText,
+            type: targetType || 'URLINFO',
+            targetId: targetId || id
+        });
+    };
+
+    const editComment = async () => {
+        return await axios.patch('http://localhost:8080/api/comment', {
+            text: commentText,
+            targetId: targetId
+        });
+    };
+
+    const deleteComment = async () => {
+        return await axios.patch('http://localhost:8080/api/comment', {
+            targetId: targetId,
+            isDeleted: true
+        });
+    };
+
+    // 에러 처리 함수
+    const handleError = (error, actionWord) => {
+        const defaultMessage = `댓글 ${actionWord}에 실패했습니다. `;
+        const detailedMessage = error.response ? error.response.data.message : error.message;
+
+        setErrorMessage({ fetchError: defaultMessage + detailedMessage });
+        setErrorMessageOpen(true);
+    };
 
     const handleSubmit = async () => {
         if (!user) {
-            // 로그인이 필요한 액션이므로, 사용자를 로그인 페이지로 리다이렉트
-            // 로그인 후 이 페이지로 돌아올 수 있도록 현재 경로를 상태로 전달
             navigate('/login', { state: { from: location.pathname } });
-            return; // 함수 실행 종료
+            return;
         }
 
-        // 유효성 검사를 실행합니다.
-        const isValid = validate();
+        if (!validate()) return;
 
-        // 유효성 검사를 통과하지 못했다면, 요청을 중단합니다.
-        if (!isValid) return;
         try {
-            let response;
-            if (commentActionType === 'edit') {
-                // 수정 요청
-                response = await axios.patch('http://localhost:8080/api/comment', {
-                    text: commentText,
-                    targetId: targetId
-                });
-            }else if (commentActionType === 'delete') {
-                // 삭제 요청
-                response = await axios.patch('http://localhost:8080/api/comment', {
-                    targetId: targetId,
-                    isDeleted: true
-                });
+            const actionMapping = {
+                edit: editComment,
+                delete: deleteComment,
+                default: createComment,
+            };
+
+            const action = actionMapping[commentActionType] || actionMapping.default;
+            const actionWord = actionWordMapping[commentActionType] || actionWordMapping.default;
+
+            const response = await action();
+            if (commentActionType !== 'delete') {
+                // 처리 결과에 대한 추가 작업 (예: 저장된 댓글 상태 업데이트)
+                storeMyComment(response.data.type, response.data.id);
             }
-            else {
-                // 생성 요청
-                response = await axios.post('http://localhost:8080/api/comment', {
-                    text: commentText,
-                    type: targetType || 'URLINFO',
-                    targetId: targetId || id
-                })
-                    .then(response => {
-                        const savedComment = response.data;
-                        storeMyComment(savedComment.type, savedComment.id);
-                    })
-                ;
-            }
+
             finalizeCommentAction();
         } catch (error) {
-            let actionWord = '저장'; // 기본 동작은 '저장'
-            if (commentActionType === 'edit') {
-                actionWord = '수정';
-            } else if (commentActionType === 'delete') {
-                actionWord = '삭제';
-            }
-
-            setErrorMessage({ fetchError: `댓글 ${actionWord}에 실패했습니다. ${error.response ? error.response.data.message : error.message}` });
-
-            // 서버로부터 오류 응답이 있는 경우, 상세 메시지를 추가
-            if (error.response && error.response.data) {
-                // 서버 응답에서 상세 메시지 추출
-                const serverErrorMessage = error.response.data;
-                setErrorMessage(prevState => ({
-                    ...prevState, // 이전 상태를 유지
-                    serverErrorMessage: serverErrorMessage // 상세 메시지 추가
-                }));
-            }
-            setErrorMessageOpen(true);
+            handleError(error, actionWordMapping[commentActionType] || actionWordMapping.default);
         }
     };
+
 
     const storeMyComment = (targetType, targetId) => {
         // 로컬 스토리지에서 기존 북마크 목록을 가져옵니다.

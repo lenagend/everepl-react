@@ -51,7 +51,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                         sm: 60
                     } }} variant="outlined">
                     <img
-                        src="/images/character/level2.png"
+                        src={comment.user.imageUrl ? comment.user.imageUrl : "/images/character/level3.png"}
                         loading="lazy"
                         alt=""
                     />
@@ -63,7 +63,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                     <Stack sx={{ pl: 1, pb: 1}} spacing={1}>
                         <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                             <Typography level="title-sm" color="neutral">
-                                {comment.nickname}({ipPart})
+                                {comment.user.name ? comment.user.name : `유저${comment.user.id}`}
                                 <Typography  level="body-xs" color="neutral" >
                                     &nbsp;&middot;&nbsp;<TimeAgo time={comment.createdAt} />
                                 </Typography>
