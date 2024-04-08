@@ -95,14 +95,14 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const editComment = async () => {
-        return await axios.patch('http://localhost:8080/api/comment', {
+        return await axiosInstance.patch('http://localhost:8080/api/comment', {
             text: commentText,
             targetId: targetId
         });
     };
 
     const deleteComment = async () => {
-        return await axios.patch('http://localhost:8080/api/comment', {
+        return await axiosInstance.patch('http://localhost:8080/api/comment', {
             targetId: targetId,
             isDeleted: true
         });
