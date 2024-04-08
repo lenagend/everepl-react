@@ -5,7 +5,7 @@ import Card from "@mui/joy/Card";
 import {CardOverflow, Divider, Typography} from "@mui/joy";
 import CardContent from "@mui/joy/CardContent";
 import NotExistCommentList from "../loading/NotExistCommentList";
-export default function CommentList({comments, depth, onCommentButtonClick, onEditComment, onDeleteComment}) {
+export default function CommentList({comments, onCommentButtonClick, onEditComment, onDeleteComment}) {
 
     return(
         <Card sx={{ p: 1.5, pt: 0}}>
@@ -38,7 +38,6 @@ export default function CommentList({comments, depth, onCommentButtonClick, onEd
                             <React.Fragment key={comment.id}>
                                 <Comment
                                     comment={comment}
-                                    depth={depth}
                                     onCommentButtonClick={onCommentButtonClick}
                                     onEditComment={onEditComment}
                                     onDeleteComment={onDeleteComment}

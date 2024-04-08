@@ -26,7 +26,7 @@ const ExpandMore = styled((props) => {
     }),
 }));
 
-export default function CommentEditor({   commentText, onCommentChange, onSubmit, targetNicknameAndIp,
+export default function CommentEditor({   commentText, onCommentChange, onSubmit, selectedComment,
                                           handleCommentExpandClick, commentEditorExpanded, handleCommentButtonClick,
                                           commentActionType, resetCommentState }) {
 
@@ -74,17 +74,17 @@ export default function CommentEditor({   commentText, onCommentChange, onSubmit
                                     <Typography level="title-md">
                                         {commentTitle}
                                     </Typography>
-                                    {targetNicknameAndIp ? (
+                                    {selectedComment ? (
                                         <Badge
                                             badgeContent={<CloseRoundedIcon sx={{fontSize: 10}}/>}
                                             variant="outlined" color="danger" size="sm"
                                             badgeInset="-2%"
                                             onClick={(e) => {
                                                 e.stopPropagation();
-                                                handleCommentButtonClick('', '', '');
+                                                handleCommentButtonClick(null, '', '');
                                             }}>
                                             <Typography level="title-lg" color="primary" sx={{pl: 1}}>
-                                                @{targetNicknameAndIp}
+                                                @{selectedComment.user.name}&nbsp;&nbsp;
                                             </Typography>
                                         </Badge>
                                     ) : (

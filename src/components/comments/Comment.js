@@ -16,20 +16,9 @@ import MenuItem from "@mui/joy/MenuItem";
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
-import moment from 'moment';
 import Box from "@mui/material/Box";
-import {formatIpAddress} from "../../utils/stringUtils";
 
-export default function Comment({comment, depth, onCommentButtonClick, onEditComment, onDeleteComment}){
-    const ipPart = formatIpAddress(comment.userIp);
-    const parrentIpPard = formatIpAddress(comment.parentCommentUserIp);
-
-    // 날짜 형식을 'YYYY-MM-DD HH:mm' 형식으로 변환
-    const createdAt = moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss');
-    const updatedAt = moment(comment.updatedAt).format('YYYY-MM-DD HH:mm:ss');
-    // 생성 시간과 수정 시간이 다른지 여부를 통해 댓글이 수정되었는지 판단
-    const isModified = createdAt !== updatedAt;
-
+export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment}){
     return(
         <Box>
         <Card orientation="horizontal" variant="soft" color="neutral" sx={{
@@ -63,7 +52,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                     <Stack sx={{ pl: 1, pb: 1}} spacing={1}>
                         <Stack direction="row" justifyContent="flex-start" alignItems="center" spacing={1}>
                             <Typography level="title-sm" color="neutral">
-                                {comment.user.name ? comment.user.name : `유저${comment.user.id}`}
+                                {comment.user.name}
                                 <Typography  level="body-xs" color="neutral" >
                                     &nbsp;&middot;&nbsp;<TimeAgo time={comment.createdAt} />
                                 </Typography>
@@ -76,11 +65,11 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                 xs: 1
                             }}
                         >
-                            {comment.parentCommentNickname && (
-                                <Typography level="title-md" color="primary" sx={{mr: 1}}>@{comment.parentCommentNickname}({parrentIpPard})</Typography>
+                            {comment.parentCommentUser && (
+                                <Typography level="title-md" color="primary" sx={{mr: 1}}>@{comment.parentCommentUser.name}</Typography>
                             )}
                             {comment.text}
-                            {!comment.isDeleted && isModified && <Typography sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>}
+                            {/*{<Typography sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>}*/}
                         </Typography>
                         <Stack direction="row" spacing={1}   alignItems="center">
                                 <Stack direction="row" spacing={0}  alignItems="center">
@@ -89,7 +78,7 @@ export default function Comment({comment, depth, onCommentButtonClick, onEditCom
                                             "--IconButton-size": "20px",
                                             ml: -0.5
                                         }}
-                                        onClick={() => onCommentButtonClick(`${comment.nickname}(${ipPart})`, comment.id, 'COMMENT')}
+                                        onClick={() => onCommentButtonClick(comment, comment.id, 'COMMENT')}
                                         >
                                             <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
                                         </IconButton>

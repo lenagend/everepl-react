@@ -25,7 +25,7 @@ const CommentCard = styled(Card)(({ theme }) => ({
 
 export default function BookmarkComment({comment}){
     const ipPart = formatIpAddress(comment.userIp);
-    const parrentIpPard = formatIpAddress(comment.parentCommentUserIp);
+    const parentIpPard = formatIpAddress(comment.parentCommentUserIp);
 
     // 날짜 형식을 'YYYY-MM-DD HH:mm' 형식으로 변환
     const createdAt = moment(comment.createdAt).format('YYYY-MM-DD HH:mm:ss');
@@ -74,7 +74,7 @@ export default function BookmarkComment({comment}){
                             }}
                         >
                             {comment.parentCommentNickname && (
-                                <Typography level="title-md" color="primary" sx={{mr: 1}}>@{comment.parentCommentNickname}({parrentIpPard})</Typography>
+                                <Typography level="title-md" color="primary" sx={{mr: 1}}>@{comment.parentCommentNickname}({parentIpPard})</Typography>
                             )}
                             {comment.text}
                             {!comment.isDeleted && isModified && <Typography sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>}

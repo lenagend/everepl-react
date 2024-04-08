@@ -53,7 +53,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const [commentText, setCommentText] = useState('');
     const [targetId, setTargetId] = useState('');
     const [targetType, setTargetType] = useState('');
-    const [targetNicknameAndIp, setTargetNicknameAndIp] = useState('');
+    const [selectedComment, setSelectedComment] = useState(null);
 
 
     const validate = () => {
@@ -102,10 +102,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const deleteComment = async () => {
-        return await axiosInstance.patch('http://localhost:8080/api/comment', {
-            targetId: targetId,
-            isDeleted: true
-        });
+        return await axiosInstance.delete(`http://localhost:8080/api/comment/${targetId}`);
     };
 
     // 에러 처리 함수
@@ -144,6 +141,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             finalizeCommentAction();
         } catch (error) {
             handleError(error, actionWordMapping[commentActionType] || actionWordMapping.default);
+            console.log(error);
         }
     };
 
@@ -191,7 +189,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
         // 오직 'edit' 또는 'delete' 액션일 때만 특정 상태를 초기화
         if (actionType === 'edit' || actionType === 'delete') {
             setTargetId('');
-            setTargetNicknameAndIp('');
+            setSelectedComment(null);
         }
         setCommentText('');
         setCommentActionType('');
@@ -277,8 +275,8 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     //대댓글 클릭
-    const handleCommentButtonClick = (nicknameAndIp, targetId, targetType) => {
-        setTargetNicknameAndIp(nicknameAndIp);
+    const handleCommentButtonClick = (selectedComment, targetId, targetType) => {
+        setSelectedComment(selectedComment);
         setTargetId(targetId);
         setTargetType(targetType);
         setCommentActionType('');
@@ -297,7 +295,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             ) :  (
                 <CommentList
                     comments={comments}
-                    depth={0}
                     onCommentButtonClick={handleCommentButtonClick}
                     onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
                 />
@@ -329,7 +326,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                 commentText={commentText}
                 onCommentChange={setCommentText}
                 onSubmit={handleSubmit}
-                targetNicknameAndIp={targetNicknameAndIp}
+                selectedComment={selectedComment}
                 commentEditorExpanded={commentEditorExpanded}
                 handleCommentExpandClick={handleCommentExpandClick}
                 handleCommentButtonClick={handleCommentButtonClick}
