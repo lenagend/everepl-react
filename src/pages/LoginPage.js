@@ -16,6 +16,14 @@ const LoginPage = () => {
                     <Typography level="title-lg" textAlign="center">
                         SNS로 1초만에 회원가입/로그인 하세요!
                     </Typography>
+                    <Box>
+                        <Typography level="body-md" textAlign="center">
+                            개인을 구별하기 위한 식별자 외에
+                        </Typography>
+                        <Typography level="body-md" textAlign="center">
+                            어떠한 정보도 저장하고 있지 않습니다
+                        </Typography>
+                    </Box>
                    <LoginCard />
                 </Stack>
             </Container>
