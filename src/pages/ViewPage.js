@@ -25,9 +25,8 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
-    const { user, axiosInstance } = useAuth(); // 로그인 상태 확인을 위한 user 객체
+    const { user, axiosInstance, requireAuth  } = useAuth(); // 로그인 상태 확인을 위한 user 객체
     const navigate = useNavigate();
-    const location = useLocation();
 
     const fetchUrlInfo = (id) => {
         axios.get(`http://localhost:8080/api/url/${id}`)
@@ -115,10 +114,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const handleSubmit = async () => {
-        if (!user) {
-            navigate('/login', { state: { from: location.pathname } });
-            return;
-        }
+        if (!requireAuth()) return;
 
         if (!validate()) return;
 
@@ -249,12 +245,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const [commentEditorExpanded, setCommentEditorExpanded] = React.useState(false);
 
     const handleToggleCommentEditor = (expand) => {
-        // 로그인 상태 확인
-        if (!user) {
-            // 사용자가 로그인하지 않았다면 로그인 페이지로 리다이렉트
-            navigate('/login', { state: { from: location.pathname } });
-            return; // 함수 실행 종료
-        }
+        if (!requireAuth()) return;
 
         // 파라미터에 따라 댓글창 상태 설정
         if (expand === true) {
