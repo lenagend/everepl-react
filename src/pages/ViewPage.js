@@ -297,7 +297,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                     spacing="0.5rem"
                 >
                     <LikeButton targetId={id} targetType='URLINFO'/>
-                    <BookmarkButton targetId={id} targetType='URLINFO'/>
                     <Button>신고</Button>
                     <IconButton><ShareIcon/></IconButton>
                 </ButtonGroup>
