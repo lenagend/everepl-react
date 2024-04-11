@@ -25,7 +25,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
-    const { user, axiosInstance, requireAuth  } = useAuth(); // 로그인 상태 확인을 위한 user 객체
+    const { axiosInstance, requireAuth  } = useAuth();
     const navigate = useNavigate();
 
     const fetchUrlInfo = (id) => {
@@ -114,7 +114,8 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const handleSubmit = async () => {
-        if (!requireAuth()) return;
+        const isAuthValid = await requireAuth(); // requireAuth의 결과를 기다립니다.
+        if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
 
         if (!validate()) return;
 
