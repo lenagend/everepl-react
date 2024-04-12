@@ -24,7 +24,7 @@ export default function LikeButton({ targetId, targetType }) {
             });
             setMessage('성공적으로 좋아요 되었습니다.');
         } catch (error) {
-            setMessage('좋아요에 실패했습니다. ' + error.message);
+            setMessage('좋아요에 실패했습니다. ' + error.response.data.message);
         } finally {
             setSnackbarOpen(true);
         }
