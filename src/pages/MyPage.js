@@ -9,7 +9,7 @@ import BookmarkCommentList from "../components/comments/BookmarkCommentList";
 import UrlListCard from "../components/url/UrlListCard";
 import NotExistBookmarkUrlCardList from "../components/loading/NotExistBookmarkUrlCardList";
 
-const BookmarkPage = () => {
+const MyPage = () => {
     //게시물목록의 페이징(뷰 페이지에서도 사용하기 위해 루트컴포넌트로 올림)
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(20);
@@ -87,4 +87,4 @@ const BookmarkPage = () => {
     )
 }
 
-export default BookmarkPage;
+export default MyPage;

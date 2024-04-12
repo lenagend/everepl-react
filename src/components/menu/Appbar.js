@@ -15,6 +15,7 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Stack from "@mui/joy/Stack";
+import MyPageButton from "../iconButtons/MyPageButton";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 5,
@@ -161,31 +162,8 @@ export default function Appbar({ url, setUrl }) {
                             }
                         />
                     </Search>
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-
-                        <IconButton
-                            size="large"
-                            edge="end"
-                            aria-label="account of current user"
-                            aria-controls={menuId}
-                            aria-haspopup="true"
-                            onClick={handleProfileMenuOpen}
-                            color="inherit"
-                        >
-                            <RateReview />
-                        </IconButton>
-                    </Box>
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreVertIcon />
-                        </IconButton>
+                    <Box sx={{ display:  'flex' }}>
+                        <MyPageButton width={'45px'} variant={"plane"}/>
                     </Box>
                     </Stack>
             </AppBar>

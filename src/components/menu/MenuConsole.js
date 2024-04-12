@@ -35,17 +35,11 @@ export default function MenuConsole({ handleFilterChange, currentFilterKey }) {
         </Badge>
     );
 
-    const handleBookmarkButtonClick = () => {
-        navigate('/bookmark');
-    };
-
     return (
         <Card orientation="horizontal" variant="outlined">
             <CardContent>
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     {renderButton('전체', 'all', <WidgetsIcon />)}
-                    <Button size="sm" variant="soft" startDecorator={<CollectionsBookmarkIcon />}
-                            onClick={handleBookmarkButtonClick}>My</Button>
                     {renderButton('유튜브', 'youtube', <YouTubeIcon />)}
                     {renderButton('뉴스', 'news', <FeedIcon />)}
                     {renderButton('인스타', 'instagram', <InstagramIcon />)}
