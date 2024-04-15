@@ -17,8 +17,10 @@ import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
 import Box from "@mui/material/Box";
+import LikeButton from "../iconButtons/LikeButton";
+import Link from "@mui/joy/Link";
 
-export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment}){
+export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, commentConext}){
     return(
         <Box>
         <Card orientation="horizontal" variant="soft" color="neutral" sx={{
@@ -31,9 +33,15 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
             gap: 0,
             border: '1px dotted #0A2744'
         }}>
-            {/*<Box sx={{width: (comment.path.length - 3) * 10}}>*/}
-
-            {/*</Box>*/}
+            {commentConext === 'liked' && (
+                <Link
+                    underline="none"
+                    href={comment.rootUrl}
+                    sx={{ zIndex: 5}}
+                    overlay
+                >
+                </Link>
+            )}
             <Stack>
                 <AspectRatio ratio="1" sx={{ width: {
                         xs: 30,
@@ -95,12 +103,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                     <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
                                 </Stack>
                                 <Stack direction="row" spacing={0}  alignItems="center">
-                                <IconButton  variant="plain" sx={{
-                                    "--IconButton-size": "20px",
-                                    ml: -0.5
-                                }}>
-                                    <FavoriteTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
-                                </IconButton>
+                                 <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"}/>
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                                 </Stack>
                             {!comment.isDeleted && (

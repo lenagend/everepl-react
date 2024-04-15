@@ -10,7 +10,7 @@ import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {Pagination, useMediaQuery} from "@mui/material";
 
-export default function UrlListCard({urlInfos, page, currentSortKey, handlePageChange, handleSortChange, isBookmarkPage}){
+export default function UrlListCard({urlInfos, page, currentSortKey, onPageChange, onSortChange, isMyPage}){
     const isMobile = useMediaQuery('(max-width:600px)');
 
     const renderButton = (label, sortKey, icon) => (
@@ -19,7 +19,7 @@ export default function UrlListCard({urlInfos, page, currentSortKey, handlePageC
                 size="sm"
                 variant="soft"
                 startDecorator={icon}
-                onClick={() => handleSortChange(sortKey)}
+                onClick={() => onSortChange(sortKey)}
             >
                 {label}
             </Button>
@@ -28,7 +28,7 @@ export default function UrlListCard({urlInfos, page, currentSortKey, handlePageC
 
     return(
         <Card sx={{p: 0, mt: 2, gap: 0}}>
-            {!isBookmarkPage && (
+            {!isMyPage && (
                 <CardOverflow
                     color="primary"
                     sx={{
@@ -63,7 +63,7 @@ export default function UrlListCard({urlInfos, page, currentSortKey, handlePageC
                     sx={{ mx: 'auto' }}
                     count={urlInfos.totalPages} // 전체 페이지 수
                     page={page} // 현재 페이지
-                    onChange={handlePageChange} // 페이지 변경 핸들러
+                    onChange={onPageChange} // 페이지 변경 핸들러
                     size={isMobile ? "small" : "large"}
                 />
             </CardOverflow>

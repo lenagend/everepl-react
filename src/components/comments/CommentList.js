@@ -46,7 +46,7 @@ export default function CommentList({comments, onCommentButtonClick, onEditComme
                         ))}
                     </Stack>
                 ) : (
-                    <NotExistCommentList />
+                    <NotExistCommentList border={"none"}/>
                 )}
 
             </CardContent>

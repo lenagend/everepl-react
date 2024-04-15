@@ -23,7 +23,7 @@ const CommentCard = styled(Card)(({ theme }) => ({
     overflow: 'auto',
 }));
 
-export default function BookmarkComment({comment}){
+export default function LikedComment({comment}){
     const ipPart = formatIpAddress(comment.userIp);
     const parentIpPard = formatIpAddress(comment.parentCommentUserIp);
 

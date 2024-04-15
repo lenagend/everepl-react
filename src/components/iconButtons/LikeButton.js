@@ -7,8 +7,10 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {useState} from "react";
 import Box from "@mui/joy/Box";
 import {useAuth} from "../../security/AuthProvider";
+import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
+import Stack from "@mui/joy/Stack";
 
-export default function LikeButton({ targetId, targetType }) {
+export default function ({ targetId, targetType, likeButtonContext}) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [message, setMessage] = useState('');
     const { axiosInstance, requireAuth  } = useAuth();
@@ -35,13 +37,31 @@ export default function LikeButton({ targetId, targetType }) {
         setMessage('');
     }
 
-    return (
-        <Box>
-        <IconButton onClick={handleLikeClick}>
-            <FavoriteBorderOutlinedIcon />
-        </IconButton>
 
-        <Snackbar
+    const renderLikeButton = () => {
+        switch (likeButtonContext) {
+            case 'COMMENT':
+                return (
+                    <IconButton onClick={handleLikeClick} variant="plain" sx={{
+                        "--IconButton-size": "20px",
+                        ml: -0.5
+                    }}>
+                        <FavoriteTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
+                    </IconButton>
+                );
+            default:
+                return (
+                    <IconButton onClick={handleLikeClick}>
+                        <FavoriteBorderOutlinedIcon />
+                    </IconButton>
+                );
+        }
+    };
+
+    return (
+        <Stack alignContent={"center"} justifyContent={"center"}>
+            {renderLikeButton()}
+            <Snackbar
             autoHideDuration={5000}
             open={snackbarOpen}
             color="neutral"
@@ -57,6 +77,6 @@ export default function LikeButton({ targetId, targetType }) {
         >
             <Typography color="neutral" level="title-md" >{message}</Typography>
         </Snackbar>
-        </Box>
+        </Stack>
     );
 }

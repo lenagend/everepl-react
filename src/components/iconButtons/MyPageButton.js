@@ -6,7 +6,7 @@ import {useNavigate} from "react-router-dom";
 export default function MyPageButton(){
     const navigate = useNavigate();
     const handleButtonClick = () => {
-        navigate("/my");
+        navigate("/my/profile");
     }
     return(
         <IconButton sx={{ color: "white" }} onClick={handleButtonClick}>

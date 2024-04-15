@@ -16,7 +16,6 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ShareIcon from '@mui/icons-material/Share';
 import Button from "@mui/joy/Button";
 import LikeButton from "../components/iconButtons/LikeButton";
-import BookmarkButton from "../components/iconButtons/BookmarkButton";
 import { useNavigate } from 'react-router-dom';
 import {useAuth} from "../security/AuthProvider";
 
@@ -130,10 +129,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             const actionWord = actionWordMapping[commentActionType] || actionWordMapping.default;
 
             const response = await action();
-            if (commentActionType !== 'delete') {
-                // 처리 결과에 대한 추가 작업 (예: 저장된 댓글 상태 업데이트)
-                storeMyComment(response.data.type, response.data.id);
-            }
 
             finalizeCommentAction();
         } catch (error) {
@@ -141,27 +136,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             console.log(error);
         }
     };
-
-
-    const storeMyComment = (targetType, targetId) => {
-        // 로컬 스토리지에서 기존 북마크 목록을 가져옵니다.
-        const bookmarks = JSON.parse(localStorage.getItem('bookmarks')) || [];
-
-        // 동일한 targetId와 targetType을 가진 북마크가 이미 있는지 확인합니다.
-        const alreadyBookmarked = bookmarks.some(bookmark => bookmark.targetId === targetId && bookmark.targetType === targetType);
-
-        if (!alreadyBookmarked) {
-            // 새 북마크 객체를 생성합니다.
-            const newBookmark = { targetId, targetType };
-
-            // 새 북마크를 기존 목록에 추가합니다.
-            bookmarks.push(newBookmark);
-
-            // 업데이트된 북마크 목록을 로컬 스토리지에 저장합니다.
-            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-
-        }
-    }
 
     // 댓글 수정/삭제
     const [commentActionType, setCommentActionType] = useState('');

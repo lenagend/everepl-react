@@ -2,7 +2,6 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import MenuItem from '@mui/material/MenuItem';
@@ -13,7 +12,6 @@ import {RateReview} from "@mui/icons-material";
 import {InputAdornment} from "@mui/material";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Stack from "@mui/joy/Stack";
 import MyPageButton from "../iconButtons/MyPageButton";
 const Search = styled('div')(({ theme }) => ({
