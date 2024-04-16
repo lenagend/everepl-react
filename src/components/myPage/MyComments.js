@@ -37,11 +37,10 @@ export default function LikedComments() {
         const isAuthValid = await requireAuth(); // requireAuth의 결과를 기다립니다.
         if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
 
-        axiosInstance.get('http://localhost:8080/api/like', {
+        axiosInstance.get('http://localhost:8080/api/comment/my', {
             params: {
                 page: page - 1,
-                size: size,
-                type : 'COMMENT',
+                size: size
             },
         })
             .then(response => {
