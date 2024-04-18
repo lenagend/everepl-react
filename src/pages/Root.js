@@ -19,6 +19,7 @@ import Profile from "../components/myPage/Profile";
 import LikedUrlInfos from "../components/myPage/LikedUrlInfos";
 import MyComments from "../components/myPage/MyComments";
 import LikedComments from "../components/myPage/LikedComments";
+import UserNotification from "../components/alert/UserNotification";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -176,6 +177,7 @@ export default function Root(){
             backgroundColor: '#F0F4F8',
             minHeight : '100vh'
         }}>
+            <UserNotification/>
             <LoadingProgressModal isLoading={isViewPageLoading}/>
             <Appbar url={url} setUrl={setUrl} onSearch={handleSearch} />
             <Container maxWidth="md" sx={{p: {

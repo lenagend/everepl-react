@@ -14,6 +14,9 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import Stack from "@mui/joy/Stack";
 import MyPageButton from "../iconButtons/MyPageButton";
+import Typography from "@mui/joy/Typography";
+import {Switch} from "@mui/joy";
+import NotificationSetting from "../alert/NotificationSetting";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 5,
@@ -47,9 +50,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
         paddingLeft: `calc(1em + ${theme.spacing(0)})`,
         transition: theme.transitions.create('width'),
         width: '100%',
-        maxWidth: 850,
         [theme.breakpoints.up('md')]: {
-            width: '100ch',
+            width: 600,
         },
     },
 }));
@@ -139,30 +141,33 @@ export default function Appbar({ url, setUrl }) {
         <Box sx={{ flexGrow: 1,  position: 'fixed', top: 0, left: 0, right: 0, zIndex: 10 }}>
             <AppBar position="static" sx={{backgroundColor: '#051423'}}>
                     <Stack direction="row" sx={{p: 1.5}} alignItems="center" justifyContent="center" spacing={2}>
-                    <LogoButton width={'45px'} variant={"soft"}/>
-                    <Search>
-                        <StyledInputBase
-                            placeholder="URL을 붙여넣으세요…"
-                            inputProps={{ 'aria-label': 'search' }}
-                            value={inputValue}
-                            onChange={handleInputChange}
-                            onKeyDown={handleSubmitOnEnter}
-                            startAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                        aria-label="toggle password visibility"
-                                        edge="end"
-                                        onClick={handleSearchButtonClick}
-                                    >
-                                        <SearchIcon sx={{color: 'white'}}/>
-                                    </IconButton>
-                                </InputAdornment>
-                            }
-                        />
-                    </Search>
-                    <Box sx={{ display:  'flex' }}>
-                        <MyPageButton width={'45px'} variant={"plane"}/>
-                    </Box>
+                            <Stack direction="row" alignContent={"start"}>
+                                <LogoButton width={'45px'} variant={"soft"}/>
+                            </Stack>
+                            <Search>
+                                <StyledInputBase
+                                    placeholder="URL을 붙여넣으세요…"
+                                    inputProps={{ 'aria-label': 'search' }}
+                                    value={inputValue}
+                                    onChange={handleInputChange}
+                                    onKeyDown={handleSubmitOnEnter}
+                                    startAdornment={
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                edge="end"
+                                                onClick={handleSearchButtonClick}
+                                            >
+                                                <SearchIcon sx={{color: 'white'}}/>
+                                            </IconButton>
+                                        </InputAdornment>
+                                    }
+                                />
+                            </Search>
+                            <Stack direction="row">
+                                <NotificationSetting/>
+                                <MyPageButton width={'45px'} variant={"plane"}/>
+                            </Stack>
                     </Stack>
             </AppBar>
             {/*{renderMobileMenu}*/}

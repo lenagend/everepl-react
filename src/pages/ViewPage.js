@@ -133,7 +133,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             finalizeCommentAction();
         } catch (error) {
             handleError(error, actionWordMapping[commentActionType] || actionWordMapping.default);
-            console.log(error);
         }
     };
 
