@@ -16,13 +16,15 @@ export const AuthProvider = ({ children }) => {
 
     // 사용자 로그인 처리 함수
     const login = (token) => {
-        localStorage.setItem('authToken', token);
-        setAuthToken(token);
-        const decoded = jwtDecode(token);
-        setUser({ userId: decoded.sub });
-
-        const { from } = location.state || { from: { pathname: "/" } };
-        navigate(from, { replace: true });
+        handleUserToken(token)
+            .then(() => {
+                const { from } = location.state || { from: { pathname: "/" } };
+                navigate(from, { replace: true });  // 토큰 처리가 완료된 후에 페이지 이동
+            })
+            .catch((error) => {
+                console.error("Login failed:", error);
+                // 실패 처리 로직, 예를 들어 에러 메시지를 사용자에게 보여주기
+            });
     };
 
     const logout = () => {
@@ -35,47 +37,59 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const token = localStorage.getItem('authToken');
         if (token) {
-            setAuthToken(token);
-            const decoded = jwtDecode(token);
-            setUser({ userId: decoded.sub });
+            handleUserToken(token);
         }
     }, []);
 
-    const fetchUser = async (userId) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/api/auth/${userId}`);
-            setUser(response.data);
-        } catch (error) {
-            console.error('Error fetching user:', error);
-        }
+    const fetchUser = (userId) => {
+        axios.get(`http://localhost:8080/api/auth/${userId}`)
+            .then(response => {
+                setUser(response.data);
+            })
+            .catch(error => {
+                console.error('Error fetching user:', error);
+            });
     };
 
-    const useRequireAuth = () => {
-        const auth = useAuth(); // AuthContext로부터 auth 객체를 가져옵니다.
+    const handleUserToken = (token) => {
+        return verifyToken(token)
+            .then(isValid => {
+                if (isValid) {
+                    setAuthToken(token);  // 상태 업데이트
+                    localStorage.setItem("authToken", token);
+                    const decoded = jwtDecode(token);
+                    const userId = decoded.sub;
+                    return fetchUser(userId);  // 이 반환값이 다음 then()에 연결됩니다.
+                } else {
+                    throw new Error("Invalid token or token expired");  // 오류를 던집니다.
+                }
+            });
+    };
+
+
+    const useRequireAuth = (authToken) => {
         const navigate = useNavigate();
         const location = useLocation();
 
-        // 비동기 함수를 정의합니다. 이 함수는 토큰의 유효성을 서버에 검증 요청합니다.
-        const verifyToken = async (token) => {
-
-            try {
-                const response = await axiosInstance.get('http://localhost:8080/api/auth/verify-token');
-                return response.status === 200;
-            } catch (error) {
-                console.error('Token verification failed:', error);
-                return false;
-            }
-        };
-
-        // 이 함수는 비동기 작업을 수행하므로, 호출하는 쪽에서 await을 사용해야 합니다.
         return async () => {
-            // auth.user가 없거나 토큰 검증이 실패한 경우, 로그인 페이지로 리다이렉션합니다.
-            if (!authToken || !(await verifyToken(auth.authToken))) {
+            if (!authToken || !(await verifyToken(authToken))) {
                 navigate('/login', { state: { from: location.pathname } });
                 return false;
             }
             return true;
         };
+    };
+
+    const verifyToken = async (token) => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/auth/verify-token', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            return response.status === 200;
+        } catch (error) {
+            console.error('Token verification failed:', error);
+            return false;
+        }
     };
 
 
@@ -93,7 +107,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, authToken, login, logout, axiosInstance, requireAuth: useRequireAuth() }}>
+        <AuthContext.Provider value={{ user, authToken, login, logout, axiosInstance, useRequireAuth  }}>
             {children}
         </AuthContext.Provider>
     );

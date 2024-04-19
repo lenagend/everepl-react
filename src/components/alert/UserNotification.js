@@ -20,12 +20,12 @@ export default function UserNotification() {
     const { user } = useAuth();
 
     useEffect(() => {
-        if (!user || !user.userId) return;  // Make sure user and user.userId exist
+        if (!user || !user.id) return;  // Make sure user and user.userId exist
         const socket = new SockJS('http://localhost:8080/ws');
         const stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function(frame) {
-            const subscriptionPath = `/topic/user.${user.userId}`;
+            const subscriptionPath = `/topic/user.${user.id}`;
             stompClient.subscribe(subscriptionPath, function(notification) {
                 const data = JSON.parse(notification.body);
                 handleNotificationOpen(data);
@@ -58,8 +58,6 @@ export default function UserNotification() {
                     open={state.open}
                     autoHideDuration={5000}
                     onClose={handleNotificationClose}
-                    variant="soft"
-                    color="primary"
                     size="lg"
                     sx={{ opacity: 0.9 }}
                     endDecorator={<IconButton onClick={handleNotificationClose} sx={{zIndex: 10}}><CloseIcon/></IconButton>}

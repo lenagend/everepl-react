@@ -24,7 +24,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
-    const { axiosInstance, requireAuth  } = useAuth();
+    const { axiosInstance, useRequireAuth  } = useAuth();
     const navigate = useNavigate();
 
     const fetchUrlInfo = (id) => {
@@ -113,7 +113,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const handleSubmit = async () => {
-        const isAuthValid = await requireAuth(); // requireAuth의 결과를 기다립니다.
+        const isAuthValid = await useRequireAuth; // requireAuth의 결과를 기다립니다.
         if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
 
         if (!validate()) return;
@@ -219,7 +219,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const [commentEditorExpanded, setCommentEditorExpanded] = React.useState(false);
 
     const handleToggleCommentEditor = (expand) => {
-        if (!requireAuth()) return;
+        if (!useRequireAuth) return;
 
         // 파라미터에 따라 댓글창 상태 설정
         if (expand === true) {
