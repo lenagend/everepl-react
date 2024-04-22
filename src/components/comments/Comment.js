@@ -26,7 +26,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
         <Card orientation="horizontal" variant="soft" color="neutral" sx={{
             overflow: 'auto',
             padding: 1,
-            ml : (comment.path.length - 3) * 1,
+            ml : commentConext === "liked" ? 0 : (comment.path.length - 3) * 1,
             '& .css-14d6vet-MuiCardContent-root:last-child': {
                 paddingBottom: 0
             },

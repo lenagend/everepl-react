@@ -16,7 +16,7 @@ export default function LikedComments() {
     const [comments, setComments] = useState([]);
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(20);
-    const { axiosInstance, requireAuth  } = useAuth();
+    const { axiosInstance, useRequireAuth  } = useAuth();
 
     // 페이지 변경 핸들러
     const handlePageChange = (event, newPage) => {
@@ -36,8 +36,8 @@ export default function LikedComments() {
     }, [location]);
 
     const fetchComments = async () => {
-        const isAuthValid = await requireAuth(); // requireAuth의 결과를 기다립니다.
-        if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
+        const isAuthValid = await useRequireAuth; // requireAuth의 결과를 기다립니다.
+        if (!isAuthValid) return;
 
         axiosInstance.get('http://localhost:8080/api/like', {
             params: {
