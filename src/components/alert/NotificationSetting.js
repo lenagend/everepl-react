@@ -8,9 +8,9 @@ import {useAuth} from "../../security/AuthProvider";
 
 export default function NotificationSetting(){
     const [checked, setChecked] = useState(true);
-    const { user, axiosInstance, useRequireAuth  } = useAuth();
+    const { user, fetchUser, axiosInstance, useRequireAuth  } = useAuth();
 
-    const updateUser = () => {
+    const updateUser = (checked) => {
         if (!useRequireAuth) return;
 
         const data = {
@@ -19,8 +19,8 @@ export default function NotificationSetting(){
 
         axiosInstance.patch(`http://localhost:8080/api/auth`, data)
             .then(response => {
-                console.log(response.data);
-                setChecked(response.data.notificationSetting); // 서버 응답으로 상태 업데이트
+                setChecked(response.data.notificationSetting);
+                fetchUser(user.id);
             })
             .catch(error => {
                 console.error('Error fetching user:', error);
@@ -34,8 +34,7 @@ export default function NotificationSetting(){
     }, [user]);
 
     const handleNotificationSetting = (event) => {
-        setChecked(event.target.checked)
-        updateUser();
+        updateUser(event.target.checked);
     }
 
     if (!user) {

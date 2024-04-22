@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
                     const userId = decoded.sub;
                     return fetchUser(userId);  // 이 반환값이 다음 then()에 연결됩니다.
                 } else {
-                    throw new Error("Invalid token or token expired");  // 오류를 던집니다.
+                    logout();
                 }
             });
     };
@@ -107,7 +107,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, authToken, login, logout, axiosInstance, useRequireAuth  }}>
+        <AuthContext.Provider value={{ user, fetchUser, authToken, login, logout, axiosInstance, useRequireAuth  }}>
             {children}
         </AuthContext.Provider>
     );
