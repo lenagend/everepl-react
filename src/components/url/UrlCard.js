@@ -97,7 +97,7 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                     level="body-xs"
                                     sx={{ zIndex: 6, pt: 0, pl: 0.5}}
                                 >
-                                {isMobile ? truncateString(urlInfo.url, 65) : truncateString(urlInfo.url, 100)}
+                                {isMobile ? truncateString(urlInfo.url, 40) : truncateString(urlInfo.url, 100)}
                                 </Link>
                                 {isListItem? (
                                     <Stack direction="row" spacing={1} alignItems="center" sx={{pt: 0.5}}>

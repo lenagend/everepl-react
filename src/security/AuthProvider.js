@@ -8,7 +8,7 @@ const AuthContext = createContext({ authToken: null });
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-    const [authToken, setAuthToken] = useState(null);
+    const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken') || null);
     const [user, setUser] = useState(null);
 
     const navigate = useNavigate();
@@ -35,9 +35,8 @@ export const AuthProvider = ({ children }) => {
     };
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
-        if (token) {
-            handleUserToken(token);
+        if (authToken) {
+            handleUserToken(authToken);
         }
     }, []);
 
@@ -66,20 +65,6 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
-
-    const useRequireAuth = (authToken) => {
-        const navigate = useNavigate();
-        const location = useLocation();
-
-        return async () => {
-            if (!authToken || !(await verifyToken(authToken))) {
-                navigate('/login', { state: { from: location.pathname } });
-                return false;
-            }
-            return true;
-        };
-    };
-
     const verifyToken = async (token) => {
         try {
             const response = await axios.get('http://localhost:8080/api/auth/verify-token', {
@@ -91,7 +76,6 @@ export const AuthProvider = ({ children }) => {
             return false;
         }
     };
-
 
     const axiosInstance = axios.create({
         baseURL: 'http://localhost:8080/api',
@@ -107,8 +91,9 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, fetchUser, authToken, login, logout, axiosInstance, useRequireAuth  }}>
+        <AuthContext.Provider value={{ user, fetchUser, authToken, login, logout, axiosInstance, verifyToken  }}>
             {children}
         </AuthContext.Provider>
     );
 };
+

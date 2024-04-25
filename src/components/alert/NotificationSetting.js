@@ -3,15 +3,12 @@ import {Switch} from "@mui/joy";
 import Stack from "@mui/joy/Stack";
 import * as React from "react";
 import {useEffect, useState} from "react";
-import axios from "axios";
 import {useAuth} from "../../security/AuthProvider";
 
 export default function NotificationSetting(){
     const [checked, setChecked] = useState(true);
-    const { user, fetchUser, axiosInstance, useRequireAuth  } = useAuth();
-
+    const { user, fetchUser, axiosInstance  } = useAuth();
     const updateUser = (checked) => {
-        if (!useRequireAuth) return;
 
         const data = {
             notificationSetting: checked

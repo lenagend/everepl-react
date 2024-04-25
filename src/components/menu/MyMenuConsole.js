@@ -10,6 +10,7 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import {useLocation, useNavigate} from "react-router-dom";
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 
 export default function MyMenuConsole({ currentPath }) {
     const navigate = useNavigate();
@@ -32,6 +33,7 @@ export default function MyMenuConsole({ currentPath }) {
             <CardContent>
                 <Stack direction="row" spacing={1} divider={<Divider orientation="vertical"/>} justifyContent="flex-start" flexWrap="wrap" useFlexGap>
                     {renderButton('홈으로', '/', <HomeIcon sx={{fontSize: 15}}/>)}
+                    {renderButton('알림', '/my/notification', <NotificationsActiveIcon sx={{fontSize: 15}}/>)}
                     {renderButton('프로필', '/my/profile', <PersonIcon sx={{fontSize: 15}}/>)}
                     {renderButton('페이지', '/my/liked/urlinfos', <FavoriteIcon sx={{fontSize: 15}}/>)}
                     {renderButton('댓글', '/my/liked/comments', <FavoriteIcon sx={{fontSize: 15}}/>)}

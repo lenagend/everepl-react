@@ -170,7 +170,6 @@ export default function Appbar({ url, setUrl }) {
                             </Stack>
                     </Stack>
             </AppBar>
-            {/*{renderMobileMenu}*/}
         </Box>
     );
 }

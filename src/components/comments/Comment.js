@@ -26,7 +26,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
         <Card orientation="horizontal" variant="soft" color="neutral" sx={{
             overflow: 'auto',
             padding: 1,
-            ml : commentConext === "liked" ? 0 : (comment.path.length - 3) * 1,
+            ml : commentConext === "liked" ? 0 : comment.path.split('/').length - 1,
             '& .css-14d6vet-MuiCardContent-root:last-child': {
                 paddingBottom: 0
             },
@@ -81,7 +81,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                         </Typography>
                         <Stack direction="row" spacing={1}   alignItems="center">
                                 <Stack direction="row" spacing={0}  alignItems="center">
-                                    {comment.path.length <= 9 ? (
+                                    {comment.path.split('/').length <= 5 ? (
                                         <IconButton  variant="plain" sx={{
                                             "--IconButton-size": "20px",
                                             ml: -0.5

@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect, useState} from "react";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import UrlCard from "../components/url/UrlCard";
 import Stack from "@mui/joy/Stack";
 import CommentList from "../components/comments/CommentList";
@@ -16,16 +16,17 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ShareIcon from '@mui/icons-material/Share';
 import Button from "@mui/joy/Button";
 import LikeButton from "../components/iconButtons/LikeButton";
-import { useNavigate } from 'react-router-dom';
 import {useAuth} from "../security/AuthProvider";
+import {useRequireAuth} from "../security/useRequireAuth";
 
 const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
-    //urlInfo를 불러오는 로직
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
-    const { axiosInstance, useRequireAuth  } = useAuth();
+    const { axiosInstance } = useAuth();
+    const isAuthValid = useRequireAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const fetchUrlInfo = (id) => {
         axios.get(`http://localhost:8080/api/url/${id}`)
@@ -113,8 +114,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const handleSubmit = async () => {
-        const isAuthValid = await useRequireAuth; // requireAuth의 결과를 기다립니다.
-        if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
+        if(!isAuthValid) navigate('/login', { state: { from: location.pathname } });;
 
         if (!validate()) return;
 
@@ -219,7 +219,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const [commentEditorExpanded, setCommentEditorExpanded] = React.useState(false);
 
     const handleToggleCommentEditor = (expand) => {
-        if (!useRequireAuth) return;
+        if(!isAuthValid) navigate('/login', { state: { from: location.pathname } });;
 
         // 파라미터에 따라 댓글창 상태 설정
         if (expand === true) {

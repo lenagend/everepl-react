@@ -12,7 +12,6 @@ import Stack from "@mui/joy/Stack";
 import LoadingProgressModal from "../components/loading/LoadingProgressModal";
 import qs from "qs";
 import PolicyPage from "./PolicyPage";
-import BookmarkPage from "./MyPage";
 import LoginPage from "./LoginPage";
 import MyPage from "./MyPage";
 import Profile from "../components/myPage/Profile";
@@ -20,6 +19,8 @@ import LikedUrlInfos from "../components/myPage/LikedUrlInfos";
 import MyComments from "../components/myPage/MyComments";
 import LikedComments from "../components/myPage/LikedComments";
 import UserNotification from "../components/alert/UserNotification";
+import PrivateRoute from "../security/PrivateRoute";
+import MyNotification from "../components/myPage/MyNotification";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -211,11 +212,12 @@ export default function Root(){
                     />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/policy" element={<PolicyPage />} />
-                    <Route path="/my" element={<MyPage />} />
-                    <Route path="/my/profile" element={<Profile/>}/>
-                    <Route path="/my/liked/urlinfos" element={<LikedUrlInfos/>}/>
-                    <Route path="/my/liked/comments" element={<LikedComments/>}/>
-                    <Route path="/my/comments" element={<MyComments/>}/>
+                    <Route path="/my" element={<PrivateRoute element={MyPage} />} />
+                    <Route path="/my/notification" element={<PrivateRoute element={MyNotification} />}/>
+                    <Route path="/my/profile" element={<PrivateRoute element={Profile} />}/>
+                    <Route path="/my/liked/urlinfos" element={<PrivateRoute element={LikedUrlInfos} />}/>
+                    <Route path="/my/liked/comments" element={<PrivateRoute element={LikedComments} />}/>
+                    <Route path="/my/comments" element={<PrivateRoute element={MyComments} />}/>
                     <Route path="/404" element={<NotFoundPage />} />
                     <Route path="*" element={<WildcardPage />} />
                 </Routes>

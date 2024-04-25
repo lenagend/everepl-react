@@ -2,8 +2,6 @@ import MyMenuConsole from "../menu/MyMenuConsole";
 import Stack from "@mui/joy/Stack";
 import * as React from "react";
 import LoadingUrlCardList from "../loading/LoadingUrlCardList";
-import NotExistUrlCardList from "../loading/NotExistUrlCardList";
-import UrlListCard from "../url/UrlListCard";
 import {useEffect, useState} from "react";
 import {useAuth} from "../../security/AuthProvider";
 import {useLocation} from "react-router-dom";
@@ -16,7 +14,7 @@ export default function LikedComments() {
     const [comments, setComments] = useState([]);
     const [page, setPage] = useState(1);
     const [size, setSize] = useState(20);
-    const { axiosInstance, useRequireAuth  } = useAuth();
+    const { axiosInstance } = useAuth();
 
     // 페이지 변경 핸들러
     const handlePageChange = (event, newPage) => {
@@ -36,9 +34,6 @@ export default function LikedComments() {
     }, [location]);
 
     const fetchComments = async () => {
-        const isAuthValid = await useRequireAuth; // requireAuth의 결과를 기다립니다.
-        if (!isAuthValid) return;
-
         axiosInstance.get('http://localhost:8080/api/like', {
             params: {
                 page: page - 1,
