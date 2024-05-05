@@ -5,7 +5,8 @@ import Card from "@mui/joy/Card";
 import {CardOverflow, Divider, Typography} from "@mui/joy";
 import CardContent from "@mui/joy/CardContent";
 import NotExistCommentList from "../loading/NotExistCommentList";
-export default function CommentList({comments, onCommentButtonClick, onEditComment, onDeleteComment}) {
+import {Pagination} from "@mui/material";
+export default function CommentList({comments, onCommentButtonClick, onEditComment, onDeleteComment, page, onPageChange}) {
 
     return(
         <Card sx={{ p: 1.5, pt: 0}}>
@@ -44,6 +45,14 @@ export default function CommentList({comments, onCommentButtonClick, onEditComme
                                 />
                             </React.Fragment>
                         ))}
+                        <Stack alignItems={'center'} justifyContent={'center'}>
+                            <Pagination
+                                sx={{ textAlign: 'center' }}
+                                count={comments.totalPages} // 전체 페이지 수
+                                page={page} // 현재 페이지
+                                onChange={onPageChange}
+                            />
+                        </Stack>
                     </Stack>
                 ) : (
                     <NotExistCommentList border={"none"}/>

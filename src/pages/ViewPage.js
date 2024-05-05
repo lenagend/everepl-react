@@ -188,6 +188,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                     targetId: targetId
                 },
             });
+            console.log(response.data);
             return response.data; // 데이터 반환
         } catch (error) {
             throw new Error('댓글 정보를 불러오는데 실패했습니다.'); // 에러 처리
@@ -262,6 +263,8 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                     comments={comments}
                     onCommentButtonClick={handleCommentButtonClick}
                     onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
+                    page={commentPage}
+                    onPageChange={handleCommentPageChange}
                 />
             )}
             <Stack direction="row" justifyContent="flex-end">
