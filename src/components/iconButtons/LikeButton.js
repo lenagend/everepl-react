@@ -1,22 +1,25 @@
 import {IconButton, Snackbar, Typography} from "@mui/joy";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import * as React from "react";
-import axios from "axios";
 import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {useState} from "react";
-import Box from "@mui/joy/Box";
-import {useAuth} from "../../security/AuthProvider";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import Stack from "@mui/joy/Stack";
+import {useRequireAuth} from "../../security/useRequireAuth";
+import {useLocation, useNavigate} from "react-router-dom";
+import {useAuth} from "../../security/AuthProvider";
 
 export default function ({ targetId, targetType, likeButtonContext}) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [message, setMessage] = useState('');
-    const { axiosInstance, requireAuth  } = useAuth();
+    const isAuthValid = useRequireAuth();
+    const navigate = useNavigate();
+    const { axiosInstance } = useAuth();
+    const location = useLocation();
 
     const handleLikeClick = async () => {
-        const isAuthValid = await requireAuth(); // requireAuth의 결과를 기다립니다.
+        if(!isAuthValid) navigate('/login', { state: { from: location.pathname } });;
         if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
 
         try {
