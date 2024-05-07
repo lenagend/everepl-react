@@ -12,7 +12,7 @@ export default function LikedCommentList({comments}) {
                 <Stack spacing={1} divider={<Divider orientation="horizontal" />}>
                     {comments.content.map((comment, index) => (
                             <Comment
-                                key={index} comment={comment} commentConext={"liked"}
+                                key={index} comment={comment} context={"liked"}
                             />
                     ))}
                 </Stack>

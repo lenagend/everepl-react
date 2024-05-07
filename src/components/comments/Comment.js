@@ -1,4 +1,4 @@
-import {Divider, Stack,  Dropdown, IconButton} from "@mui/joy";
+import {Divider, Stack, Dropdown, IconButton, Button} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
 import CardContent from "@mui/joy/CardContent";
@@ -19,21 +19,41 @@ import FlagTwoToneIcon from '@mui/icons-material/FlagTwoTone';
 import Box from "@mui/material/Box";
 import LikeButton from "../iconButtons/LikeButton";
 import Link from "@mui/joy/Link";
+import CommentList from "./CommentList";
+import {useState} from "react";
+import axios from "axios";
 
-export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, commentConext}){
+export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
+
+    const [replies, setReplies] = useState(comment.replies || []);
+    const [isAllRepliesLoaded, setIsAllRepliesLoaded] = useState(false);
+    const [isRepliesLoading, setIsRepliesLoading] = useState(false);
+
+    const fetchAllReplies = async () => {
+        try {
+            setIsRepliesLoading(true);
+            const response = await axios.get(`http://localhost:8080/api/comment/${comment.id}/replies`);
+            setReplies(response.data);
+            setIsAllRepliesLoaded(true);
+            setIsRepliesLoading(false);
+        } catch (error) {
+            console.log('Failed to load all replies:', error);
+            setIsRepliesLoading(false);
+        }
+    };
+
     return(
         <Box>
         <Card orientation="horizontal" variant="soft" color="neutral" sx={{
             overflow: 'auto',
             padding: 1,
-            ml : commentConext === "liked" ? 0 : comment.path.split('/').length - 1,
             '& .css-14d6vet-MuiCardContent-root:last-child': {
                 paddingBottom: 0
             },
             gap: 0,
-            border: '1px dotted #0A2744'
+            border: comment.type === 'COMMENT' ? 'none' : '1px dotted #0A2744'
         }}>
-            {commentConext === 'liked' && (
+            {context === 'liked' && (
                 <Link
                     underline="none"
                     href={comment.rootUrl}
@@ -53,6 +73,11 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                         alt=""
                     />
                 </AspectRatio>
+                {replies.length > 0 && (
+                    <Stack direction="row" sx={{height: '100%'}}>
+                        <Box sx={{width: '50%'}}/><Divider orientation="vertical"></Divider><Box/>
+                    </Stack>
+                )}
             </Stack>
 
             <CardContent sx={{flexGrow: 1}}>
@@ -81,26 +106,19 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                         </Typography>
                         <Stack direction="row" spacing={1}   alignItems="center">
                                 <Stack direction="row" spacing={0}  alignItems="center">
-                                    {comment.path.split('/').length <= 5 ? (
-                                        <IconButton  variant="plain" sx={{
-                                            "--IconButton-size": "20px",
-                                            ml: -0.5
-                                        }}
-                                        onClick={() => onCommentButtonClick(comment, comment.id, 'COMMENT')}
-                                        >
-                                            <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
-                                        </IconButton>
-                                    ): (
-                                        <IconButton  variant="plain" sx={{
-                                            "--IconButton-size": "20px",
-                                            ml: -0.5
-                                        }}
-                                        disabled
-                                        >
-                                            <CommentsDisabledTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
-                                        </IconButton>
-                                    )}
-                                    <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
+                                    {comment.type !== 'COMMENT' && (
+                                        <>
+                                            <IconButton  variant="plain" sx={{
+                                                "--IconButton-size": "20px",
+                                                ml: -0.5
+                                            }}
+                                            onClick={() => onCommentButtonClick(comment, comment.id, 'COMMENT')}
+                                            >
+                                                <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
+                                            </IconButton>
+                                            <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.commentCount}</Typography>
+                                        </>
+                                  )}
                                 </Stack>
                                 <Stack direction="row" spacing={0}  alignItems="center">
                                  <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"}/>
@@ -124,6 +142,22 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                 </Stack>
                             )}
                         </Stack>
+                        {replies.length > 0 && (
+                            <Box sx={{ width: 'calc(100% + 15px)', transform: 'translateX(-15px)' }}>
+                                <CommentList
+                                    comments={replies}
+                                    onCommentButtonClick={onCommentButtonClick}
+                                    onEditComment={onEditComment}
+                                    onDeleteComment={onDeleteComment}
+                                    isReply={true}
+                                />
+                                {comment.commentCount - replies.length > 0 && (
+                                    <Button variant={'plain'} onClick={fetchAllReplies} disabled={isRepliesLoading}>
+                                        {comment.commentCount - replies.length}개의 대댓글 더보기<MoreHorizIcon/>
+                                    </Button>
+                                )}
+                            </Box>
+                        )}
                     </Stack>
                 </Stack>
             </CardContent>

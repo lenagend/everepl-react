@@ -2,40 +2,51 @@ import Comment from "./Comment";
 import * as React from "react";
 import Stack from "@mui/joy/Stack";
 import Card from "@mui/joy/Card";
-import {CardOverflow, Divider, Typography} from "@mui/joy";
 import CardContent from "@mui/joy/CardContent";
 import NotExistCommentList from "../loading/NotExistCommentList";
-import {Pagination} from "@mui/material";
-export default function CommentList({comments, onCommentButtonClick, onEditComment, onDeleteComment, page, onPageChange}) {
+import {CardOverflow, Typography} from "@mui/joy";
+export default function CommentList({commentCount, comments, onCommentButtonClick, onEditComment, onDeleteComment, isReply}) {
 
     return(
-        <Card sx={{ p: 1.5, pt: 0}}>
-            <CardOverflow
-                color="primary"
-                sx={{
-                    pt: 2.5,
-                    pb: 1,
-                    px: 1,
-                    borderBottom: '1px solid',
-                    borderColor: 'divider',
+        <Card sx={{
+            p: !isReply && 1.5,
+            background: isReply && 'none',
+            pt: !isReply && 0,
+            border: isReply && 'none',
+        }}>
+            {!isReply &&
+               (
+                <CardOverflow
+                    color="primary"
+                    sx={{
+                        pt: 2.5,
+                        pb: 1,
+                        px: 1,
+                        borderBottom: '1px solid',
+                        borderColor: 'divider',
 
-                }}
-            >
-                <Typography level="title-md" sx={{
-                    background: '#0A2744',
-                    color: '#E3EFFB',
-                    p: 0.5,
-                    px: 1.5,
-                    borderRadius: 8,
-                    fontWeight: 600
-                }}>
-                    {comments.totalElements}개의 댓글이 있습니다.
-                </Typography>
-            </CardOverflow>
+                    }}
+                >
+                    <Typography level="title-md" sx={{
+                        background: '#0A2744',
+                        color: '#E3EFFB',
+                        p: 0.5,
+                        px: 1.5,
+                        borderRadius: 8,
+                        fontWeight: 600
+                    }}>
+                        {/*처리할것*/}
+                        {commentCount}개의 댓글이 있습니다.
+                    </Typography>
+                </CardOverflow>
+                 )
+            }
             <CardContent sx={{background: 'none'}}>
-                {comments.totalElements > 0 ? (
-                    <Stack spacing={1}>
-                        {comments.content.map((comment) => (
+                {comments.length > 0 ? (
+                    <Stack
+                        spacing={isReply ? 0 : 1}
+                    >
+                        {comments.map((comment) => (
                             <React.Fragment key={comment.id}>
                                 <Comment
                                     comment={comment}
@@ -45,14 +56,6 @@ export default function CommentList({comments, onCommentButtonClick, onEditComme
                                 />
                             </React.Fragment>
                         ))}
-                        <Stack alignItems={'center'} justifyContent={'center'}>
-                            <Pagination
-                                sx={{ textAlign: 'center' }}
-                                count={comments.totalPages} // 전체 페이지 수
-                                page={page} // 현재 페이지
-                                onChange={onPageChange}
-                            />
-                        </Stack>
                     </Stack>
                 ) : (
                     <NotExistCommentList border={"none"}/>

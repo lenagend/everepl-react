@@ -59,7 +59,7 @@ export default function LikedComments() {
             ) : comments.content.length === 0 ? (
                 <NotExistCommentList/>
             ) : (
-                <LikedCommentList comments={comments} page={page} commentConext={"liked"}/>
+                <LikedCommentList comments={comments} page={page} context={"liked"}/>
             )}
         </Stack>
     );

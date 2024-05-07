@@ -168,13 +168,12 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const finalizeCommentAction = () => {
         resetCommentState(); // 상태 초기화
         handleToggleCommentEditor(false); // 댓글창 닫기
+        fetchUrlInfo(id);
         fetchComments(id, 'URLINFO', 1); // 댓글 목록 다시 불러오기
     };
 
 
     //댓글 목록을 위한 변수와 함수들.
-    const [commentPage, setCommentPage] = useState(1);
-    const [commentSize, setCommentSize] = useState(10);
     const [comments, setComments] = useState([]);
     const [isCommentsLoading, setIsCommentsLoading] = useState(true);
 
@@ -182,13 +181,10 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
         try {
             const response = await axios.get('http://localhost:8080/api/comment', {
                 params: {
-                    page: page - 1,
-                    size: commentSize,
                     type: targetType,
                     targetId: targetId
                 },
             });
-            console.log(response.data);
             return response.data; // 데이터 반환
         } catch (error) {
             throw new Error('댓글 정보를 불러오는데 실패했습니다.'); // 에러 처리
@@ -198,7 +194,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const fetchComments = (targetId, targetType, page) => {
         setIsCommentsLoading(true);
 
-        fetchCommentsData(targetId, targetType, page, commentSize)
+        fetchCommentsData(targetId, targetType)
             .then(data => {
                 setComments(data); // 상태 업데이트
                 setIsCommentsLoading(false);
@@ -207,13 +203,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                 setErrorMessage({ fetchError: error.message });
                 setIsCommentsLoading(false);
             });
-    };
-
-    // 페이지 변경 핸들러
-    const handleCommentPageChange = () => {
-        const nextPage = commentPage + 1;
-        setCommentPage(nextPage); // 페이지 번호 업데이트
-        fetchComments(id, 'URLINFO', nextPage); // 수정된 fetchComments 함수 호출
     };
 
     //댓글창 열었다 닫기
@@ -260,11 +249,10 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                 <LoadingUrlCardList/>
             ) :  (
                 <CommentList
+                    commentCount={urlInfo ? urlInfo.commentCount : 0}
                     comments={comments}
                     onCommentButtonClick={handleCommentButtonClick}
                     onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
-                    page={commentPage}
-                    onPageChange={handleCommentPageChange}
                 />
             )}
             <Stack direction="row" justifyContent="flex-end">
