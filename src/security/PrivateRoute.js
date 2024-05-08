@@ -1,17 +1,12 @@
 import React from 'react';
-import {useRequireAuth} from "./useRequireAuth";
 import { Navigate, useLocation } from 'react-router-dom';
-import LoadingProgressModal from "../components/loading/LoadingProgressModal";
+import {useAuth} from "./AuthProvider";
 
 const PrivateRoute = ({ element: Component }) => {
-    const isAuthValid = useRequireAuth();
+    const { isAuthenticated } = useAuth();
     const location = useLocation();
 
-    if (isAuthValid === null) {
-        return <LoadingProgressModal isLoading={true}/>;
-    }
-
-    return isAuthValid ? <Component /> : <Navigate to="/login" state={{ from: location.pathname }} />;
+    return isAuthenticated ? <Component /> : <Navigate to="/login" state={{ from: location.pathname }} />;
 };
 
 

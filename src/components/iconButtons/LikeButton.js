@@ -6,21 +6,21 @@ import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import {useState} from "react";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import Stack from "@mui/joy/Stack";
-import {useRequireAuth} from "../../security/useRequireAuth";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../../security/AuthProvider";
 
 export default function ({ targetId, targetType, likeButtonContext}) {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [message, setMessage] = useState('');
-    const isAuthValid = useRequireAuth();
     const navigate = useNavigate();
-    const { axiosInstance } = useAuth();
+    const { isAuthenticated, axiosInstance } = useAuth();
     const location = useLocation();
 
     const handleLikeClick = async () => {
-        if(!isAuthValid) navigate('/login', { state: { from: location.pathname } });;
-        if (!isAuthValid) return; // 인증이 유효하지 않으면 함수를 종료합니다.
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: location.pathname } });
+            return;
+        }
 
         try {
             const response = await axiosInstance.post('http://localhost:8080/api/like/add', {

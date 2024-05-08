@@ -17,14 +17,12 @@ import ShareIcon from '@mui/icons-material/Share';
 import Button from "@mui/joy/Button";
 import LikeButton from "../components/iconButtons/LikeButton";
 import {useAuth} from "../security/AuthProvider";
-import {useRequireAuth} from "../security/useRequireAuth";
 
 const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     let {id} = useParams();
     const [urlInfo, setUrlInfo] = useState(null);
     const [isUrlCardLoading, setIsUrlCardLoading] = useState(true);
-    const { axiosInstance } = useAuth();
-    const isAuthValid = useRequireAuth();
+    const { isAuthenticated, axiosInstance } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -114,7 +112,10 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const handleSubmit = async () => {
-        if(!isAuthValid) navigate('/login', { state: { from: location.pathname } });;
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: location.pathname } });
+            return;
+        }
 
         if (!validate()) return;
 
@@ -209,7 +210,10 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const [commentEditorExpanded, setCommentEditorExpanded] = React.useState(false);
 
     const handleToggleCommentEditor = (expand) => {
-        if(!isAuthValid) navigate('/login', { state: { from: location.pathname } });;
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: location.pathname } });
+            return;
+        }
 
         // 파라미터에 따라 댓글창 상태 설정
         if (expand === true) {

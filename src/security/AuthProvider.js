@@ -3,13 +3,21 @@ import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
 
-const AuthContext = createContext({ authToken: null });
-
-export const useAuth = () => useContext(AuthContext);
+const AuthContext = createContext({
+    user: null,
+    authToken: null,
+    isAuthenticated: null, // 인증 상태를 추가합니다.
+    fetchUser: () => {},
+    login: () => {},
+    logout: () => {},
+    axiosInstance: undefined,
+    verifyToken: () => {}
+});
 
 export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken') || null);
     const [user, setUser] = useState(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(null);
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -38,7 +46,23 @@ export const AuthProvider = ({ children }) => {
         if (authToken) {
             handleUserToken(authToken);
         }
-    }, []);
+    }, [location.pathname]);
+
+    const handleUserToken = (token) => {
+        return verifyToken(token)
+            .then(isValid => {
+                if (isValid) {
+                    setAuthToken(token);  // 상태 업데이트
+                    setIsAuthenticated(true);
+                    localStorage.setItem("authToken", token);
+                    const decoded = jwtDecode(token);
+                    const userId = decoded.sub;
+                    return fetchUser(userId);  // 이 반환값이 다음 then()에 연결됩니다.
+                } else {
+                    logout();
+                }
+            });
+    };
 
     const fetchUser = (userId) => {
         axios.get(`http://localhost:8080/api/auth/${userId}`)
@@ -50,20 +74,7 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
-    const handleUserToken = (token) => {
-        return verifyToken(token)
-            .then(isValid => {
-                if (isValid) {
-                    setAuthToken(token);  // 상태 업데이트
-                    localStorage.setItem("authToken", token);
-                    const decoded = jwtDecode(token);
-                    const userId = decoded.sub;
-                    return fetchUser(userId);  // 이 반환값이 다음 then()에 연결됩니다.
-                } else {
-                    logout();
-                }
-            });
-    };
+
 
     const verifyToken = async (token) => {
         try {
@@ -91,9 +102,10 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, fetchUser, authToken, login, logout, axiosInstance, verifyToken  }}>
+        <AuthContext.Provider value={{ user, fetchUser, authToken, isAuthenticated, login, logout, axiosInstance, verifyToken  }}>
             {children}
         </AuthContext.Provider>
     );
 };
 
+export const useAuth = () => useContext(AuthContext);
