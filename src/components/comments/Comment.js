@@ -51,12 +51,12 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                 paddingBottom: 0
             },
             gap: 0,
-            border: comment.type === 'COMMENT' ? 'none' : '1px dotted #0A2744'
+            border: comment.type !== 'COMMENT' || context === 'liked' ? '1px dotted #0A2744' : 'none'
         }}>
             {context === 'liked' && (
                 <Link
                     underline="none"
-                    href={comment.rootUrl}
+                    href={comment.link}
                     sx={{ zIndex: 5}}
                     overlay
                 >

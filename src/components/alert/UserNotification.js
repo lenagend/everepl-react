@@ -9,6 +9,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import Stack from "@mui/joy/Stack";
 import Box from "@mui/joy/Box";
 import CloseIcon from '@mui/icons-material/Close';
+import {useNavigate} from "react-router-dom";
 
 export default function UserNotification() {
     const [state, setState] = useState({
@@ -17,7 +18,8 @@ export default function UserNotification() {
         vertical: 'top', // 위치: 상단
         horizontal: 'center', // 위치: 중앙
     });
-    const { user } = useAuth();
+    const { axiosInstance, user } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!user || !user.id) return;  // Make sure user and user.userId exist
@@ -47,6 +49,22 @@ export default function UserNotification() {
         setState({ ...state, open: false, message: {} });
     };
 
+    const updateNotificationStatus = async (notificationId, status) => {
+        try {
+            await axiosInstance.put(`http://localhost:8080/api/notifications/status`, {
+                notificationId: notificationId,
+                status: status
+            });
+        } catch (error) {
+            console.error('Error updating notification status', error);
+        }
+    };
+
+
+    const handleLinkButtonClick = (notificationId, link) => {
+        updateNotificationStatus(notificationId, 'READ').then(navigate(link));
+    }
+
     return(
         <Box>
             {state.message && Object.keys(state.message).length > 0 && (
@@ -60,22 +78,26 @@ export default function UserNotification() {
                     onClose={handleNotificationClose}
                     size="lg"
                     sx={{ opacity: 0.9 }}
+                    startDecorator={<EmailIcon />}
                     endDecorator={<IconButton onClick={handleNotificationClose} sx={{zIndex: 10}}><CloseIcon/></IconButton>}
+
                 >
                     <Stack>
                         <Link
                             underline="none"
-                            href={state.message.rootUrl}
                             sx={{ zIndex: 5 }}
                             overlay
+                            onClick={() => handleLinkButtonClick(state.message.id, state.message.link)}
                         >
                         </Link>
-                        <Typography startDecorator={<EmailIcon />}>
-                            {state.message.user.name}님으로부터
-                        </Typography>
-                        <Typography level="title-md">
-                            {state.message.text}
-                        </Typography>
+                        <Stack spacing={2}>
+                            <Typography >
+                                {state.message.title}
+                            </Typography>
+                            <Typography level="title-md">
+                                {state.message.message}
+                            </Typography>
+                        </Stack>
                     </Stack>
                 </Snackbar>
             )}

@@ -1,5 +1,7 @@
 // stringUtils.js
 
+import moment from "moment/moment";
+
 /**
  * 잠재적으로 위험한 문자열을 검사하고 차단하는 함수.
  * @param {string} input - 검사할 문자열.
@@ -61,3 +63,7 @@ export function formatIpAddress(ipAddress) {
     // 알 수 없는 형식인 경우
     return ipAddress;
 }
+
+export function formatDate(dateString){
+    return moment(dateString).format('YYYY-MM-DD HH:mm:ss');
+};

@@ -7,33 +7,28 @@ import {useAuth} from "../../security/AuthProvider";
 import {useLocation, useNavigate} from "react-router-dom";
 import NotExistNotificationList from "../loading/NotExistNotificationList";
 import Alert from '@mui/joy/Alert';
-import PlaylistAddCheckCircleRoundedIcon from '@mui/icons-material/PlaylistAddCheckCircleRounded';
 import Button from "@mui/joy/Button";
 import {Chip, Typography} from "@mui/joy";
+import {formatDate} from "../../utils/stringUtils";
+
+const statusText = {
+    UNREAD: '읽지않음',
+    READ: '읽음'
+};
+
 
 export default function MyNotification() {
     const location = useLocation();
     const [isNotificationsLoading, setIsNotificationsLoading] = useState(true);
     const [notifications, setNotifications] = useState([]);
-    const [page, setPage] = useState(1);
-    const [size, setSize] = useState(20);
     const { axiosInstance, user } = useAuth();
     const navigate = useNavigate();
 
-    // 페이지 변경 핸들러
     useEffect(() => {
         if (user && user.id) {
             fetchNotifications();
         }
-    }, [page, user]);
-
-    useEffect(() => {
-        const queryParams = new URLSearchParams(location.search);
-
-        const pageParam = parseInt(queryParams.get('page'), 10);
-        if (pageParam) setPage(pageParam);
-
-    }, [location]);
+    }, [user]);
 
     const fetchNotifications = async () => {
         if (!user || !user.id) return; // user.id가 없는 경우 함수를 종료합니다.
@@ -49,8 +44,20 @@ export default function MyNotification() {
             });
     };
 
-    const handleLinkButtonClick = (link) => {
-        navigate(link);
+    const updateNotificationStatus = async (notificationId, status) => {
+        try {
+            await axiosInstance.put(`http://localhost:8080/api/notifications/status`, {
+                notificationId: notificationId,
+                status: status
+            });
+        } catch (error) {
+            console.error('Error updating notification status', error);
+        }
+    };
+
+
+    const handleLinkButtonClick = (notificationId, link) => {
+        updateNotificationStatus(notificationId, 'READ').then(navigate(link));
     }
 
     return(
@@ -62,16 +69,17 @@ export default function MyNotification() {
                 <NotExistNotificationList/>
             ) : (
                 notifications.content.map(notification => ( // 알림 데이터가 있는 경우 각 알림을 반복하여 렌더링
-                    <Alert color={"primary"} variant={"outlined"} key={notification.id} sx={{display: 'flex'}}
-                           startDecorator={<Chip color={"primary"}>읽지않음</Chip>}
+                    <Alert color={notification.notificationStatus === 'UNREAD' ? 'primary' : 'neutral'} variant={"outlined"} key={notification.id} sx={{display: 'flex'}}
+                           startDecorator={<Chip color={notification.notificationStatus === 'UNREAD' ? 'primary' : 'neutral'}>{statusText[notification.notificationStatus] || '알 수 없음'}</Chip>}
                             endDecorator={notification.link ?
-                                <Button size="sm" variant="solid" onClick={() => handleLinkButtonClick(notification.link)}>
+                                <Button color={notification.notificationStatus === 'UNREAD' ? 'primary' : 'neutral'} size="sm" variant="solid" onClick={() => handleLinkButtonClick(notification.id, notification.link)}>
                                 보러가기
                                 </Button> : null}
                     >
-                        <Stack sx={{maxWidth: 400}}>
-                            <Typography sx={{maxWidth: 100}}> {notification.title}</Typography>
-                            <Typography sx={{maxWidth: 100}}>{notification.message}</Typography>
+                        <Stack sx={{maxWidth: 400}} spacing={2}>
+                            <Typography> {notification.title}</Typography>
+                            <Typography>{notification.message}</Typography>
+                            <Typography level={'body-xs'}>{formatDate(notification.createdAt)}</Typography>
                         </Stack>
                     </Alert >
                 ))

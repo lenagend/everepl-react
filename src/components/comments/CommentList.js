@@ -5,7 +5,25 @@ import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import NotExistCommentList from "../loading/NotExistCommentList";
 import {CardOverflow, Typography} from "@mui/joy";
+import {useEffect} from "react";
+import {useLocation} from "react-router-dom";
+import Box from "@mui/joy/Box";
 export default function CommentList({commentCount, comments, onCommentButtonClick, onEditComment, onDeleteComment, isReply}) {
+    const location = useLocation();
+
+    // URL에서 commentId 쿼리 파라미터를 추출합니다.
+    const queryParams = new URLSearchParams(location.search);
+    const commentId = queryParams.get('commentId');
+
+    useEffect(() => {
+        if (commentId) {
+            // 해당 댓글로 스크롤 이동
+            const element = document.getElementById(`comment-${commentId}`);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    }, [commentId]);
 
     return(
         <Card sx={{
@@ -48,12 +66,14 @@ export default function CommentList({commentCount, comments, onCommentButtonClic
                     >
                         {comments.map((comment) => (
                             <React.Fragment key={comment.id}>
-                                <Comment
-                                    comment={comment}
-                                    onCommentButtonClick={onCommentButtonClick}
-                                    onEditComment={onEditComment}
-                                    onDeleteComment={onDeleteComment}
-                                />
+                                <Box id={`comment-${comment.id}`}>
+                                    <Comment
+                                        comment={comment}
+                                        onCommentButtonClick={onCommentButtonClick}
+                                        onEditComment={onEditComment}
+                                        onDeleteComment={onDeleteComment}
+                                    />
+                                </Box>
                             </React.Fragment>
                         ))}
                     </Stack>
