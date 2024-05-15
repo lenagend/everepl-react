@@ -22,6 +22,7 @@ import Link from "@mui/joy/Link";
 import CommentList from "./CommentList";
 import {useState} from "react";
 import axios from "axios";
+import ProfileImage from "../user/ProfileImage";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
 
@@ -63,16 +64,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                 </Link>
             )}
             <Stack>
-                <AspectRatio ratio="1" sx={{ width: {
-                        xs: 30,
-                        sm: 60
-                    } }} variant="outlined">
-                    <img
-                        src={comment.user.imageUrl ? comment.user.imageUrl : "/images/character/level3.png"}
-                        loading="lazy"
-                        alt=""
-                    />
-                </AspectRatio>
+                <ProfileImage src={comment.user.imageUrl}/>
                 {replies.length > 0 && (
                     <Stack direction="row" sx={{height: '100%'}}>
                         <Box sx={{width: '50%'}}/><Divider orientation="vertical"></Divider><Box/>

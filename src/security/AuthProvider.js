@@ -83,7 +83,6 @@ export const AuthProvider = ({ children }) => {
             });
             return response.status === 200;
         } catch (error) {
-            console.error('Token verification failed:', error);
             return false;
         }
     };
@@ -102,7 +101,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, fetchUser, authToken, isAuthenticated, login, logout, axiosInstance, verifyToken  }}>
+        <AuthContext.Provider value={{ user, fetchUser, setUser, authToken, isAuthenticated, login, logout, axiosInstance, verifyToken  }}>
             {children}
         </AuthContext.Provider>
     );

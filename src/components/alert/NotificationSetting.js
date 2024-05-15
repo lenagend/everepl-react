@@ -7,17 +7,19 @@ import {useAuth} from "../../security/AuthProvider";
 
 export default function NotificationSetting(){
     const [checked, setChecked] = useState(true);
-    const { user, fetchUser, axiosInstance  } = useAuth();
+    const { user, setUser, axiosInstance  } = useAuth();
     const updateUser = (checked) => {
+        const formData = new FormData();
+        formData.append('notificationSetting', checked);
 
-        const data = {
-            notificationSetting: checked
-        };
 
-        axiosInstance.patch(`http://localhost:8080/api/auth`, data)
+        axiosInstance.patch(`http://localhost:8080/api/auth`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },})
             .then(response => {
                 setChecked(response.data.notificationSetting);
-                fetchUser(user.id);
+                setUser(response.data);
             })
             .catch(error => {
                 console.error('Error fetching user:', error);
