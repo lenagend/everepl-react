@@ -2,11 +2,13 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
+import {STATIC_SERVER_URL} from "../config/Config";
 
 const AuthContext = createContext({
     user: null,
     authToken: null,
-    isAuthenticated: null, // 인증 상태를 추가합니다.
+    isAuthLoading: true, // 권한 체크 로딩 상태를 추가합니다.
+    isAuthenticated: null,
     fetchUser: () => {},
     login: () => {},
     logout: () => {},
@@ -18,6 +20,7 @@ export const AuthProvider = ({ children }) => {
     const [authToken, setAuthToken] = useState(() => localStorage.getItem('authToken') || null);
     const [user, setUser] = useState(null);
     const [isAuthenticated, setIsAuthenticated] = useState(null);
+    const [isAuthLoading, setIsAuthLoading] = useState(true); // 초기 로딩 상태를 true로 설정
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -39,16 +42,19 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem('authToken');
         setAuthToken(null);
         setUser(null);
-
+        setIsAuthenticated(false);
     };
 
     useEffect(() => {
         if (authToken) {
             handleUserToken(authToken);
+        } else {
+            setIsAuthLoading(false); // 토큰이 없으면 로딩 상태를 false로 설정
         }
     }, [location.pathname]);
 
     const handleUserToken = (token) => {
+        setIsAuthLoading(true); // 권한 체크 시작
         return verifyToken(token)
             .then(isValid => {
                 if (isValid) {
@@ -61,12 +67,17 @@ export const AuthProvider = ({ children }) => {
                 } else {
                     logout();
                 }
+            })
+            .finally(() => {
+                setIsAuthLoading(false); // 권한 체크 완료
             });
     };
 
     const fetchUser = (userId) => {
-        axios.get(`http://localhost:8080/api/auth/${userId}`)
+        axiosInstance.get(`/auth/${userId}`)
             .then(response => {
+                const userData = response.data;
+                userData.imageUrl = `${STATIC_SERVER_URL}${userData.imageUrl}`;
                 setUser(response.data);
             })
             .catch(error => {
@@ -74,13 +85,9 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
-
-
-    const verifyToken = async (token) => {
+    const verifyToken = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/api/auth/verify-token', {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await axiosInstance.get('/auth/verify-token');
             return response.status === 200;
         } catch (error) {
             return false;
@@ -88,7 +95,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     const axiosInstance = axios.create({
-        baseURL: 'http://localhost:8080/api',
+        baseURL: process.env.REACT_APP_SPRING_BOOT_SERVER_URL || 'http://localhost:8080/api',
     });
 
     axiosInstance.interceptors.request.use(config => {
@@ -101,7 +108,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, fetchUser, setUser, authToken, isAuthenticated, login, logout, axiosInstance, verifyToken  }}>
+        <AuthContext.Provider value={{ user, fetchUser, setUser, authToken, isAuthenticated, isAuthLoading, login, logout, axiosInstance, verifyToken }}>
             {children}
         </AuthContext.Provider>
     );
