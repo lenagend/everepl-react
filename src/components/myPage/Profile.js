@@ -7,15 +7,22 @@ import {useAuth} from "../../security/AuthProvider";
 import {Badge, CardContent, Input, Typography} from "@mui/joy";
 import CardOverflow from "@mui/joy/CardOverflow";
 import Button from "@mui/joy/Button";
-import axios from "axios";
-import {useRef, useState} from "react";
+import {useEffect, useRef, useState} from "react";
+import Box from "@mui/joy/Box";
 
 export default function Profile() {
-    const { user, setUser, axiosInstance } = useAuth();
+    const { user, setUser, axiosInstance, isAuthLoading } = useAuth();
     const [selectedFile, setSelectedFile] = useState(null);
-    const [name, setName] = useState(user.name);
-    const [previewUrl, setPreviewUrl] = useState(user.imageUrl); // 미리보기 URL 상태
+    const [name, setName] = useState('');
+    const [previewUrl, setPreviewUrl] = useState(''); // 미리보기 URL 상태
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        if (user) {
+            setName(user.name);
+            setPreviewUrl('http://localhost:8000/' + user.imageUrl);
+        }
+    }, [user]);
 
     // 파일 선택을 처리하는 함수
     const handleFileSelect = (event) => {
@@ -43,8 +50,6 @@ export default function Profile() {
         try {
             const response = await axiosInstance.patch('/auth', formData);
             setUser(response.data);
-            setPreviewUrl(response.data.imageUrl);
-            console.log(response.data);
             alert('프로필이 업데이트 되었습니다.');
         } catch (error) {
             console.error('프로필 업데이트 중 에러 발생:', error);
@@ -52,10 +57,18 @@ export default function Profile() {
         }
     };
 
-    return(
+    if (isAuthLoading) {
+        return <Box>프로필 로딩중...</Box>; // 로딩 중일 때 표시할 컴포넌트
+    }
+
+    if (!user) {
+        return <Box>유저를 찾을 수 없습니다. 다시 로그인해주세요.</Box>; // 사용자 정보가 없을 때 표시할 컴포넌트
+    }
+
+    return (
         <Stack spacing={2}>
             <MyMenuConsole currentPath={"/my/profile"} />
-            <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} alignItems={'center'} justifyContent={'center'} >
+            <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }} alignItems={'center'} justifyContent={'center'}>
                 <Card
                     orientation="horizontal"
                     sx={{
@@ -89,16 +102,11 @@ export default function Profile() {
                                     vertical: 'bottom',
                                     horizontal: 'right',
                                 }}
-                                badgeContent={<Typography sx={{color: 'white', fontSize: {
-                                        xs: 7,
-                                        sm: 10
-                                    }}}>클릭</Typography>}
-                                sx={{
-                                    p: 0
-                                }}
+                                badgeContent={<Typography sx={{ color: 'white', fontSize: { xs: 7, sm: 10 } }}>클릭</Typography>}
+                                sx={{ p: 0 }}
                                 onClick={() => fileInputRef.current.click()}
                             >
-                                <ProfileImage src={previewUrl}/>
+                                <ProfileImage src={previewUrl} />
                                 <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleFileSelect} />
                             </Badge>
                             <Input sx={{ flexGrow: 1 }} value={name} onChange={(e) => setName(e.target.value)} />
@@ -131,13 +139,12 @@ export default function Profile() {
                     >
                         회원탈퇴
                     </CardOverflow>
-                        <Stack spacing={2} direction={'row'} alignItems={'center'} width={'100%'} >
-                            <Typography sx={{flexGrow: 1}}>복구할 수 없습니다</Typography>
-                            <Button color={'danger'}>탈퇴</Button>
-                        </Stack>
+                    <Stack spacing={2} direction={'row'} alignItems={'center'} width={'100%'}>
+                        <Typography sx={{ flexGrow: 1 }}>복구할 수 없습니다</Typography>
+                        <Button color={'danger'}>탈퇴</Button>
+                    </Stack>
                 </Card>
             </Stack>
-
         </Stack>
     );
 }
