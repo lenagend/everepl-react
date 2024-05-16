@@ -8,13 +8,13 @@ import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import Stack from "@mui/joy/Stack";
 import {useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../../security/AuthProvider";
+import {useSnackbar} from "../../contexts/SnackbarProvider";
 
 export default function ({ targetId, targetType, likeButtonContext}) {
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
-    const [message, setMessage] = useState('');
     const navigate = useNavigate();
     const { isAuthenticated, axiosInstance } = useAuth();
     const location = useLocation();
+    const { showSnackbar } = useSnackbar();
 
     const handleLikeClick = async () => {
         if (!isAuthenticated) {
@@ -23,22 +23,15 @@ export default function ({ targetId, targetType, likeButtonContext}) {
         }
 
         try {
-            const response = await axiosInstance.post('http://localhost:8080/api/like/add', {
+            const response = await axiosInstance.post('/like/add', {
                 targetId: targetId,
                 type: targetType
             });
-            setMessage('성공적으로 좋아요 되었습니다.');
+            showSnackbar('성공적으로 좋아요 되었습니다.', 'success');
         } catch (error) {
-            setMessage('좋아요에 실패했습니다. ' + error.response.data.message);
-        } finally {
-            setSnackbarOpen(true);
+            showSnackbar('좋아요에 실패했습니다. ' + (error.response?.data?.message || error.message), 'error');
         }
     };
-
-    const handleMessageClose = () => {
-        setSnackbarOpen(false);
-        setMessage('');
-    }
 
 
     const renderLikeButton = () => {
@@ -64,22 +57,6 @@ export default function ({ targetId, targetType, likeButtonContext}) {
     return (
         <Stack alignContent={"center"} justifyContent={"center"}>
             {renderLikeButton()}
-            <Snackbar
-            autoHideDuration={5000}
-            open={snackbarOpen}
-            color="neutral"
-            variant="outlined"
-            size="lg"
-            onClose={handleMessageClose}
-            startDecorator={<ErrorOutlineRoundedIcon/>}
-            endDecorator={
-                <IconButton color="neutral" onClick={handleMessageClose}>
-                    <CloseRoundedIcon/>
-                </IconButton>
-            }
-        >
-            <Typography color="neutral" level="title-md" >{message}</Typography>
-        </Snackbar>
         </Stack>
     );
 }

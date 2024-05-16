@@ -3,6 +3,7 @@ import Stack from "@mui/joy/Stack";
 import * as React from "react";
 import {useAuth} from "../../security/AuthProvider";
 import { useNavigate, useLocation } from 'react-router-dom';
+import {SPRING_BOOT_SERVER_URL} from "../../config/Config";
 
 
 export default function LoginCard() {
@@ -17,7 +18,7 @@ export default function LoginCard() {
         );
 
         const handleOAuthMessage = (event) => {
-            if (event.origin !== "http://localhost:8080") return; // 메시지 소스 검증
+            if (event.origin !== SPRING_BOOT_SERVER_URL) return; // 메시지 소스 검증
 
             const { token } = event.data;
             if (token) {
@@ -42,21 +43,21 @@ export default function LoginCard() {
                     width="250"
                     height={50}
                     src="/images/sns/googleLoginButton.png"
-                    onClick={() => handleLogin('http://localhost:8080/oauth2/authorization/google')}
+                    onClick={() => handleLogin(SPRING_BOOT_SERVER_URL + '/oauth2/authorization/google')}
                     style={{ cursor: 'pointer' }}
                 />
                 <img
                     width="250"
                     height={50}
                     src="/images/sns/kakaoLoginButton.png"
-                    onClick={() => handleLogin('http://localhost:8080/oauth2/authorization/kakao')}
+                    onClick={() => handleLogin(SPRING_BOOT_SERVER_URL + '/oauth2/authorization/kakao')}
                     style={{ cursor: 'pointer' }}
                 />
                 <img
                     width="250"
                     height={50}
                     src="/images/sns/naverLoginButton.png"
-                    onClick={() => handleLogin('http://localhost:8080/oauth2/authorization/naver')}
+                    onClick={() => handleLogin(SPRING_BOOT_SERVER_URL + '/oauth2/authorization/naver')}
                     style={{ cursor: 'pointer' }}
                 />
             </Stack>

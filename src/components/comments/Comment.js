@@ -23,17 +23,19 @@ import CommentList from "./CommentList";
 import {useState} from "react";
 import axios from "axios";
 import ProfileImage from "../user/ProfileImage";
+import {useAuth} from "../../security/AuthProvider";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
 
     const [replies, setReplies] = useState(comment.replies || []);
     const [isAllRepliesLoaded, setIsAllRepliesLoaded] = useState(false);
     const [isRepliesLoading, setIsRepliesLoading] = useState(false);
+    const { axiosInstance } = useAuth();
 
     const fetchAllReplies = async () => {
         try {
             setIsRepliesLoading(true);
-            const response = await axios.get(`http://localhost:8080/api/comment/${comment.id}/replies`);
+            const response = await axiosInstance.get(`/comment/${comment.id}/replies`);
             setReplies(response.data);
             setIsAllRepliesLoaded(true);
             setIsRepliesLoading(false);

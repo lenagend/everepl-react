@@ -33,7 +33,7 @@ export default function MyNotification() {
     const fetchNotifications = async () => {
         if (!user || !user.id) return; // user.id가 없는 경우 함수를 종료합니다.
 
-        axiosInstance.get(`http://localhost:8080/api/notifications/user/${user.id}`)
+        axiosInstance.get(`/notifications/user/${user.id}`)
             .then(response => {
                 setNotifications(response.data);
                 setIsNotificationsLoading(false);
@@ -46,7 +46,7 @@ export default function MyNotification() {
 
     const updateNotificationStatus = async (notificationId, status) => {
         try {
-            await axiosInstance.put(`http://localhost:8080/api/notifications/status`, {
+            await axiosInstance.put(`/notifications/status`, {
                 notificationId: notificationId,
                 status: status
             });

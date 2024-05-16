@@ -5,7 +5,6 @@ import * as React from "react";
 import {useEffect, useState} from "react";
 import ViewPage from "./ViewPage";
 import UrlListPage from "./UrlListPage";
-import axios from "axios";
 import NotFoundPage from "./NotFoundPage";
 import WildcardPage from "./WildcardPage";
 import Stack from "@mui/joy/Stack";
@@ -21,6 +20,7 @@ import LikedComments from "../components/myPage/LikedComments";
 import UserNotification from "../components/alert/UserNotification";
 import PrivateRoute from "../security/PrivateRoute";
 import MyNotification from "../components/myPage/MyNotification";
+import {useAuth} from "../security/AuthProvider";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -28,10 +28,11 @@ export default function Root(){
     const location = useLocation();
     const navigate = useNavigate();
     const [isViewPageLoading, setIsViewPageLoading] = useState(false);
+    const { axiosInstance } = useAuth();
 
     const handleSearch = (url) => {
         setIsViewPageLoading(true);
-        axios.post('http://localhost:8080/api/url', { url: url })
+        axiosInstance.post('/url', { url: url })
             .then(response => {
                 if (response.status === 200) {
                     navigate(`/view/${response.data.id}`);
@@ -150,7 +151,7 @@ export default function Root(){
     const [isUrlInfosLoading, setIsUrlInfosLoading] = useState(true);
 
     const fetchUrlInfos = () => {
-        axios.get('http://localhost:8080/api/url', {
+        axiosInstance.get('/url', {
             params: {
                 filterStrings:  currentFilter,
                 sort: currentSort,

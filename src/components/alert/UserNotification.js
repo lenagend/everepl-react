@@ -10,6 +10,7 @@ import Stack from "@mui/joy/Stack";
 import Box from "@mui/joy/Box";
 import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from "react-router-dom";
+import {SPRING_BOOT_SERVER_URL} from "../../config/Config";
 
 export default function UserNotification() {
     const [state, setState] = useState({
@@ -23,7 +24,7 @@ export default function UserNotification() {
 
     useEffect(() => {
         if (!user || !user.id) return;  // Make sure user and user.userId exist
-        const socket = new SockJS('http://localhost:8080/ws');
+        const socket = new SockJS(SPRING_BOOT_SERVER_URL + '/ws');
         const stompClient = Stomp.over(socket);
 
         stompClient.connect({}, function(frame) {
@@ -51,7 +52,7 @@ export default function UserNotification() {
 
     const updateNotificationStatus = async (notificationId, status) => {
         try {
-            await axiosInstance.put(`http://localhost:8080/api/notifications/status`, {
+            await axiosInstance.put(`/notifications/status`, {
                 notificationId: notificationId,
                 status: status
             });

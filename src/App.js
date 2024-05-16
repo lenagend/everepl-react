@@ -2,14 +2,17 @@ import {BrowserRouter } from "react-router-dom";
 import Root from "./pages/Root";
 import * as React from "react";
 import {AuthProvider} from "./security/AuthProvider";
+import {SnackbarProvider} from "./contexts/SnackbarProvider";
 
 function App() {
   return (
       <BrowserRouter>
           <AuthProvider>
-              <div className="App">
-                  <Root/>
-              </div>
+              <SnackbarProvider>
+                  <div className="App">
+                      <Root/>
+                  </div>
+              </SnackbarProvider>
           </AuthProvider>
       </BrowserRouter>
   );

@@ -35,7 +35,7 @@ export default function LikedUrlInfos() {
 
     const fetchUrlInfos = async () => {
 
-        axiosInstance.get('http://localhost:8080/api/like', {
+        axiosInstance.get('/like', {
             params: {
                 page: page - 1,
                 size: size,

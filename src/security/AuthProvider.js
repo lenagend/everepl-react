@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import {STATIC_SERVER_URL} from "../config/Config";
+import {SPRING_BOOT_SERVER_URL, STATIC_SERVER_URL} from "../config/Config";
 
 const AuthContext = createContext({
     user: null,
@@ -85,9 +85,11 @@ export const AuthProvider = ({ children }) => {
             });
     };
 
-    const verifyToken = async () => {
+    const verifyToken = async (token) => {
         try {
-            const response = await axiosInstance.get('/auth/verify-token');
+            const response = await axios.get(SPRING_BOOT_SERVER_URL + '/api/auth/verify-token', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
             return response.status === 200;
         } catch (error) {
             return false;
@@ -95,11 +97,12 @@ export const AuthProvider = ({ children }) => {
     };
 
     const axiosInstance = axios.create({
-        baseURL: process.env.REACT_APP_SPRING_BOOT_SERVER_URL || 'http://localhost:8080/api',
+        baseURL: SPRING_BOOT_SERVER_URL + '/api',
     });
 
     axiosInstance.interceptors.request.use(config => {
         if (authToken) {
+            console.log(authToken);
             config.headers['Authorization'] = 'Bearer ' + authToken;
         }
         return config;

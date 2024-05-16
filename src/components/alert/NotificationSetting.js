@@ -13,7 +13,7 @@ export default function NotificationSetting(){
         formData.append('notificationSetting', checked);
 
 
-        axiosInstance.patch(`http://localhost:8080/api/auth`, formData, {
+        axiosInstance.patch(`/api/auth`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },})

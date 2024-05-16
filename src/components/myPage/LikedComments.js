@@ -34,7 +34,7 @@ export default function LikedComments() {
     }, [location]);
 
     const fetchComments = async () => {
-        axiosInstance.get('http://localhost:8080/api/like', {
+        axiosInstance.get('/like', {
             params: {
                 page: page - 1,
                 size: size,

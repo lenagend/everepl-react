@@ -20,7 +20,7 @@ export default function Profile() {
     useEffect(() => {
         if (user) {
             setName(user.name);
-            setPreviewUrl('http://localhost:8000/' + user.imageUrl);
+            setPreviewUrl(user.imageUrl);
         }
     }, [user]);
 

@@ -4,7 +4,6 @@ import {useLocation, useNavigate, useParams} from "react-router-dom";
 import UrlCard from "../components/url/UrlCard";
 import Stack from "@mui/joy/Stack";
 import CommentList from "../components/comments/CommentList";
-import axios from "axios";
 import LoadingUrlCard from "../components/loading/LoadingUrlCard";
 import UrlListPage from "./UrlListPage";
 import {handleScrollToTop} from "../utils/navigationUtils";
@@ -27,7 +26,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const location = useLocation();
 
     const fetchUrlInfo = (id) => {
-        axios.get(`http://localhost:8080/api/url/${id}`)
+        axiosInstance.get(`/url/${id}`)
             .then(response => {
                 setUrlInfo(response.data);
                 setIsUrlCardLoading(false);
@@ -84,7 +83,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
 
     // API 요청에 대한 함수들
     const createComment = async () => {
-        return await axiosInstance.post('http://localhost:8080/api/comment', {
+        return await axiosInstance.post('/comment', {
             text: commentText,
             type: targetType || 'URLINFO',
             targetId: targetId || id
@@ -92,14 +91,14 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     };
 
     const editComment = async () => {
-        return await axiosInstance.patch('http://localhost:8080/api/comment', {
+        return await axiosInstance.patch('/comment', {
             text: commentText,
             targetId: targetId
         });
     };
 
     const deleteComment = async () => {
-        return await axiosInstance.delete(`http://localhost:8080/api/comment/${targetId}`);
+        return await axiosInstance.delete(`/comment/${targetId}`);
     };
 
     // 에러 처리 함수
@@ -180,7 +179,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
 
     const fetchCommentsData = async (targetId, targetType, page, commentSize) => {
         try {
-            const response = await axios.get('http://localhost:8080/api/comment', {
+            const response = await axiosInstance.get('/comment', {
                 params: {
                     type: targetType,
                     targetId: targetId
