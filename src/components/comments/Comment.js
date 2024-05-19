@@ -21,9 +21,9 @@ import LikeButton from "../iconButtons/LikeButton";
 import Link from "@mui/joy/Link";
 import CommentList from "./CommentList";
 import {useState} from "react";
-import axios from "axios";
 import ProfileImage from "../user/ProfileImage";
 import {useAuth} from "../../security/AuthProvider";
+import {useSnackbar} from "../../contexts/SnackbarProvider";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
 
@@ -31,6 +31,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
     const [isAllRepliesLoaded, setIsAllRepliesLoaded] = useState(false);
     const [isRepliesLoading, setIsRepliesLoading] = useState(false);
     const { axiosInstance } = useAuth();
+    const { showSnackbar } = useSnackbar();
 
     const fetchAllReplies = async () => {
         try {
@@ -40,7 +41,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
             setIsAllRepliesLoaded(true);
             setIsRepliesLoading(false);
         } catch (error) {
-            console.log('Failed to load all replies:', error);
+            showSnackbar('답글 목록을 불러오는데 실패했습니다. ' + 'danger');
             setIsRepliesLoading(false);
         }
     };

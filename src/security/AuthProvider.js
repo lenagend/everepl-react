@@ -102,7 +102,6 @@ export const AuthProvider = ({ children }) => {
 
     axiosInstance.interceptors.request.use(config => {
         if (authToken) {
-            console.log(authToken);
             config.headers['Authorization'] = 'Bearer ' + authToken;
         }
         return config;
@@ -111,7 +110,7 @@ export const AuthProvider = ({ children }) => {
     });
 
     return (
-        <AuthContext.Provider value={{ user, fetchUser, setUser, authToken, isAuthenticated, isAuthLoading, login, logout, axiosInstance, verifyToken }}>
+        <AuthContext.Provider value={{ user, fetchUser,  authToken, isAuthenticated, isAuthLoading, login, logout, axiosInstance, verifyToken }}>
             {children}
         </AuthContext.Provider>
     );

@@ -1,9 +1,6 @@
-import {IconButton, Snackbar, Typography} from "@mui/joy";
+import {IconButton} from "@mui/joy";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import * as React from "react";
-import ErrorOutlineRoundedIcon from "@mui/icons-material/ErrorOutlineRounded";
-import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
-import {useState} from "react";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import Stack from "@mui/joy/Stack";
 import {useLocation, useNavigate} from "react-router-dom";
@@ -27,9 +24,9 @@ export default function ({ targetId, targetType, likeButtonContext}) {
                 targetId: targetId,
                 type: targetType
             });
-            showSnackbar('성공적으로 좋아요 되었습니다.', 'success');
+            showSnackbar('성공적으로 좋아요 되었습니다.', 'primary');
         } catch (error) {
-            showSnackbar('좋아요에 실패했습니다. ' + (error.response?.data?.message || error.message), 'error');
+            showSnackbar('좋아요에 실패했습니다. ' + (error.response?.data?.message || error.message), 'danger');
         }
     };
 

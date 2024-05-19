@@ -9,13 +9,15 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import Button from "@mui/joy/Button";
 import {useEffect, useRef, useState} from "react";
 import Box from "@mui/joy/Box";
+import {useSnackbar} from "../../contexts/SnackbarProvider";
 
 export default function Profile() {
-    const { user, setUser, axiosInstance, isAuthLoading } = useAuth();
+    const { user, fetchUser, axiosInstance, isAuthLoading } = useAuth();
     const [selectedFile, setSelectedFile] = useState(null);
     const [name, setName] = useState('');
     const [previewUrl, setPreviewUrl] = useState(''); // 미리보기 URL 상태
     const fileInputRef = useRef(null);
+    const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         if (user) {
@@ -34,7 +36,7 @@ export default function Profile() {
                 const preview = URL.createObjectURL(file); // 선택된 이미지의 미리보기 URL 생성
                 setPreviewUrl(preview); // 미리보기 URL 업데이트
             } else {
-                alert('이미지 파일만 선택 가능하며, 크기는 5MB 이하여야 합니다.');
+                showSnackbar('이미지 파일만 선택 가능하며, 크기는 5MB 이하여야 합니다.' , 'danger');
             }
         }
     };
@@ -49,11 +51,11 @@ export default function Profile() {
 
         try {
             const response = await axiosInstance.patch('/auth', formData);
-            setUser(response.data);
-            alert('프로필이 업데이트 되었습니다.');
+            fetchUser(response.data.id);
+            setSelectedFile(null);
+            showSnackbar('프로필이 업데이트 되었습니다.' , 'primary');
         } catch (error) {
-            console.error('프로필 업데이트 중 에러 발생:', error);
-            alert('프로필 업데이트에 실패했습니다.');
+            showSnackbar('프로필 업데이트에 실패했습니다.' + error.message, 'danger');
         }
     };
 
