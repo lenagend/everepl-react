@@ -24,6 +24,7 @@ import {useState} from "react";
 import ProfileImage from "../user/ProfileImage";
 import {useAuth} from "../../security/AuthProvider";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
+import {STATIC_SERVER_URL} from "../../config/Config";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
 
@@ -32,6 +33,8 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
     const [isRepliesLoading, setIsRepliesLoading] = useState(false);
     const { axiosInstance } = useAuth();
     const { showSnackbar } = useSnackbar();
+
+    const commentUserUrl = comment.user.imageUrl && `${STATIC_SERVER_URL}${comment.user.imageUrl}`;
 
     const fetchAllReplies = async () => {
         try {
@@ -67,7 +70,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                 </Link>
             )}
             <Stack>
-                <ProfileImage src={comment.user.imageUrl}/>
+                <ProfileImage src={commentUserUrl}/>
                 {replies.length > 0 && (
                     <Stack direction="row" sx={{height: '100%'}}>
                         <Box sx={{width: '50%'}}/><Divider orientation="vertical"></Divider><Box/>

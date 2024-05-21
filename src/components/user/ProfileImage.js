@@ -12,7 +12,7 @@ export default function ProfileImage({src}){
                 }
             }}
             variant={'soft'}
-            src={src ? src : "/images/character/level3.png"}
+            src={src ? src : "/images/default/defaultProfileImage.png"}
             alt={'프로필이미지'}
         />
     )

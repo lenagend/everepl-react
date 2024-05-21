@@ -77,13 +77,14 @@ export const AuthProvider = ({ children }) => {
         axiosInstance.get(`/auth/${userId}`)
             .then(response => {
                 const userData = response.data;
-                userData.imageUrl = `${STATIC_SERVER_URL}${userData.imageUrl}`;
-                setUser(response.data);
+                userData.imageUrl = userData.imageUrl && `${STATIC_SERVER_URL}${userData.imageUrl}`;
+                setUser(userData);
             })
             .catch(error => {
                 console.error('Error fetching user:', error);
             });
     };
+
 
     const verifyToken = async (token) => {
         try {

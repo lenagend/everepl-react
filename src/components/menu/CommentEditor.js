@@ -14,6 +14,8 @@ import {Collapse} from "@mui/material";
 import Link from "@mui/joy/Link";
 import Textarea from "@mui/joy/Textarea";
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import {useAuth} from "../../security/AuthProvider";
+import ProfileImage from "../user/ProfileImage";
 
 const ExpandMore = styled((props) => {
     const { expand, ...other } = props;
@@ -29,6 +31,8 @@ const ExpandMore = styled((props) => {
 export default function CommentEditor({   commentText, onCommentChange, onSubmit, selectedComment,
                                           handleCommentExpandClick, commentEditorExpanded, handleCommentButtonClick,
                                           commentActionType, resetCommentState }) {
+
+    const { user } = useAuth();
 
     // 댓글 제목 결정
     const commentTitles = {
@@ -120,16 +124,11 @@ export default function CommentEditor({   commentText, onCommentChange, onSubmit
                                         </Box>
                                 </CardContent>
                                 <Stack spacing={2}>
-                                    <AspectRatio ratio="1" sx={{ width: {
-                                            xs: 60,
-                                            sm: 90
-                                        }}} variant="outlined">
-                                        <img
-                                            src="/images/character/level2.png"
-                                            loading="lazy"
-                                            alt=""
-                                        />
-                                    </AspectRatio>
+                                    {user && (
+                                        <Link href={'/my/profile'}>
+                                            <ProfileImage src={user.imageUrl}/>
+                                        </Link>
+                                    )}
                                     <IconButtonJoy variant="solid" color="primary" sx={{flexGrow: 1}}
                                     onClick={onSubmit}
                                     >
