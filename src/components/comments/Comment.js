@@ -2,14 +2,10 @@ import {Divider, Stack, Dropdown, IconButton, Button} from "@mui/joy";
 import Typography from "@mui/joy/Typography";
 import * as React from "react";
 import CardContent from "@mui/joy/CardContent";
-import { styled } from '@mui/material/styles';
 import Card from "@mui/joy/Card";
-import AspectRatio from "@mui/joy/AspectRatio";
 import TimeAgo from "../../utils/TimeAgo";
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
-import CommentsDisabledTwoToneIcon from '@mui/icons-material/CommentsDisabledTwoTone';
 import MenuButton from "@mui/joy/MenuButton";
 import Menu from "@mui/joy/Menu";
 import MenuItem from "@mui/joy/MenuItem";
@@ -25,13 +21,14 @@ import ProfileImage from "../user/ProfileImage";
 import {useAuth} from "../../security/AuthProvider";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
 import {STATIC_SERVER_URL} from "../../config/Config";
+import ReportButton from "../iconButtons/ReportButton";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
 
     const [replies, setReplies] = useState(comment.replies || []);
     const [isAllRepliesLoaded, setIsAllRepliesLoaded] = useState(false);
     const [isRepliesLoading, setIsRepliesLoading] = useState(false);
-    const { axiosInstance } = useAuth();
+    const { axiosInstance, user } = useAuth();
     const { showSnackbar } = useSnackbar();
 
     const commentUserUrl = comment.user.imageUrl && `${STATIC_SERVER_URL}${comment.user.imageUrl}`;
@@ -122,19 +119,34 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                  <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"}/>
                                 <Typography sx={{ml: 0}} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                                 </Stack>
-                            {!comment.isDeleted && (
                                 <Stack direction="row" spacing={0}  alignItems="center">
+                                    <Stack alignContent={"center"} justifyContent={"center"}>
+                                        <Dropdown>
+                                            <MenuButton
+                                                slots={{ root: IconButton }}
+                                                slotProps={{ root: { variant: 'plane' } }}
+                                            >
+                                                <FlagTwoToneIcon color="action" sx={{ ml: -1.5 }} />
+                                            </MenuButton>
+                                            <Menu>
+                                                <ReportButton targetId={comment.user.id} targetType={'USER'} />
+                                                <ReportButton targetId={comment.user.id} targetType={'COMMENT'} />
+                                            </Menu>
+                                        </Dropdown>
+                                    </Stack>
+                                </Stack>
+                            {!comment.isDeleted && user && comment.user && user.id === comment.user.id && (
+                                <Stack direction="row" spacing={0} alignItems="center">
                                     <Dropdown>
                                         <MenuButton
                                             slots={{ root: IconButton }}
-                                            slotProps={{ root: { variant: 'plane'} }}
+                                            slotProps={{ root: { variant: 'plane' } }}
                                         >
-                                            <MoreHorizIcon color="action"/>
+                                            <MoreHorizIcon color="action" />
                                         </MenuButton>
                                         <Menu>
-                                            <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon  color="action"/>수정</MenuItem>
-                                            <MenuItem onClick={() => onDeleteComment(comment)}><DeleteTwoToneIcon  color="action"/>삭제</MenuItem>
-                                            <MenuItem><FlagTwoToneIcon  color="action"/>신고</MenuItem>
+                                            <MenuItem onClick={() => onEditComment(comment)}><EditTwoToneIcon color="action" />수정</MenuItem>
+                                            <MenuItem onClick={() => onDeleteComment(comment)}><DeleteTwoToneIcon color="action" />삭제</MenuItem>
                                         </Menu>
                                     </Dropdown>
                                 </Stack>

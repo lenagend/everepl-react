@@ -13,9 +13,9 @@ import {ButtonGroup, IconButton, Snackbar, Typography} from "@mui/joy";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ShareIcon from '@mui/icons-material/Share';
-import Button from "@mui/joy/Button";
 import LikeButton from "../components/iconButtons/LikeButton";
 import {useAuth} from "../security/AuthProvider";
+import ReportButton from "../components/iconButtons/ReportButton";
 
 const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     let {id} = useParams();
@@ -265,7 +265,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                     spacing="0.5rem"
                 >
                     <LikeButton targetId={id} targetType='URLINFO'/>
-                    <Button>신고</Button>
+                    <ReportButton targetId={id} targetType={'URLINFO'} />
                     <IconButton><ShareIcon/></IconButton>
                 </ButtonGroup>
             </Stack>

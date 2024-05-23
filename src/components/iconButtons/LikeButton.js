@@ -7,7 +7,7 @@ import {useLocation, useNavigate} from "react-router-dom";
 import {useAuth} from "../../security/AuthProvider";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
 
-export default function ({ targetId, targetType, likeButtonContext}) {
+export default function LikeButton({ targetId, targetType, likeButtonContext}) {
     const navigate = useNavigate();
     const { isAuthenticated, axiosInstance } = useAuth();
     const location = useLocation();

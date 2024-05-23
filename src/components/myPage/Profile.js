@@ -55,7 +55,7 @@ export default function Profile() {
             setSelectedFile(null);
             showSnackbar('프로필이 업데이트 되었습니다.' , 'primary');
         } catch (error) {
-            showSnackbar('프로필 업데이트에 실패했습니다.' + error.message, 'danger');
+            showSnackbar('프로필 업데이트에 실패했습니다.' + error.response.data.message, 'danger');
         }
     };
 

@@ -21,6 +21,7 @@ import UserNotification from "../components/alert/UserNotification";
 import PrivateRoute from "../security/PrivateRoute";
 import MyNotification from "../components/myPage/MyNotification";
 import {useAuth} from "../security/AuthProvider";
+import {useSnackbar} from "../contexts/SnackbarProvider";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -29,6 +30,7 @@ export default function Root(){
     const navigate = useNavigate();
     const [isViewPageLoading, setIsViewPageLoading] = useState(false);
     const { axiosInstance } = useAuth();
+    const { showSnackbar } = useSnackbar();
 
     const handleSearch = (url) => {
         setIsViewPageLoading(true);
@@ -39,7 +41,7 @@ export default function Root(){
                 }
             })
             .catch(error => {
-                console.error("Error: ", error.response ? error.response.data : error.message);
+                showSnackbar(error.response.data.message, 'danger');
             })
             .finally(()=>{
                 setIsViewPageLoading(false);

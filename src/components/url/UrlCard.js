@@ -13,8 +13,6 @@ import TimeAgo from "../../utils/TimeAgo";
 import ChatBubbleTwoToneIcon from "@mui/icons-material/ChatBubbleTwoTone";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import YouTubeEmbed from "../embeds/YouTubeEmbed";
-import InstagramEmbed from "../embeds/InstagramEmbed";
 
 
 export default function UrlCard({ isListItem, urlInfo }) {
@@ -50,8 +48,9 @@ export default function UrlCard({ isListItem, urlInfo }) {
                     }
                 }}
             >
-                <CardContent sx={{p: 0,
-                    pb: isListItem? 0 : 2
+                <CardContent sx={{
+                    p: 0,
+                    pb: 0
                 }} >
                     <Stack direction="row" spacing={3} >
                         <Link
@@ -131,18 +130,12 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                         </Stack>
                                     </Stack>
                                 ): null}
+                            <Typography color="danger" level="title-md">
+                                {urlInfo.description}
+                            </Typography>
                         </Stack>
                     </Stack>
                 </CardContent>
-                {isListItem ? null : (
-                    <CardOverflow>
-                        {urlInfo.url.includes('youtube.com') ? (
-                            <YouTubeEmbed url={urlInfo.url} />
-                        ) : urlInfo.url.includes('instagram.com') ? (
-                            <InstagramEmbed url={urlInfo.url} />
-                        ) : null}
-                    </CardOverflow>
-                )}
             </Card>
     );
 }
