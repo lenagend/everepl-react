@@ -22,6 +22,8 @@ import PrivateRoute from "../security/PrivateRoute";
 import MyNotification from "../components/myPage/MyNotification";
 import {useAuth} from "../security/AuthProvider";
 import {useSnackbar} from "../contexts/SnackbarProvider";
+import AdminRoute from "../security/AdminRoute";
+import AdminPage from "./AdminPage";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -221,6 +223,7 @@ export default function Root(){
                     <Route path="/my/liked/urlinfos" element={<PrivateRoute element={LikedUrlInfos} />}/>
                     <Route path="/my/liked/comments" element={<PrivateRoute element={LikedComments} />}/>
                     <Route path="/my/comments" element={<PrivateRoute element={MyComments} />}/>
+                    <Route path="/admin" element={<AdminRoute element={AdminPage} />} />
                     <Route path="/404" element={<NotFoundPage />} />
                     <Route path="*" element={<WildcardPage />} />
                 </Routes>

@@ -3,6 +3,7 @@ import * as React from "react";
 import Stack from "@mui/joy/Stack";
 import LoginCard from "../components/login/LoginCard";
 import LogoButton from "../components/iconButtons/LogoButton";
+import Link from "@mui/joy/Link";
 
 const LoginPage = () => {
     return(
@@ -23,6 +24,11 @@ const LoginPage = () => {
                         <Typography level="body-md" textAlign="center">
                             어떠한 정보도 저장하고 있지 않습니다
                         </Typography>
+                        <Box sx={{textAlign: 'center'}}>
+                            <Link href={'/policy'} >
+                                개인정보처리방침
+                            </Link>
+                        </Box>
                     </Box>
                    <LoginCard />
                 </Stack>
