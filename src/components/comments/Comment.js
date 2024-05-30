@@ -97,7 +97,9 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                 <Typography level="title-md" color="primary" sx={{mr: 1}}>@{comment.parentCommentUser.name}</Typography>
                             )}
                             {comment.text}
-                            {/*{<Typography sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>}*/}
+                            {comment.modified && (
+                                <Typography color="primary" sx={{display: 'block'}} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>
+                            )}
                         </Typography>
                         <Stack direction="row" spacing={1}   alignItems="center">
                                 <Stack direction="row" spacing={0}  alignItems="center">
