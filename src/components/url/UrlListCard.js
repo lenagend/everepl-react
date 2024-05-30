@@ -9,6 +9,7 @@ import Button from "@mui/joy/Button";
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {Pagination, useMediaQuery} from "@mui/material";
+import Box from "@mui/joy/Box";
 
 export default function UrlListCard({urlInfos, page, currentSortKey, onPageChange, onSortChange, isMyPage}){
     const isMobile = useMediaQuery('(max-width:600px)');
@@ -27,46 +28,41 @@ export default function UrlListCard({urlInfos, page, currentSortKey, onPageChang
     );
 
     return(
-        <Card sx={{p: 0, mt: 2, gap: 0}}>
-            {!isMyPage && (
-                <CardOverflow
-                    color="primary"
-                    sx={{
-                        p: 1,
-                        borderBottom: '1px solid',
-                        borderColor: 'divider',
-                    }}
-                >
-                    <Stack direction="row" spacing={1} justifyContent="flex-end" flexWrap="wrap" useFlexGap>
-                        {renderButton('인기', 'popularity', <AutoAwesomeIcon />)}
-                        {renderButton('최신', 'latest', <UploadFileIcon />)}
+        <Box>
+            <Card sx={{p: 0, mt: 2, gap: 0}}>
+                {!isMyPage && (
+                    <CardOverflow
+                        color="primary"
+                        sx={{
+                            p: 1,
+                            borderBottom: '1px solid',
+                            borderColor: 'divider',
+                        }}
+                    >
+                        <Stack direction="row" spacing={1} justifyContent="flex-end" flexWrap="wrap" useFlexGap>
+                            {renderButton('인기', 'popularity', <AutoAwesomeIcon />)}
+                            {renderButton('최신', 'latest', <UploadFileIcon />)}
+                        </Stack>
+                    </CardOverflow>
+                )}
+                <CardContent>
+                    <Stack sx={{ borderRadius: 3 }} divider={<Divider />}>
+                        {urlInfos.content.map((urlInfo, index) => (
+                            <UrlCard key={index} urlInfo={urlInfo} isListItem={true} />
+                        ))}
                     </Stack>
-                </CardOverflow>
-            )}
-            <CardContent>
-                <Stack sx={{ borderRadius: 3 }} divider={<Divider />}>
-                    {urlInfos.content.map((urlInfo, index) => (
-                        <UrlCard key={index} urlInfo={urlInfo} isListItem={true} />
-                    ))}
-                </Stack>
 
-            </CardContent>
-            <CardOverflow
-                color="primary"
-                sx={{
-                    p: 2,
-                    borderTop: '1px solid',
-                    borderColor: 'divider',
-                }}
-            >
+                </CardContent>
+            </Card>
+            <Stack alignItems={'center'} sx={{py: 2}}>
                 <Pagination
-                    sx={{ mx: 'auto' }}
                     count={urlInfos.totalPages} // 전체 페이지 수
                     page={page} // 현재 페이지
                     onChange={onPageChange} // 페이지 변경 핸들러
                     size={isMobile ? "small" : "large"}
+                    color="primary"
                 />
-            </CardOverflow>
-        </Card>
+            </Stack>
+        </Box>
     )
 }
