@@ -2,21 +2,17 @@ import { Box, Typography } from "@mui/joy";
 import * as React from "react";
 import AnnouncementForm from "../components/admin/AnnouncementForm";
 import AnnouncementList from "../components/Announcement/AnnouncementList";
+import Stack from "@mui/joy/Stack";
 
 const AdminPage = () => {
-    const [announcements, setAnnouncements] = React.useState([]);
-
-    const handleAnnouncementCreated = (newAnnouncement) => {
-        setAnnouncements([newAnnouncement, ...announcements]);
-    };
 
     return (
-        <Box>
+        <Stack spacing={2}>
             <Typography level="h1">관리자 페이지</Typography>
             <Typography level="h3">공지사항</Typography>
-            <AnnouncementForm onAnnouncementCreated={handleAnnouncementCreated} />
-            <AnnouncementList announcements={announcements} />
-        </Box>
+            <AnnouncementForm/>
+            <AnnouncementList/>
+        </Stack>
     );
 };
 

@@ -6,6 +6,7 @@ import {useEffect} from "react";
 import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import {handleScrollToTop} from "../utils/navigationUtils";
 import NotExistUrlCardList from "../components/loading/NotExistUrlCardList";
+import AnnouncementList from "../components/Announcement/AnnouncementList";
 
 const UrlListPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
 
@@ -20,6 +21,7 @@ const UrlListPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onP
     return(
             <Stack spacing={2}>
                 <MenuConsole handleFilterChange={onFilterChange} currentFilterKey={currentFilterKey}/>
+                <AnnouncementList/>
                 {isUrlInfosLoading ? (
                     <LoadingUrlCardList/>
                 ) : urlInfos.content.length === 0 ? (
