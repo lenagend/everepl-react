@@ -12,10 +12,12 @@ const AdminRoute = ({ element: Component }) => {
 
     const isAdmin = user && user.role === 'ROLE_ADMIN';
 
-    return isAuthenticated && isAdmin ? (
+    if (!isAdmin) {
+        return <Box>관리자만 이용가능합니다...</Box>; // 권한 체크 로딩 중일 때 표시할 컴포넌트
+    }
+
+    return isAuthenticated && isAdmin && (
         <Component />
-    ) : (
-        <Navigate to="/login" state={{ from: location.pathname }} />
     );
 };
 
