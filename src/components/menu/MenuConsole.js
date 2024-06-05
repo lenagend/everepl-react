@@ -10,7 +10,6 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import FeedIcon from '@mui/icons-material/Feed';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import InstagramIcon from '@mui/icons-material/Instagram';
-import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 import {useNavigate} from "react-router-dom";
 
 export default function MenuConsole({ handleFilterChange, currentFilterKey }) {
