@@ -60,7 +60,7 @@ export default function LikedUrlInfos() {
             ) : urlInfos.content.length === 0 ? (
                 <NotExistUrlCardList/>
             ) : (
-                <UrlListCard urlInfos={urlInfos} page={page} onPageChange={handlePageChange} isMyPage={true}/>
+                <UrlListCard urlInfos={urlInfos} page={page} onPageChange={handlePageChange} hasSortingOptions={true}/>
             )}
         </Stack>
     );

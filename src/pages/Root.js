@@ -24,6 +24,7 @@ import {useAuth} from "../security/AuthProvider";
 import {useSnackbar} from "../contexts/SnackbarProvider";
 import AdminRoute from "../security/AdminRoute";
 import AdminPage from "./AdminPage";
+import SearchResultsPage from "./SearchResultsPage";
 
 export default function Root(){
     //주소창에 url을 붙여 들어왔을때나, 검색바에 url을 검색했을때.
@@ -217,6 +218,7 @@ export default function Root(){
                     />} />
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/policy" element={<PolicyPage />} />
+                    <Route path="/search" element={<SearchResultsPage />} />
                     <Route path="/my" element={<PrivateRoute element={MyPage} />} />
                     <Route path="/my/notification" element={<PrivateRoute element={MyNotification} />}/>
                     <Route path="/my/profile" element={<PrivateRoute element={Profile} />}/>

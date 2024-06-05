@@ -27,7 +27,7 @@ const UrlListPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onP
                 ) : urlInfos.content.length === 0 ? (
                     <NotExistUrlCardList/>
                 ) : (
-                    <UrlListCard urlInfos={urlInfos} page={page} currentSortKey={currentSortKey} onPageChange={onPageChange} onSortChange={onSortChange} isMyPage={false}/>
+                    <UrlListCard urlInfos={urlInfos} page={page} currentSortKey={currentSortKey} onPageChange={onPageChange} onSortChange={onSortChange} hasSortingOptions={false}/>
                 )}
 
 

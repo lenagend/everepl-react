@@ -14,9 +14,8 @@ import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import Stack from "@mui/joy/Stack";
 import MyPageButton from "../iconButtons/MyPageButton";
-import Typography from "@mui/joy/Typography";
-import {Switch} from "@mui/joy";
 import NotificationSetting from "../alert/NotificationSetting";
+import {isValidUrl} from "../../utils/urlUtils";
 const Search = styled('div')(({ theme }) => ({
     position: 'relative',
     borderRadius: 5,
@@ -81,8 +80,16 @@ export default function Appbar({ url, setUrl }) {
     };
 
     const handleSearchButtonClick = () => {
-        setUrl('');
-        navigate(`/${inputValue}`)
+        const input = inputValue.trim();
+        if (isValidUrl(input)) {
+            // URL 처리 로직
+            setUrl('');
+            navigate(`/?url=${encodeURIComponent(input)}`);
+        } else {
+            // 검색어 처리 로직
+            setUrl('');
+            navigate(`/search?title=${encodeURIComponent(input)}`);
+        }
     };
 
     const handleProfileMenuOpen = (event) => {
@@ -146,7 +153,7 @@ export default function Appbar({ url, setUrl }) {
                             </Stack>
                             <Search>
                                 <StyledInputBase
-                                    placeholder="URL을 붙여넣으세요…"
+                                    placeholder="URL혹은 검색어를 입력하세요…"
                                     inputProps={{ 'aria-label': 'search' }}
                                     value={inputValue}
                                     onChange={handleInputChange}

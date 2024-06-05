@@ -11,7 +11,7 @@ import UploadFileIcon from '@mui/icons-material/UploadFile';
 import {Pagination, useMediaQuery} from "@mui/material";
 import Box from "@mui/joy/Box";
 
-export default function UrlListCard({urlInfos, page, currentSortKey, onPageChange, onSortChange, isMyPage}){
+export default function UrlListCard({urlInfos, page, currentSortKey, onPageChange, onSortChange, hasSortingOptions}){
     const isMobile = useMediaQuery('(max-width:600px)');
 
     const renderButton = (label, sortKey, icon) => (
@@ -30,7 +30,7 @@ export default function UrlListCard({urlInfos, page, currentSortKey, onPageChang
     return(
         <Box>
             <Card sx={{p: 0, mt: 2, gap: 0}}>
-                {!isMyPage && (
+                {!hasSortingOptions && (
                     <CardOverflow
                         color="primary"
                         sx={{
