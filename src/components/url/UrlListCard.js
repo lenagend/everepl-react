@@ -29,7 +29,7 @@ export default function UrlListCard({urlInfos, page, currentSortKey, onPageChang
 
     return(
         <Box>
-            <Card sx={{p: 0, mt: 2, gap: 0}}>
+            <Card sx={{p: 0, gap: 0}}>
                 {!hasSortingOptions && (
                     <CardOverflow
                         color="primary"
