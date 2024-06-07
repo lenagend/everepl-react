@@ -29,7 +29,9 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
     const [isRepliesLoading, setIsRepliesLoading] = useState(false);
     const { axiosInstance, user } = useAuth();
     const { showSnackbar } = useSnackbar();
-
+    const htmlContent = {
+        __html: comment.text
+    };
     const commentUserUrl = comment.user.imageUrl && `${STATIC_SERVER_URL}${comment.user.imageUrl}`;
 
     const fetchAllReplies = async () => {
@@ -77,13 +79,13 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                 </Typography>
                             </Stack>
                             <Typography
-                                level="body-sm"
+                                level="title-sm"
                                 pr={{ xs: 1 }}
                             >
                                 {comment.parentCommentUser && (
                                     <Typography level="title-md" color="primary" sx={{ mr: 1 }}>@{comment.parentCommentUser.name}</Typography>
                                 )}
-                                {comment.text}
+                                <article dangerouslySetInnerHTML={htmlContent}></article>
                                 {comment.modified && (
                                     <Typography color="primary" sx={{ display: 'block' }} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>
                                 )}
