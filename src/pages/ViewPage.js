@@ -12,7 +12,6 @@ import LoadingUrlCardList from "../components/loading/LoadingUrlCardList";
 import {ButtonGroup, IconButton, Snackbar, Typography} from "@mui/joy";
 import ErrorOutlineRoundedIcon from '@mui/icons-material/ErrorOutlineRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
-import ShareIcon from '@mui/icons-material/Share';
 import LikeButton from "../components/iconButtons/LikeButton";
 import {useAuth} from "../security/AuthProvider";
 import ReportButton from "../components/iconButtons/ReportButton";
@@ -36,7 +35,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             });
     };
 
-
     useEffect(() => {
         handleScrollToTop();
 
@@ -44,6 +42,13 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
 
         fetchComments(id, 'URLINFO', 1);
     }, [id]);
+
+    useEffect(() => {
+        if (urlInfo && urlInfo.title) {
+            // Set the page title to the date from urlInfo
+            document.title = urlInfo.title;
+        }
+    }, [urlInfo]);
 
     //댓글과 관련된 로직
     const [commentText, setCommentText] = useState('');
@@ -266,7 +271,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                 >
                     <LikeButton targetId={id} targetType='URLINFO'/>
                     <ReportButton targetId={id} targetType={'URLINFO'} />
-                    <IconButton><ShareIcon/></IconButton>
                 </ButtonGroup>
             </Stack>
             <UrlListPage
