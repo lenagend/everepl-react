@@ -98,7 +98,6 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                 >
                                 {isMobile ? truncateString(urlInfo.url, 40) : truncateString(urlInfo.url, 100)}
                                 </Link>
-                                {isListItem? (
                                     <Stack direction="row" spacing={1} alignItems="center" sx={{pt: 0.5}}>
                                         <Stack direction="row" spacing={0} alignItems="center">
                                             <IconButton variant="plain" sx={{
@@ -120,16 +119,7 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                             <Typography sx={{ml: 0}} level="body-xs"
                                                         color="neutral">{urlInfo.likeCount}</Typography>
                                         </Stack>
-                                        <Stack direction="row" spacing={0} alignItems="center">
-                                            <IconButton variant="plain" sx={{
-                                                "--IconButton-size": "20px",
-                                                ml: -0.5
-                                            }}>
-                                                <MoreHorizIcon color="action" sx={{fontSize: 20}}/>
-                                            </IconButton>
-                                        </Stack>
                                     </Stack>
-                                ): null}
                             <Typography color="danger" level="title-md">
                                 {urlInfo.description}
                             </Typography>

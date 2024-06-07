@@ -8,7 +8,7 @@ import {CardOverflow, Typography} from "@mui/joy";
 import {useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import Box from "@mui/joy/Box";
-export default function CommentList({commentCount, comments, onCommentButtonClick, onEditComment, onDeleteComment, isReply}) {
+export default function CommentList({commentCount, comments, onCommentButtonClick, onEditComment, onDeleteComment, isReply, onLike}) {
     const location = useLocation();
 
     // URL에서 commentId 쿼리 파라미터를 추출합니다.
@@ -72,6 +72,7 @@ export default function CommentList({commentCount, comments, onCommentButtonClic
                                         onCommentButtonClick={onCommentButtonClick}
                                         onEditComment={onEditComment}
                                         onDeleteComment={onDeleteComment}
+                                        onLike={onLike}
                                     />
                                 </Box>
                             </React.Fragment>

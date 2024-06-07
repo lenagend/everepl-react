@@ -15,6 +15,7 @@ import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import LikeButton from "../components/iconButtons/LikeButton";
 import {useAuth} from "../security/AuthProvider";
 import ReportButton from "../components/iconButtons/ReportButton";
+import {useSnackbar} from "../contexts/SnackbarProvider";
 
 const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPageChange, onFilterChange, fetchUrlInfos, urlInfos, isUrlInfosLoading }) => {
     let {id} = useParams();
@@ -23,6 +24,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     const { isAuthenticated, axiosInstance } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
+    const { showSnackbar } = useSnackbar();
 
     const fetchUrlInfo = (id) => {
         axiosInstance.get(`/url/${id}`)
@@ -232,7 +234,6 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
         }
     };
 
-
     const handleCommentExpandClick = () => {
         handleToggleCommentEditor();
     };
@@ -245,6 +246,28 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
         setCommentActionType('');
         handleToggleCommentEditor(true);
     }
+
+    //좋아요로직
+    const handleLikeClick = async (targetId, targetType) => {
+        if (!isAuthenticated) {
+            navigate('/login', { state: { from: location.pathname } });
+            return;
+        }
+
+        try {
+            await axiosInstance.post('/like/add', { targetId, type: targetType });
+            showSnackbar('성공적으로 좋아요 되었습니다.', 'primary');
+
+            // 대상에 따라 필요한 데이터를 다시 불러옵니다.
+            if (targetType === 'URLINFO') {
+                fetchUrlInfo(id); // URL 정보 업데이트
+            } else if (targetType === 'COMMENT') {
+                fetchComments(id, 'URLINFO'); // 댓글 목록 업데이트
+            }
+        } catch (error) {
+            showSnackbar('좋아요에 실패했습니다. ' + (error.response?.data?.message || error.message), 'danger');
+        }
+    };
 
     return(
         <Stack spacing={2}>
@@ -261,6 +284,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                     comments={comments}
                     onCommentButtonClick={handleCommentButtonClick}
                     onEditComment={handleEditComment} onDeleteComment={handleDeleteComment}
+                    onLike={handleLikeClick}
                 />
             )}
             <Stack direction="row" justifyContent="flex-end">
@@ -269,7 +293,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
                     variant="soft"
                     spacing="0.5rem"
                 >
-                    <LikeButton targetId={id} targetType='URLINFO'/>
+                    <LikeButton targetId={id} targetType="URLINFO" onLike={handleLikeClick} />
                     <ReportButton targetId={id} targetType={'URLINFO'} />
                 </ButtonGroup>
             </Stack>

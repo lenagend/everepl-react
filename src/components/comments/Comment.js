@@ -22,7 +22,7 @@ import {useSnackbar} from "../../contexts/SnackbarProvider";
 import {STATIC_SERVER_URL} from "../../config/Config";
 import ReportButton from "../iconButtons/ReportButton";
 
-export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, context}){
+export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, onLike }){
 
     const [replies, setReplies] = useState(comment.replies || []);
     const [isAllRepliesLoaded, setIsAllRepliesLoaded] = useState(false);
@@ -105,7 +105,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                     )}
                                 </Stack>
                                 <Stack direction="row" spacing={0} alignItems="center">
-                                    <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"} />
+                                    <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"} onLike={onLike}/>
                                     <Typography sx={{ ml: 0 }} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                                 </Stack>
                                 <Stack direction="row" spacing={0} alignItems="center">
@@ -149,6 +149,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                         onEditComment={onEditComment}
                                         onDeleteComment={onDeleteComment}
                                         isReply={true}
+                                        onLike={onLike}
                                     />
                                     {comment.commentCount - replies.length > 0 && (
                                         <Button variant={'plain'} onClick={fetchAllReplies} disabled={isRepliesLoading}>
