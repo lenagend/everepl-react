@@ -2,15 +2,38 @@ import Card from "@mui/joy/Card";
 import Stack from "@mui/joy/Stack";
 import * as React from "react";
 import {useAuth} from "../../security/AuthProvider";
-import { useNavigate, useLocation } from 'react-router-dom';
 import {SPRING_BOOT_SERVER_URL} from "../../config/Config";
+import {useEffect, useRef, useState} from "react";
+import {useSnackbar} from "../../contexts/SnackbarProvider";
 
 
 export default function LoginCard() {
     const { login } = useAuth();
-    const navigate = useNavigate();
+    const [isHuman, setIsHuman] = useState(false);
+    const turnstileRef = useRef(null);
+    const { showSnackbar } = useSnackbar();
+
+    useEffect(() => {
+        if (turnstileRef.current) {
+            // Turnstile 위젯 렌더링
+            window.turnstile.render(turnstileRef.current, {
+                sitekey: "0x4AAAAAAAcY2CIg-LaCzoah", // 받은 사이트 키로 교체
+                callback: (token) => {
+                    if (token) {
+                        setIsHuman(true); // 토큰이 생성되면 사람이 확인됨
+                    }
+                },
+            });
+        }
+    }, []);
+
 
     const handleLogin = (providerUrl) => {
+        if (!isHuman) {
+            showSnackbar('사람인지를 확인해야 가입 가능합니다...', 'warning');
+            return;
+        }
+
         const oauthWindow = window.open(
             providerUrl,
             'oauthPopup',
@@ -39,6 +62,7 @@ export default function LoginCard() {
             variant="outlined"
         >
             <Stack sx={{ width: { xs: '100%', sm: 300 } }} spacing={1.5} alignItems="center">
+                <div ref={turnstileRef}></div> {/* Cloudflare Turnstile 위젯이 렌더링될 영역 */}
                 <img
                     width="250"
                     height={50}
