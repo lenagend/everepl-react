@@ -20,7 +20,7 @@ import {useState} from "react";
 import ProfileImage from "../user/ProfileImage";
 import {useAuth} from "../../security/AuthProvider";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
-import {STATIC_SERVER_URL} from "../../config/Config";
+import {S3_BUCKET_URL} from "../../config/Config";
 import ReportButton from "../iconButtons/ReportButton";
 import {truncateString} from "../../utils/stringUtils";
 import {useMediaQuery} from "@mui/material";
@@ -33,7 +33,7 @@ function CommentWithResource({ comment, onCommentButtonClick, onEditComment, onD
     const { showSnackbar } = useSnackbar();
     const isMobile = useMediaQuery('(max-width:600px)');
 
-    const commentUserUrl = comment.comment.user.imageUrl && `${STATIC_SERVER_URL}${comment.comment.user.imageUrl}`;
+    const commentUserUrl = comment.comment.user.imageUrl && `${S3_BUCKET_URL}${comment.comment.user.imageUrl}`;
 
     const fetchAllReplies = async () => {
         try {

@@ -19,7 +19,7 @@ import {useState} from "react";
 import ProfileImage from "../user/ProfileImage";
 import {useAuth} from "../../security/AuthProvider";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
-import {STATIC_SERVER_URL} from "../../config/Config";
+import {S3_BUCKET_URL} from "../../config/Config";
 import ReportButton from "../iconButtons/ReportButton";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, onLike }){
@@ -32,7 +32,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
     const htmlContent = {
         __html: comment.text
     };
-    const commentUserUrl = comment.user.imageUrl && `${STATIC_SERVER_URL}${comment.user.imageUrl}`;
+    const commentUserUrl = comment.user.imageUrl && `${S3_BUCKET_URL}${comment.user.imageUrl}`;
 
     const fetchAllReplies = async () => {
         try {
