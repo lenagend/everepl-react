@@ -136,8 +136,8 @@ export default function CommentEditor({
             if (imgElements.length > 0) {
                 const imgElement = imgElements[imgElements.length - 1]; // 가장 마지막에 삽입된 이미지
                 if (imgElement) {
-                    imgElement.style.width = '50px'; // 너비를 50px로 설정
-                    imgElement.style.height = '50px'; // 높이를 50px로 설정
+                    imgElement.style.width = '45px'; // 너비를 50px로 설정
+                    imgElement.style.height = '45px'; // 높이를 50px로 설정
                     imgElement.style.borderRadius = '50%'; // 원형으로 만듭니다.
                     imgElement.style.verticalAlign = 'middle'; // 텍스트와 세로 중앙 정렬
                     imgElement.style.marginLeft = '5px';

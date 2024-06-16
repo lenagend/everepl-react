@@ -4,7 +4,7 @@ import * as React from "react";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
 import Stack from "@mui/joy/Stack";
 
-export default function LikeButton({ targetId, targetType, onLike, likeButtonContext}) {
+export default function LikeButton({ targetId, targetType, onLike, disable, likeButtonContext}) {
 
     const renderLikeButton = () => {
         switch (likeButtonContext) {
@@ -13,13 +13,17 @@ export default function LikeButton({ targetId, targetType, onLike, likeButtonCon
                     <IconButton onClick={() => onLike(targetId, targetType)} variant="plain" sx={{
                         "--IconButton-size": "20px",
                         ml: -0.5
-                    }}>
+                    }}
+                    disabled={disable}
+                    >
                         <FavoriteTwoToneIcon color="action" sx={{ fontSize: 20 }}/>
                     </IconButton>
                 );
             default:
                 return (
-                    <IconButton onClick={() => onLike(targetId, targetType)}>
+                    <IconButton onClick={() => onLike(targetId, targetType)}
+                                disabled={disable}
+                    >
                         <FavoriteBorderOutlinedIcon />
                     </IconButton>
                 );

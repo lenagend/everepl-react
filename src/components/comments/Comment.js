@@ -19,7 +19,6 @@ import {useState} from "react";
 import ProfileImage from "../user/ProfileImage";
 import {useAuth} from "../../security/AuthProvider";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
-import {S3_BUCKET_URL} from "../../config/Config";
 import ReportButton from "../iconButtons/ReportButton";
 
 export default function Comment({comment, onCommentButtonClick, onEditComment, onDeleteComment, onLike }){
@@ -32,7 +31,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
     const htmlContent = {
         __html: comment.text
     };
-    const commentUserUrl = comment.user.imageUrl && `${S3_BUCKET_URL}${comment.user.imageUrl}`;
+    const commentUserUrl = comment.user.imageUrl && `${comment.user.imageUrl}`;
 
     const fetchAllReplies = async () => {
         try {
@@ -78,18 +77,18 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                     </Typography>
                                 </Typography>
                             </Stack>
-                            <Typography
+                            <Box
                                 level="title-sm"
                                 pr={{ xs: 1 }}
                             >
                                 {comment.parentCommentUser && (
                                     <Typography level="title-md" color="primary" sx={{ mr: 1 }}>@{comment.parentCommentUser.name}</Typography>
                                 )}
-                                <article dangerouslySetInnerHTML={htmlContent}></article>
+                                <p dangerouslySetInnerHTML={htmlContent}></p>
                                 {comment.modified && (
                                     <Typography color="primary" sx={{ display: 'block' }} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>
                                 )}
-                            </Typography>
+                            </Box>
                             <Stack direction="row" spacing={1} alignItems="center">
                                 <Stack direction="row" spacing={0} alignItems="center">
                                     {comment.type !== 'COMMENT' && (
@@ -99,6 +98,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                                 ml: -0.5
                                             }}
                                                         onClick={() => onCommentButtonClick(comment, comment.id, 'COMMENT')}
+                                                        disabled={comment.deleted ? true : false}
                                             >
                                                 <CommentTwoToneIcon color="action" sx={{ fontSize: 20 }} />
                                             </IconButton>
@@ -107,7 +107,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                     )}
                                 </Stack>
                                 <Stack direction="row" spacing={0} alignItems="center">
-                                    <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"} onLike={onLike}/>
+                                    <LikeButton targetId={comment.id} targetType={"COMMENT"} likeButtonContext={"COMMENT"} disable={comment.deleted ? true : false} onLike={onLike}/>
                                     <Typography sx={{ ml: 0 }} level="body-xs" color="neutral">{comment.likeCount}</Typography>
                                 </Stack>
                                 <Stack direction="row" spacing={0} alignItems="center">
@@ -126,7 +126,7 @@ export default function Comment({comment, onCommentButtonClick, onEditComment, o
                                         </Dropdown>
                                     </Stack>
                                 </Stack>
-                                {!comment.isDeleted && user && comment.user && user.id === comment.user.id && (
+                                {!comment.deleted && user && comment.user && user.id === comment.user.id && (
                                     <Stack direction="row" spacing={0} alignItems="center">
                                         <Dropdown>
                                             <MenuButton

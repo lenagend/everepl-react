@@ -2,7 +2,7 @@ import React, {createContext, useContext, useEffect, useState} from 'react';
 import axios from "axios";
 import {useLocation, useNavigate} from "react-router-dom";
 import { jwtDecode } from 'jwt-decode';
-import {SPRING_BOOT_SERVER_URL, S3_BUCKET_URL} from "../config/Config";
+import {SPRING_BOOT_SERVER_URL} from "../config/Config";
 
 const AuthContext = createContext({
     user: null,
@@ -77,7 +77,7 @@ export const AuthProvider = ({ children }) => {
         axiosInstance.get(`/auth/${userId}`)
             .then(response => {
                 const userData = response.data;
-                userData.imageUrl = userData.imageUrl && `${S3_BUCKET_URL}${userData.imageUrl}`;
+                userData.imageUrl = userData.imageUrl && `${userData.imageUrl}`;
                 setUser(userData);
             })
             .catch(error => {

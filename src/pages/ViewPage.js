@@ -205,6 +205,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
             .then(data => {
                 setComments(data); // 상태 업데이트
                 setIsCommentsLoading(false);
+                console.log(data);
             })
             .catch(error => {
                 setErrorMessage({ fetchError: error.message });
