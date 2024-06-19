@@ -1,32 +1,23 @@
-# 1. 빌드 스테이지: Node.js 16.x LTS 버전을 사용하여 리액트 애플리케이션을 빌드합니다.
+# Build stage
 FROM node:16 AS build-stage
 
-# 2. 작업 디렉토리를 /app으로 설정합니다. 이 디렉토리는 이후의 모든 명령어의 기준이 됩니다.
 WORKDIR /app
 
-# 3. 패키지 파일만 먼저 복사합니다. package.json과 package-lock.json 파일을 복사하여 의존성을 설치합니다.
 COPY package.json package-lock.json ./
 
-# 4. 프로젝트의 의존성을 설치합니다. npm install을 통해 package.json에 정의된 모든 패키지를 설치합니다.
 RUN npm install
 
-# 5. 애플리케이션의 나머지 소스 코드를 복사합니다.
 COPY . .
 
-# 6. 애플리케이션을 빌드합니다. 'npm run build' 명령은 빌드 스크립트에 정의된 대로 애플리케이션을 빌드합니다.
+ENV REACT_APP_SPRING_BOOT_SERVER_URL=https://everepl.com
+
 RUN npm run build
 
-# 7. 프로덕션 스테이지: Nginx 1.21.0 버전을 사용하여 빌드된 애플리케이션을 서비스합니다.
+# Production stage
 FROM nginx:1.21.0-alpine AS production-stage
 
-# 8. Nginx 설정 파일을 복사합니다. (옵션) 이 부분은 Nginx 설정을 커스터마이즈하고 싶을 때 사용합니다.
-#COPY nginx.conf /etc/nginx/nginx.conf
-
-# 9. 빌드된 애플리케이션 파일을 Nginx의 기본 경로로 복사합니다.
 COPY --from=build-stage /app/build /usr/share/nginx/html
 
-# 10. 컨테이너가 사용할 포트를 노출합니다. 기본적으로 Nginx는 80 포트를 사용합니다.
 EXPOSE 80
 
-# 11. Nginx를 실행하는 명령어를 지정합니다. 이 명령어는 컨테이너가 시작될 때 실행됩니다.
 CMD ["nginx", "-g", "daemon off;"]
