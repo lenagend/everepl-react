@@ -62,7 +62,7 @@ export default function LoginCard() {
             variant="outlined"
         >
             <Stack sx={{ width: { xs: '100%', sm: 300 } }} spacing={1.5} alignItems="center">
-                <div ref={turnstileRef}></div> {/* Cloudflare Turnstile 위젯이 렌더링될 영역 */}
+                <div ref={turnstileRef}></div>
                 <img
                     width="250"
                     height={50}
