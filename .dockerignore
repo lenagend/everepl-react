@@ -1,0 +1,30 @@
+# Node.js 프로젝트
+node_modules
+npm-debug.log
+yarn-error.log
+
+# 빌드 아티팩트
+dist
+build
+.out
+
+# 환경 변수 파일
+.env
+.env.local
+.env.*.local
+
+# Docker 관련 파일
+.dockerignore
+Dockerfile
+
+# Git 관련 파일
+.git
+.gitignore
+
+# IDE 설정 파일
+.vscode
+.idea
+.DS_Store
+
+# OS 생성 파일
+Thumbs.db
