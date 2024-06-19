@@ -216,7 +216,7 @@ export default function Root(){
                         urlInfos={urlInfos}
                         isUrlInfosLoading={isUrlInfosLoading}
                     />} />
-                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signin" element={<LoginPage />} />
                     <Route path="/policy" element={<PolicyPage />} />
                     <Route path="/search" element={<SearchResultsPage />} />
                     <Route path="/my" element={<PrivateRoute element={MyPage} />} />

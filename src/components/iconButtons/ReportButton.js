@@ -14,7 +14,7 @@ export default function ReportButton({ targetId, targetType }) {
     const handleReport = async (reason) => {
 
         if (!isAuthenticated) {
-            navigate('/login', { state: { from: location.pathname } });
+            navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 

@@ -12,7 +12,7 @@ const PrivateRoute = ({ element: Component }) => {
         return <Box>권한확인중입니다...</Box>; // 권한 체크 로딩 중일 때 표시할 컴포넌트
     }
 
-    return isAuthenticated ? <Component /> : <Navigate to="/login" state={{ from: location.pathname }} />;
+    return isAuthenticated ? <Component /> : <Navigate to="/signin" state={{ from: location.pathname }} />;
 };
 
 export default PrivateRoute;

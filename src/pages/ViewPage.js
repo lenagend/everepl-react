@@ -119,7 +119,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
 
     const handleSubmit = async () => {
         if (!isAuthenticated) {
-            navigate('/login', { state: { from: location.pathname } });
+            navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 
@@ -218,7 +218,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
 
     const handleToggleCommentEditor = (expand) => {
         if (!isAuthenticated) {
-            navigate('/login', { state: { from: location.pathname } });
+            navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 
@@ -251,7 +251,7 @@ const ViewPage = ({ page, currentFilterKey, currentSortKey, onSortChange, onPage
     //좋아요로직
     const handleLikeClick = async (targetId, targetType) => {
         if (!isAuthenticated) {
-            navigate('/login', { state: { from: location.pathname } });
+            navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 

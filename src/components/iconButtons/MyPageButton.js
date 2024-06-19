@@ -17,7 +17,7 @@ export default function MyPageButton(){
     }
 
     const handleLoginClick = () => {
-        navigate("/login");
+        navigate("/signin");
     }
 
     return(
