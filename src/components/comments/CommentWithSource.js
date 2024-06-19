@@ -31,7 +31,9 @@ function CommentWithResource({ comment, onCommentButtonClick, onEditComment, onD
     const { axiosInstance, user } = useAuth();
     const { showSnackbar } = useSnackbar();
     const isMobile = useMediaQuery('(max-width:600px)');
-
+    const htmlContent = {
+        __html: comment.comment.text
+    };
     const commentUserUrl = comment.comment.user.imageUrl && `${comment.comment.user.imageUrl}`;
 
     const fetchAllReplies = async () => {
@@ -83,18 +85,18 @@ function CommentWithResource({ comment, onCommentButtonClick, onEditComment, onD
                                         </Typography>
                                     </Typography>
                                 </Stack>
-                                <Typography
-                                    level="body-sm"
+                                <Box
+                                    level="title-sm"
                                     pr={{ xs: 1 }}
                                 >
-                                    {comment.comment.parentCommentUser && (
-                                        <Typography level="title-md" color="primary" sx={{ mr: 1 }}>@{comment.comment.parentCommentUser.name}</Typography>
+                                    {comment.parentCommentUser && (
+                                        <Typography level="title-md" color="primary" sx={{ mr: 1 }}>@{comment.parentCommentUser.name}</Typography>
                                     )}
-                                    {comment.comment.text}
-                                    {comment.comment.modified && (
-                                        <Typography color="primary" sx={{ display: 'block' }} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.comment.updatedAt} />)</Typography>
+                                    <p dangerouslySetInnerHTML={htmlContent}></p>
+                                    {comment.modified && (
+                                        <Typography color="primary" sx={{ display: 'block' }} level="body-xs">수정된 댓글입니다(<TimeAgo time={comment.updatedAt} />)</Typography>
                                     )}
-                                </Typography>
+                                </Box>
                                 <Stack direction="row" spacing={1} alignItems="center">
                                     <Stack direction="row" spacing={0} alignItems="center">
                                         {comment.comment.type !== 'COMMENT' && (
