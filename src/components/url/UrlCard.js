@@ -12,8 +12,7 @@ import {truncateString} from "../../utils/stringUtils";
 import TimeAgo from "../../utils/TimeAgo";
 import ChatBubbleTwoToneIcon from "@mui/icons-material/ChatBubbleTwoTone";
 import FavoriteTwoToneIcon from "@mui/icons-material/FavoriteTwoTone";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 
 export default function UrlCard({ isListItem, urlInfo }) {
     const navigate = useNavigate();
@@ -99,21 +98,37 @@ export default function UrlCard({ isListItem, urlInfo }) {
                                 {isMobile ? truncateString(urlInfo.url, 40) : truncateString(urlInfo.url, 100)}
                                 </Link>
                                     <Stack direction="row" spacing={1} alignItems="center" sx={{pt: 0.5}}>
-                                        <Stack direction="row" spacing={0} alignItems="center">
+                                        <Stack direction="row" spacing={0} alignItems="center" justifyContent={"center"}>
                                             <IconButton variant="plain" sx={{
                                                 "--IconButton-size": "20px",
                                                 ml: -0.5
-                                            }}>
-                                                <ChatBubbleTwoToneIcon color="action" sx={{fontSize: 20}}/>
+                                            }}
+                                            disabled
+                                            >
+                                                <VisibilityTwoToneIcon color="action" sx={{fontSize: 20}}/>
+                                            </IconButton>
+                                            <Typography sx={{ml: 0}} level="body-xs"
+                                                        color="neutral">{urlInfo.viewCount}</Typography>
+                                        </Stack>
+                                        <Stack direction="row" spacing={0} alignItems="center" justifyContent={"center"}>
+                                            <IconButton variant="plain" sx={{
+                                                "--IconButton-size": "20px",
+                                                ml: -0.5
+                                            }}
+                                            disabled
+                                            >
+                                                <ChatBubbleTwoToneIcon color="action" sx={{fontSize: 18}}/>
                                             </IconButton>
                                             <Typography sx={{ml: 0}} level="body-xs"
                                                         color="neutral">{urlInfo.commentCount}</Typography>
                                         </Stack>
-                                        <Stack direction="row" spacing={0} alignItems="center">
+                                        <Stack direction="row" spacing={0} alignItems="center" justifyContent={"center"}>
                                             <IconButton variant="plain" sx={{
                                                 "--IconButton-size": "20px",
                                                 ml: -0.5
-                                            }}>
+                                            }}
+                                            disabled
+                                            >
                                                 <FavoriteTwoToneIcon color="action" sx={{fontSize: 20}}/>
                                             </IconButton>
                                             <Typography sx={{ml: 0}} level="body-xs"
