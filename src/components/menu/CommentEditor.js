@@ -142,6 +142,7 @@ export default function CommentEditor({
                     imgElement.style.verticalAlign = 'middle'; // 텍스트와 세로 중앙 정렬
                     imgElement.style.marginLeft = '5px';
                     imgElement.style.marginRight = '5px';
+                    imgElement.setAttribute('alt', '이모티콘'); // alt 속성 추가
                 }
             }
 
@@ -329,7 +330,7 @@ export default function CommentEditor({
                             sx={{ cursor: 'pointer', m: '5px' }}
                             onClick={() => handleGifClick(gif)}
                         >
-                            <img src={gif} alt="GIF" style={{ width: '50px', height: '50px' }} />
+                            <img src={gif} alt="이모티콘" style={{ width: '50px', height: '50px' }} />
                         </Box>
                     ))}
                 </Box>

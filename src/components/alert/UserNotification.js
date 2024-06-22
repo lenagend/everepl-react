@@ -95,7 +95,9 @@ export default function UserNotification() {
                             <Typography >
                                 {state.message.title}
                             </Typography>
-                                <p dangerouslySetInnerHTML={{ __html: state.message.message }}/>
+                            <Typography level="title-md">
+                                {state.message.message}
+                            </Typography>
                         </Stack>
                     </Stack>
                 </Snackbar>
