@@ -16,7 +16,6 @@ import CampaignIcon from '@mui/icons-material/Campaign';
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
 import {truncateString} from "../../utils/stringUtils";
 import {useMediaQuery} from "@mui/material";
-import LoadingUrlCard from "../loading/LoadingUrlCard";
 import LoadingAnnouncementList from "../loading/LoadingAnnouncementList";
 
 const AnnouncementList = () => {
