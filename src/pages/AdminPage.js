@@ -5,6 +5,7 @@ import Stack from "@mui/joy/Stack";
 import {useState} from "react";
 import AdminAnnouncementList from "../components/admin/AdminAnnouncementList";
 import UserList from "../components/admin/UserList";
+import BlockUrlForm from "../components/admin/BlockUrlForm";
 
 const AdminPage = () => {
     const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
@@ -34,6 +35,8 @@ const AdminPage = () => {
             <AdminAnnouncementList onSelectAnnouncement={handleSelectAnnouncement} />
             <Typography level="h3">유저 관리</Typography>
             <UserList page={page} onPageChange={setPage} />
+            <Typography level="h3">URL 차단/도메인 정지</Typography>
+            <BlockUrlForm />
         </Stack>
     );
 };

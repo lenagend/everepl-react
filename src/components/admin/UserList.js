@@ -41,9 +41,10 @@ const UserList = ({ page, onPageChange }) => {
     const handleDelete = async (userId) => {
         try {
             await axiosInstance.delete(`/admin/users/${userId}`);
-            showSnackbar('사용자가 정상적으로 삭제되었습니다.', 'primary');
+            alert('사용자가 정상적으로 삭제되었습니다.');
+            window.location.reload();
         } catch (error) {
-            showSnackbar('사용자 삭제에 실패했습니다. ' + (error.response ? error.response.data.message : error.message), 'danger');
+            alert('사용자 삭제에 실패했습니다. ' + (error.response ? error.response.data.message : error.message));
         }
     };
 
@@ -52,9 +53,10 @@ const UserList = ({ page, onPageChange }) => {
         if (days !== null && days !== "") {
             try {
                 await axiosInstance.post(`/admin/users/${userId}/suspend-profile-picture?days=${days}`);
-                showSnackbar('프로필 사진이 정상적으로 정지되었습니다.', 'primary');
+                alert('프로필 사진이 정상적으로 정지되었습니다.');
+                window.location.reload();
             } catch (error) {
-                showSnackbar('프로필 사진 정지에 실패했습니다. ' + (error.response ? error.response.data.message : error.message), 'danger');
+                alert('프로필 사진 정지에 실패했습니다. ' + (error.response ? error.response.data.message : error.message));
             }
         }
     };
@@ -64,9 +66,10 @@ const UserList = ({ page, onPageChange }) => {
         if (days !== null && days !== "") {
             try {
                 await axiosInstance.post(`/admin/users/${userId}/suspend-comments?days=${days}`);
-                showSnackbar('댓글 작성이 정상적으로 정지되었습니다.', 'primary');
+                alert('댓글 작성이 정상적으로 정지되었습니다.');
+                window.location.reload();
             } catch (error) {
-                showSnackbar('댓글 작성 정지에 실패했습니다. ' + (error.response ? error.response.data.message : error.message), 'danger');
+                alert('댓글 작성 정지에 실패했습니다. ' + (error.response ? error.response.data.message : error.message));
             }
         }
     };
@@ -110,10 +113,10 @@ const UserList = ({ page, onPageChange }) => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-            showSnackbar('사용자 정보가 정상적으로 수정되었습니다.', 'primary');
+            alert('사용자 정보가 정상적으로 수정되었습니다.');
             setOpenModal(false);
         } catch (error) {
-            showSnackbar('사용자 정보 수정에 실패했습니다. ' + (error.response ? error.response.data.message : error.message), 'danger');
+            alert('사용자 정보 수정에 실패했습니다. ' + (error.response ? error.response.data.message : error.message));
         }
     };
 

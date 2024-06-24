@@ -29,33 +29,33 @@ const AnnouncementForm = ({ selectedAnnouncement, onUpdateComplete, onDeleteComp
             if (isEditMode) {
                 // 공지사항 수정
                 await axiosInstance.put(`/admin/announcements/${selectedAnnouncement.id}`, { title, content });
-                showSnackbar('공지사항이 정상적으로 수정되었습니다.', 'primary');
+                alert('공지사항이 정상적으로 수정되었습니다.');
                 onUpdateComplete();
             } else {
                 // 새 공지사항 작성
                 await axiosInstance.post("/admin/announcements", { title, content });
-                showSnackbar('공지사항이 정상적으로 작성되었습니다.', 'primary');
+                alert('공지사항이 정상적으로 작성되었습니다.');
             }
             setTitle("");
             setContent("");
             setIsEditMode(false);
             window.location.reload();
         } catch (error) {
-            showSnackbar('공지사항 작성/수정에 실패했습니다. ' + (error.response ? error.response.data.message : error.message), 'danger');
+            alert('공지사항 작성/수정에 실패했습니다. ' + (error.response ? error.response.data.message : error.message));
         }
     };
 
     const handleDelete = async () => {
         try {
             await axiosInstance.delete(`/admin/announcements/${selectedAnnouncement.id}`);
-            showSnackbar('공지사항이 정상적으로 삭제되었습니다.', 'primary');
+            alert('공지사항이 정상적으로 삭제되었습니다.');
             setTitle("");
             setContent("");
             setIsEditMode(false);
             onDeleteComplete();
             window.location.reload();
         } catch (error) {
-            showSnackbar('공지사항 삭제에 실패했습니다. ' + (error.response ? error.response.data.message : error.message), 'danger');
+            alert('공지사항 삭제에 실패했습니다. ' + (error.response ? error.response.data.message : error.message));
         }
     };
 
