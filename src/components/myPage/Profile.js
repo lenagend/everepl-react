@@ -12,7 +12,7 @@ import Box from "@mui/joy/Box";
 import {useSnackbar} from "../../contexts/SnackbarProvider";
 
 export default function Profile() {
-    const { user, fetchUser, axiosInstance, isAuthLoading } = useAuth();
+    const { user, fetchUser, axiosInstance, isAuthLoading, logout } = useAuth();
     const [selectedFile, setSelectedFile] = useState(null);
     const [name, setName] = useState('');
     const [previewUrl, setPreviewUrl] = useState(''); // 미리보기 URL 상태
@@ -56,6 +56,16 @@ export default function Profile() {
             showSnackbar('프로필이 업데이트 되었습니다.' , 'primary');
         } catch (error) {
             showSnackbar('프로필 업데이트에 실패했습니다.' + error.response.data.message, 'danger');
+        }
+    };
+
+    const deleteUserAccount = async () => {
+        try {
+            await axiosInstance.delete('/auth');
+            alert('회원 탈퇴가 성공적으로 처리되었습니다.');
+            logout(); // 로그아웃 함수 호출
+        } catch (error) {
+            showSnackbar('회원 탈퇴에 실패했습니다.' + error.response.data.message, 'danger');
         }
     };
 
@@ -143,7 +153,7 @@ export default function Profile() {
                     </CardOverflow>
                     <Stack spacing={2} direction={'row'} alignItems={'center'} width={'100%'}>
                         <Typography sx={{ flexGrow: 1 }}>복구할 수 없습니다</Typography>
-                        <Button color={'danger'}>탈퇴</Button>
+                        <Button color={'danger'} onClick={deleteUserAccount}>탈퇴</Button>
                     </Stack>
                 </Card>
             </Stack>
